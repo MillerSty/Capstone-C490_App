@@ -1,0 +1,124 @@
+﻿<Window x:Class="C490_App.View.HomeFrame"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:components="clr-namespace:C490_App.Components"
+        xmlns:local="clr-namespace:C490_App"
+        ResizeMode="CanResize"
+        mc:Ignorable="d"
+        Height="500" Width="900"
+        WindowStyle="SingleBorderWindow" 
+        Title="HomeFrame"><!--Remove WindowStyle and title For made menu-->
+    
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"  />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!--Menu Bar-->
+        <!--Note WPF has Menu item-->
+        <!--<Menu> </Menu> Look into this-->
+        <!--<Border Grid.ColumnSpan="2"
+         Background="White"
+                BorderBrush="Gray"
+                BorderThickness="1" VerticalAlignment="Top">
+
+            <Grid HorizontalAlignment="Stretch" Background="Gray" VerticalAlignment="Top">
+                <Label Content=""
+                  Foreground="Gray"
+                  FontWeight="SemiBold"/>
+
+                <StackPanel HorizontalAlignment="Right"
+                     Orientation="Horizontal">
+                    <Button Width="20" Height="20" 
+                     Content="____"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     Foreground="Gray"
+                     FontWeight="Bold"
+                     Margin="0,0,0,1"/>
+                    <Button Width="20" Height="20" 
+                     Content="O"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     Foreground="Gray"
+                     FontWeight="Bold"/>
+                    <Button Width="20" Height="20" 
+                     Content="X"
+                     Background="Transparent"
+                     BorderThickness="0"
+                     Foreground="Gray"
+                     FontWeight="Bold"/>
+                </StackPanel>
+            </Grid>
+        </Border>-->
+        <!--End menu bar-->
+        
+        <StackPanel Margin="5, 10, 0, 0" Grid.Column="0"
+                    Grid.Row="1" Grid.RowSpan="3">
+            <Button Grid.Column="0"
+                    Grid.Row="1"
+                    Content="Set LED Parameters"                    
+                    Style="{StaticResource HomeButton}">
+            </Button>
+            <Button Grid.Column="0"
+                    Grid.Row="1"
+                    Content="Set Experiment Parameters"
+                    Style="{StaticResource HomeButton}">
+            </Button>
+            
+            
+            <!--Do a new stack panel for check boxes-->
+            <CheckBox Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left" >
+                <CheckBox.Resources>
+                    <Style TargetType="{x:Type Path}">
+                        <Setter Property="FlowDirection" Value="LeftToRight" />
+                    </Style>
+                </CheckBox.Resources>
+                <TextBlock FlowDirection="LeftToRight" Text="Cyclic Voltammetry" Padding="0 0 60 0"></TextBlock>
+            </CheckBox>
+
+            <CheckBox Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left">
+                <CheckBox.Resources>
+                    <Style TargetType="{x:Type Path}">
+                        <Setter Property="FlowDirection" Value="LeftToRight" />
+                    </Style>
+                </CheckBox.Resources>
+                <TextBlock FlowDirection="LeftToRight" Text="Differential Pulse Voltammetry" Padding="0 0 0 0"></TextBlock>
+            </CheckBox>
+
+            <CheckBox Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left">
+                <CheckBox.Resources>
+                    <Style TargetType="{x:Type Path}">
+                        <Setter Property="FlowDirection" Value="LeftToRight" />
+                    </Style>
+                </CheckBox.Resources>
+                <TextBlock FlowDirection="LeftToRight" Text="Chronoamperometry" Padding="0 0 50 0"></TextBlock>
+            </CheckBox>
+
+            <Button Grid.Column="0"
+                    Grid.Row="1"
+                    Content="Start / Stop Experiment"                    
+                    Style="{StaticResource HomeButton}">
+            </Button>
+            <Button Grid.Column="0"
+                    Grid.Row="1"
+                    Content="View Graph Output"
+                    Style="{StaticResource HomeButton}">
+            </Button>
+        </StackPanel>
+
+        <!--This is the LedArray, and pot grid
+         It will bind itno HomeFrameViewModel, onto its own ViewModel object-->
+        <components:LedArray Grid.Column="1" Grid.Row="1" Padding="20" />
+        <components:PotentioStatSelect Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Padding="20" />
+    </Grid>
+</Window>

@@ -1,0 +1,121 @@
+﻿<UserControl x:Class="C490_App.Components.LedArray"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:C490_App.Components"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="350">
+    <Grid Background="White" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" 
+                   Grid.ColumnSpan="11" 
+                   Text="Individual LED Selection" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center"
+                   FontWeight="Bold"/>
+        <Border Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="11" Grid.RowSpan="6" BorderBrush="Gray" BorderThickness="1"/>
+        <TextBlock Grid.Column="1"  Grid.Row="1" Text="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Column="2"  Grid.Row="1" Text="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Column="3"  Grid.Row="1" Text="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Column="4"  Grid.Row="1" Text="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Column="5"  Grid.Row="1" Text="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Column="6"  Grid.Row="1" Text="5" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Column="7"  Grid.Row="1" Text="6" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Column="8"  Grid.Row="1" Text="7" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Column="9"  Grid.Row="1" Text="8" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Column="10" Grid.Row="1" Text="9" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        
+        <TextBlock Grid.Column="0" Grid.Row="2" Text="0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Column="0" Grid.Row="3" Text="1" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Column="0" Grid.Row="4" Text="2" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Column="0" Grid.Row="5" Text="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Column="0" Grid.Row="6" Text="4" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+        <CheckBox Grid.Column="0" Grid.Row="1" Background="White" BorderBrush="Gray" Height="20" Width="20" />
+
+        <CheckBox Grid.Column="1" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="1" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="1" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="1" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="1" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        
+        <CheckBox Grid.Column="2" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="2" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="2" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="2" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="2" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+
+        <CheckBox Grid.Column="3" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="3" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="3" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="3" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="3" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+
+        <CheckBox Grid.Column="4" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="4" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="4" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="4" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="4" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+
+        <CheckBox Grid.Column="5" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="5" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="5" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="5" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="5" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+
+        <CheckBox Grid.Column="6" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="6" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="6" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="6" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="6" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+
+        <CheckBox Grid.Column="7" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="7" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="7" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="7" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="7" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+
+        <CheckBox Grid.Column="8" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="8" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="8" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="8" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="8" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+
+
+        <CheckBox Grid.Column="9" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="9" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="9" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="9" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="9" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+
+        <CheckBox Grid.Column="10" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="10" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="10" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="10" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+        <CheckBox Grid.Column="10" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20"/>
+    </Grid>
+</UserControl>
