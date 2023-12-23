@@ -18,8 +18,8 @@ namespace C490_App.MVVM.ViewModel
             set;
         }
         public RelayCommand switchL { get; set; }
-        public ObservableCollection<String> SelectedPot;
-        public ObservableCollection<String> SelectedPotName
+        public String SelectedPot;
+        public String SelectedPotName
         {
             get
             {
@@ -57,7 +57,6 @@ namespace C490_App.MVVM.ViewModel
             Trace.WriteLine("[x0]");
             Trace.WriteLine(potsActive.ToString());
             Trace.WriteLine("SelectedPot : " + SelectedPotName);
-            //postActive=SelectedPotName.ToList();
             potsActive.Add(SelectedPotName);
             potsInactive.Remove(SelectedPotName);
 
