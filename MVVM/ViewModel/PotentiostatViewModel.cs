@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace C490_App.MVVM.ViewModel
 {
-    internal class PotentiostatViewModel
+    public class PotentiostatViewModel
     {
         //public List<int> intsy = (List<int>)Enumerable.Range(0, 49);
 
@@ -18,8 +18,8 @@ namespace C490_App.MVVM.ViewModel
             set;
         }
         public RelayCommand switchL { get; set; }
-        public ObservableCollection<String> SelectedPot;
-        public ObservableCollection<String> SelectedPotName
+        public String SelectedPot;
+        public String SelectedPotName
         {
             get
             {

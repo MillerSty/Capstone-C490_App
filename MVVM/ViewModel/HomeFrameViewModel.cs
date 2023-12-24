@@ -3,12 +3,13 @@
     public class HomeFrameViewModel
     {
 
-        PotentiostatViewModel PotentiostatViewModel { get; set; }
-
+        public PotentiostatViewModel PotentiostatViewModel { get; }
+        public LedArrayViewModel LedArrayViewModel { get; }
 
         public HomeFrameViewModel()
         {
             PotentiostatViewModel = new PotentiostatViewModel();
+            LedArrayViewModel = new LedArrayViewModel();
         }
 
 

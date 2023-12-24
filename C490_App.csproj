@@ -13,10 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="MVVM\Model\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="Resources\Images\DA2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

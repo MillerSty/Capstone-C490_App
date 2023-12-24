@@ -10,7 +10,7 @@ namespace C490_App.Components
         public LedArray()
         {
             InitializeComponent();
-            this.DataContext = this;
+            //this.DataContext = this;
         }
     }
 }

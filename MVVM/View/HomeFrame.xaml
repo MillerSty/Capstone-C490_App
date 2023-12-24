@@ -4,13 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:components="clr-namespace:C490_App.Components"
-        xmlns:local="clr-namespace:C490_App"
+        xmlns:local="clr-namespace:C490_App" xmlns:viewmodel="clr-namespace:C490_App.MVVM.ViewModel"
         ResizeMode="CanResize"
         mc:Ignorable="d"
         Height="500" Width="900"
         WindowStyle="SingleBorderWindow" 
         Title="HomeFrame"><!--Remove WindowStyle and title For made menu-->
-    
+
+    <Window.DataContext>
+        <viewmodel:HomeFrameViewModel>
+        </viewmodel:HomeFrameViewModel>
+    </Window.DataContext>
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
@@ -118,7 +122,7 @@
 
         <!--This is the LedArray, and pot grid
          It will bind itno HomeFrameViewModel, onto its own ViewModel object-->
-        <components:LedArray Grid.Column="1" Grid.Row="1" Padding="20" />
-        <components:PotentioStatSelect Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Padding="20" />
+        <components:LedArray Grid.Column="1" Grid.Row="1" Padding="20" DataContext="{Binding LedArrayViewModel}"/>
+        <components:PotentioStatSelect Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Padding="20" DataContext="{Binding PotentiostatViewModel}" />
     </Grid>
 </Window>
