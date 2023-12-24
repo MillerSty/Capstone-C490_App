@@ -81,7 +81,7 @@
             
             
             <!--Do a new stack panel for check boxes-->
-            <CheckBox Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left" >
+            <CheckBox Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left"  >
                 <CheckBox.Resources>
                     <Style TargetType="{x:Type Path}">
                         <Setter Property="FlowDirection" Value="LeftToRight" />
@@ -90,7 +90,7 @@
                 <TextBlock FlowDirection="LeftToRight" Text="Cyclic Voltammetry" Padding="0 0 60 0"></TextBlock>
             </CheckBox>
 
-            <CheckBox Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left">
+            <CheckBox Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left" IsChecked="{Binding _dpvModel.isEnabled}">
                 <CheckBox.Resources>
                     <Style TargetType="{x:Type Path}">
                         <Setter Property="FlowDirection" Value="LeftToRight" />
