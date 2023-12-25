@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:components="clr-namespace:C490_App.Components"
-        xmlns:local="clr-namespace:C490_App" xmlns:viewmodel="clr-namespace:C490_App.MVVM.ViewModel"
+        xmlns:local="clr-namespace:C490_App" 
+        xmlns:viewmodel="clr-namespace:C490_App.MVVM.ViewModel"
         ResizeMode="CanResize"
         mc:Ignorable="d"
         Height="500" Width="900"
@@ -76,12 +77,13 @@
             <Button Grid.Column="0"
                     Grid.Row="1"
                     Content="Set Experiment Parameters"
-                    Style="{StaticResource HomeButton}">
+                    Style="{StaticResource HomeButton}"
+                    Command="{Binding openWindow}">
             </Button>
             
             
             <!--Do a new stack panel for check boxes-->
-            <CheckBox Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left"  >
+            <CheckBox Margin="10 10 00 0 " Command="{Binding ExperimentCheck}" CommandParameter="cv" FlowDirection="RightToLeft" HorizontalAlignment="Left" IsChecked="{Binding cvEnabled, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" >
                 <CheckBox.Resources>
                     <Style TargetType="{x:Type Path}">
                         <Setter Property="FlowDirection" Value="LeftToRight" />
@@ -90,7 +92,7 @@
                 <TextBlock FlowDirection="LeftToRight" Text="Cyclic Voltammetry" Padding="0 0 60 0"></TextBlock>
             </CheckBox>
 
-            <CheckBox Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left" IsChecked="{Binding _dpvModel.isEnabled}">
+            <CheckBox Command="{Binding ExperimentCheck}" CommandParameter="dpv" Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left" IsChecked="{Binding dpvEnabled, UpdateSourceTrigger=PropertyChanged}">
                 <CheckBox.Resources>
                     <Style TargetType="{x:Type Path}">
                         <Setter Property="FlowDirection" Value="LeftToRight" />
@@ -99,7 +101,7 @@
                 <TextBlock FlowDirection="LeftToRight" Text="Differential Pulse Voltammetry" Padding="0 0 0 0"></TextBlock>
             </CheckBox>
 
-            <CheckBox Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left">
+            <CheckBox Command="{Binding ExperimentCheck}" CommandParameter="ca" Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left" IsChecked="{Binding caEnabled, Mode=TwoWay}">
                 <CheckBox.Resources>
                     <Style TargetType="{x:Type Path}">
                         <Setter Property="FlowDirection" Value="LeftToRight" />
@@ -118,6 +120,7 @@
                     Content="View Graph Output"
                     Style="{StaticResource HomeButton}">
             </Button>
+      
         </StackPanel>
 
         <!--This is the LedArray, and pot grid
