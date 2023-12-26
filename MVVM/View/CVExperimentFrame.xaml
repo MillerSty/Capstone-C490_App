@@ -26,110 +26,110 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.Column="0" 
-                   FontSize="20" 
+        <TextBlock Grid.Row="0" Grid.Column="0"
+                   FontSize="20"
                    Text="Parameter:"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"/>
-        <TextBlock Grid.Row="1" Grid.Column="0" 
-            FontSize="20" 
-            Text="Starting Voltage (V)"
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center"/>
-        <TextBlock Grid.Row="2" Grid.Column="0" 
-           FontSize="20" 
-           Text="Voltage Threshold 1 (V)"
-           VerticalAlignment="Center"
-           HorizontalAlignment="Center"/>
-        <TextBlock Grid.Row="3" Grid.Column="0" 
-           FontSize="20" 
-           Text="Voltage Threshold 2 (V)"
-           VerticalAlignment="Center"
-           HorizontalAlignment="Center"/>
-        <TextBlock Grid.Row="4" Grid.Column="0" 
-           FontSize="20" 
-           Text="Step Size (V)"
-           VerticalAlignment="Center"
-           HorizontalAlignment="Center"/>
-        <TextBlock Grid.Row="5" Grid.Column="0" 
-           FontSize="20" 
-           Text="Scan Rate (V/s) "
-           VerticalAlignment="Center"
-           HorizontalAlignment="Center"/>
-        <TextBlock Grid.Row="6" Grid.Column="0" 
-           FontSize="20" 
-           Text="Number of Scans"
-           VerticalAlignment="Center"
-           HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="1" Grid.Column="0"
+                   FontSize="20"
+                   Text="Starting Voltage (V)"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="2" Grid.Column="0"
+                   FontSize="20"
+                   Text="Voltage Threshold 1 (V)"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="3" Grid.Column="0"
+                   FontSize="20"
+                   Text="Voltage Threshold 2 (V)"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="4" Grid.Column="0"
+                   FontSize="20"
+                   Text="Step Size (V)"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="5" Grid.Column="0"
+                   FontSize="20"
+                   Text="Scan Rate (V/s) "
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="6" Grid.Column="0"
+                   FontSize="20"
+                   Text="Number of Scans"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
 
 
-        <TextBlock Grid.Row="0" Grid.Column="1" 
-                   FontSize="20" 
+        <TextBlock Grid.Row="0" Grid.Column="1"
+                   FontSize="20"
                    Text="Input:"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"/>
 
-        <TextBox Grid.Row="1" Grid.Column="1" 
-                   FontSize="20" 
-                   Text="{Binding CvModel.startVoltage, UpdateSourceTrigger=LostFocus}"
-                   Width="100" Height="40"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   IsEnabled="True" 
-                 BorderBrush="Pink" 
+        <TextBox Grid.Row="1" Grid.Column="1"
+                 FontSize="20"
+                 Text="{Binding CvModel.startVoltage, UpdateSourceTrigger=LostFocus}"
+                 Width="100" Height="40"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Center"
+                 IsEnabled="True"
+                 BorderBrush="Pink"
                  BorderThickness="2"
                  >
             <!--I think with textboxes we can disable the "onselect" highlighting-->
         </TextBox>
-        <TextBox Grid.Row="2" Grid.Column="2" 
-                   FontSize="20" 
-                   Text="{Binding CvModel.voltageThresholdOne, UpdateSourceTrigger=LostFocus}"
-                   Width="100" Height="40"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
+        <TextBox Grid.Row="2" Grid.Column="2"
+                 FontSize="20"
+                 Text="{Binding CvModel.voltageThresholdOne, UpdateSourceTrigger=LostFocus}"
+                 Width="100" Height="40"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Center"
+                 IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
         </TextBox>
-        <TextBox Grid.Row="3" Grid.Column="1" 
-                   FontSize="20" 
-                   Text="{Binding CvModel.voltageThresholdTwo, UpdateSourceTrigger=LostFocus}"
-                   Width="100" Height="40"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
+        <TextBox Grid.Row="3" Grid.Column="1"
+                 FontSize="20"
+                 Text="{Binding CvModel.voltageThresholdTwo, UpdateSourceTrigger=LostFocus}"
+                 Width="100" Height="40"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Center"
+                 IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
         </TextBox>
-        <TextBox Grid.Row="4" Grid.Column="1" 
-                   FontSize="20" 
-                   Text="{Binding CvModel.stepSize, UpdateSourceTrigger=LostFocus}"
-                   Width="100" Height="40"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
+        <TextBox Grid.Row="4" Grid.Column="1"
+                 FontSize="20"
+                 Text="{Binding CvModel.stepSize, UpdateSourceTrigger=LostFocus}"
+                 Width="100" Height="40"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Center"
+                 IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
         </TextBox>
-        <TextBox Grid.Row="5" Grid.Column="1" 
-                   FontSize="20" 
-                   Text="{Binding CvModel.scanRate, UpdateSourceTrigger=LostFocus}"
-                   Width="100" Height="40"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
+        <TextBox Grid.Row="5" Grid.Column="1"
+                 FontSize="20"
+                 Text="{Binding CvModel.scanRate, UpdateSourceTrigger=LostFocus}"
+                 Width="100" Height="40"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Center"
+                 IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
         </TextBox>
-        <TextBox Grid.Row="6" Grid.Column="1" 
-                   FontSize="20" 
-                   Text="{Binding CvModel.numOfScans, UpdateSourceTrigger=LostFocus}"
-                   Width="100" Height="40"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
+        <TextBox Grid.Row="6" Grid.Column="1"
+                 FontSize="20"
+                 Text="{Binding CvModel.numOfScans, UpdateSourceTrigger=LostFocus}"
+                 Width="100" Height="40"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Center"
+                 IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
         </TextBox>
-        <Button Grid.Column="0" Grid.Row="8" 
-                Style="{StaticResource HomeButton}" 
+        <Button Grid.Column="0" Grid.Row="8"
+                Style="{StaticResource HomeButton}"
                 Height="30" Width="100"
                 Content="Save"
                 FontWeight="Bold"
                 HorizontalAlignment="Center" VerticalAlignment="Center"
                 Command="{Binding Save}"></Button>
-        <Button Grid.Column="1" Grid.Row="8" 
-                Style="{StaticResource HomeButton}" 
+        <Button Grid.Column="1" Grid.Row="8"
+                Style="{StaticResource HomeButton}"
                 Height="30" Width="100"
                 Content="Cancel"
                 FontWeight="Bold"
