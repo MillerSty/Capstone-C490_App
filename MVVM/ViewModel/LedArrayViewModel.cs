@@ -15,17 +15,15 @@ namespace C490_App.MVVM.ViewModel
         public bool controlCheck { get; set; }
 
 
-        ObservableCollection<LEDParameter> lEDParameters { get; set; }
+        private ObservableCollection<LEDParameter> lEDParameters { get; set; }
         public ObservableCollection<bool> isSelected { get; set; }
-        ObservableCollection<LEDParameter> _ledParameters { get; set; } = new ObservableCollection<LEDParameter>();
+        ObservableCollection<LEDParameter> ledParameters { get; set; }
 
-        public bool itemZero { get; set; }
 
         public LedArrayViewModel()
         {
-            itemZero = true;
             isSelected = new ObservableCollection<bool>();
-            _ledParameters = new ObservableCollection<LEDParameter>(initLedArray());
+            ledParameters = new ObservableCollection<LEDParameter>(initLedArray());
 
             doNothing = new RelayCommand(o => empty(o), o => true);
             ledSelect = new RelayCommand(o => SelectLed(o), o => true);
@@ -34,12 +32,7 @@ namespace C490_App.MVVM.ViewModel
         }
         public void empty(object o)
         {
-            this.isSelected[1] = true;
-            this.isSelected[1] = false;
-            //this.isSelected[1] = true;
-            Trace.WriteLine("THIS LED SELECTIONE MPTY  " + this.isSelected[0]);
-
-
+            Trace.WriteLine("THIS LED SELECTION EMPTY  " + this.isSelected[0]);
         }
 
         /*SelectLed 
@@ -57,8 +50,8 @@ namespace C490_App.MVVM.ViewModel
                 int k = int.Parse(parameterSubString[0]);
                 for (int i = 0; i < 10; i++)
                 {
-                    bool set = !_ledParameters[k].isSelected;
-                    this._ledParameters[k].isSelected = set;
+                    bool set = !ledParameters[k].isSelected;
+                    this.ledParameters[k].isSelected = set;
                     this.isSelected[k] = set;
                     k += int.Parse(parameterSubString[1]);
                 }
@@ -67,8 +60,8 @@ namespace C490_App.MVVM.ViewModel
             {
                 for (int i = int.Parse(parameterSubString[0]); i < int.Parse(parameterSubString[1]); i++)
                 {
-                    bool set = !_ledParameters[i].isSelected;
-                    this._ledParameters[i].isSelected = set;
+                    bool set = !ledParameters[i].isSelected;
+                    this.ledParameters[i].isSelected = set;
                     this.isSelected[i] = set;
                 }
             }
@@ -88,5 +81,11 @@ namespace C490_App.MVVM.ViewModel
             bool check = ledParameters[16].isSelected;
             return ledParameters;
         }
+
+        //public List<LEDP> GetLeds()
+        //{
+        //    return ledParameters;
+        //}
+
     }
 }

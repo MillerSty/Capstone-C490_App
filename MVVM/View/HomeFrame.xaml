@@ -4,12 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:components="clr-namespace:C490_App.Components"
-        xmlns:local="clr-namespace:C490_App" 
+        xmlns:local="clr-namespace:C490_App"
         xmlns:viewmodel="clr-namespace:C490_App.MVVM.ViewModel"
         ResizeMode="CanResize"
         mc:Ignorable="d"
         Height="500" Width="900"
-        WindowStyle="SingleBorderWindow" 
+        WindowStyle="SingleBorderWindow"
         Title="HomeFrame"><!--Remove WindowStyle and title For made menu-->
 
     <Window.DataContext>
@@ -32,47 +32,48 @@
         <!--Note WPF has Menu item-->
         <!--<Menu> </Menu> Look into this-->
         <!--<Border Grid.ColumnSpan="2"
-         Background="White"
-                BorderBrush="Gray"
-                BorderThickness="1" VerticalAlignment="Top">
+        Background="White"
+        BorderBrush="Gray"
+        BorderThickness="1" VerticalAlignment="Top">
 
-            <Grid HorizontalAlignment="Stretch" Background="Gray" VerticalAlignment="Top">
-                <Label Content=""
-                  Foreground="Gray"
-                  FontWeight="SemiBold"/>
+        <Grid HorizontalAlignment="Stretch" Background="Gray" VerticalAlignment="Top">
+        <Label Content=""
+        Foreground="Gray"
+        FontWeight="SemiBold"/>
 
-                <StackPanel HorizontalAlignment="Right"
-                     Orientation="Horizontal">
-                    <Button Width="20" Height="20" 
-                     Content="____"
-                     Background="Transparent"
-                     BorderThickness="0"
-                     Foreground="Gray"
-                     FontWeight="Bold"
-                     Margin="0,0,0,1"/>
-                    <Button Width="20" Height="20" 
-                     Content="O"
-                     Background="Transparent"
-                     BorderThickness="0"
-                     Foreground="Gray"
-                     FontWeight="Bold"/>
-                    <Button Width="20" Height="20" 
-                     Content="X"
-                     Background="Transparent"
-                     BorderThickness="0"
-                     Foreground="Gray"
-                     FontWeight="Bold"/>
-                </StackPanel>
-            </Grid>
+        <StackPanel HorizontalAlignment="Right"
+        Orientation="Horizontal">
+        <Button Width="20" Height="20"
+        Content="____"
+        Background="Transparent"
+        BorderThickness="0"
+        Foreground="Gray"
+        FontWeight="Bold"
+        Margin="0,0,0,1"/>
+        <Button Width="20" Height="20"
+        Content="O"
+        Background="Transparent"
+        BorderThickness="0"
+        Foreground="Gray"
+        FontWeight="Bold"/>
+        <Button Width="20" Height="20"
+        Content="X"
+        Background="Transparent"
+        BorderThickness="0"
+        Foreground="Gray"
+        FontWeight="Bold"/>
+        </StackPanel>
+        </Grid>
         </Border>-->
         <!--End menu bar-->
-        
+
         <StackPanel Margin="5, 10, 0, 0" Grid.Column="0"
                     Grid.Row="1" Grid.RowSpan="3">
             <Button Grid.Column="0"
                     Grid.Row="1"
-                    Content="Set LED Parameters"                    
-                    Style="{StaticResource HomeButton}">
+                    Content="Set LED Parameters"
+                    Style="{StaticResource HomeButton}"
+                    Command="{Binding openWindowLED}">
             </Button>
             <Button Grid.Column="0"
                     Grid.Row="1"
@@ -80,8 +81,8 @@
                     Style="{StaticResource HomeButton}"
                     Command="{Binding openWindow}">
             </Button>
-            
-            
+
+
             <!--Do a new stack panel for check boxes-->
             <CheckBox Margin="10 10 00 0 " Command="{Binding ExperimentCheck}" CommandParameter="cv" FlowDirection="RightToLeft" HorizontalAlignment="Left" IsChecked="{Binding cvEnabled, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" >
                 <CheckBox.Resources>
@@ -112,7 +113,7 @@
 
             <Button Grid.Column="0"
                     Grid.Row="1"
-                    Content="Start / Stop Experiment"                    
+                    Content="Start / Stop Experiment"
                     Style="{StaticResource HomeButton}">
             </Button>
             <Button Grid.Column="0"
@@ -120,11 +121,11 @@
                     Content="View Graph Output"
                     Style="{StaticResource HomeButton}">
             </Button>
-      
+
         </StackPanel>
 
         <!--This is the LedArray, and pot grid
-         It will bind itno HomeFrameViewModel, onto its own ViewModel object-->
+        It will bind itno HomeFrameViewModel, onto its own ViewModel object-->
         <components:LedArray Grid.Column="1" Grid.Row="1" Padding="20" DataContext="{Binding LedArrayViewModel}"/>
         <components:PotentioStatSelect Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Padding="20" DataContext="{Binding PotentiostatViewModel}" />
     </Grid>
