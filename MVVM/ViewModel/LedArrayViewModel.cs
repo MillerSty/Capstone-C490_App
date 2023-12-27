@@ -7,7 +7,7 @@ namespace C490_App.MVVM.ViewModel
 {
 
 
-    public class LedArrayViewModel : ViewModelBase
+    public class LedArrayViewModel
     {
 
         public RelayCommand ledSelect { get; set; }

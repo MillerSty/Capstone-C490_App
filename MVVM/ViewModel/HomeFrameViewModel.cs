@@ -1,12 +1,11 @@
 ﻿using C490_App.Core;
 using C490_App.MVVM.Model;
 using C490_App.MVVM.View;
-using C490_App.Services;
 using System.Windows;
 
 namespace C490_App.MVVM.ViewModel
 {
-    public class HomeFrameViewModel : ViewModelBase
+    public class HomeFrameViewModel : ObservableObject
     {
 
         public PotentiostatViewModel PotentiostatViewModel { get; }
@@ -61,25 +60,13 @@ namespace C490_App.MVVM.ViewModel
         public RelayCommand openGraphResults { get; set; }
 
 
-        private INavigationService? navigationService;
-        public INavigationService Navigation
+        public HomeFrameViewModel()
         {
-            get => navigationService;
-            set { navigationService = value; OnPropertyChanged(); }
-        }
-
-        ExperimentService e;
-        public HomeFrameViewModel(INavigationService navService, ExperimentService s)
-        {
-            Navigation = navService;
-            e = s;
-            //ledParametersy = _serviceProvider.GetRequiredService<HomeFrame>();
-            //ledParametersy = ledParamet;
             _caModel = new CAModel();
             _dpvModel = new DPVModel();
             _cvModel = new CVModel();
             PotentiostatViewModel = new PotentiostatViewModel();
-            LedArrayViewModel = s;
+            LedArrayViewModel = new LedArrayViewModel();
 
             ExperimentCheck = new RelayCommand(o => experimentCheck(o), o => true);
             openWindow = new RelayCommand(o => experimentOpen(), o => true);

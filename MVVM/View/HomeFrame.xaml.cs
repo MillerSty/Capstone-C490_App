@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace C490_App.MVVM.View
+namespace C490_App
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -9,9 +9,7 @@ namespace C490_App.MVVM.View
     {
         public HomeFrame()
         {
-
-            this.InitializeComponent();
+            //InitializeComponent();
         }
-
     }
 }

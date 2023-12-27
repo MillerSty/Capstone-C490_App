@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace C490_App.MVVM.ViewModel
 {
-    internal class ExperimentParameterViewModel : ViewModelBase
+    internal class ExperimentParameterViewModel : ObservableObject
     {
         DPVModel _dpvModel { get; set; }
         public DPVModel DpvModel
@@ -52,10 +52,9 @@ namespace C490_App.MVVM.ViewModel
         public RelayCommand Save { get; set; }
 
         public RelayCommand Cancel { get; set; }
-        ExperimentModel j { get; set; }
+
         public ExperimentParameterViewModel()
         {
-            j = new ExperimentModel();
             DpvModel = new DPVModel();
             CvModel = new CVModel();
             Save = new RelayCommand(o => save(), o => true);
@@ -66,7 +65,6 @@ namespace C490_App.MVVM.ViewModel
 
         public void save()
         {
-
             Trace.WriteLine("Saving");
         }
         public void cancel() { Trace.WriteLine("Canceling"); }
