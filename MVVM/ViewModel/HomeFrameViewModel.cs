@@ -57,6 +57,8 @@ namespace C490_App.MVVM.ViewModel
 
         public RelayCommand openWindowLED { get; set; }
 
+        public RelayCommand openGraphResults { get; set; }
+
 
         public HomeFrameViewModel()
         {
@@ -69,10 +71,16 @@ namespace C490_App.MVVM.ViewModel
             ExperimentCheck = new RelayCommand(o => experimentCheck(o), o => true);
             openWindow = new RelayCommand(o => experimentOpen(), o => true);
             openWindowLED = new RelayCommand(o => LEDOpen(), o => true);
+            openGraphResults = new RelayCommand(o => GraphOpen(), o => true);
 
 
         }
+        private void GraphOpen()
+        {
+            GraphFrame graphFrame = new GraphFrame();
 
+            graphFrame.Show();
+        }
         private void LEDOpen()
         {
             LEDParameterFrame dpv = new LEDParameterFrame();

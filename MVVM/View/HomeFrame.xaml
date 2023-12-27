@@ -119,7 +119,8 @@
             <Button Grid.Column="0"
                     Grid.Row="1"
                     Content="View Graph Output"
-                    Style="{StaticResource HomeButton}">
+                    Style="{StaticResource HomeButton}"
+                    Command="{Binding openGraphResults}">
             </Button>
 
         </StackPanel>
