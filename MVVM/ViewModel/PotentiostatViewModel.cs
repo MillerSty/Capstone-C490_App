@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace C490_App.MVVM.ViewModel
 {
-    public class PotentiostatViewModel
+    public class PotentiostatViewModel : ViewModelBase
     {
         //public List<int> intsy = (List<int>)Enumerable.Range(0, 49);
 

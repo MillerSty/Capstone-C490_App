@@ -1,6 +1,6 @@
 ﻿namespace C490_App.MVVM.Model
 {
-    internal class LEDParameter : Parameter
+    public class LEDParameter : Parameter
     {
         public UInt32 Address;
         public bool isSelected;

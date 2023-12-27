@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace C490_App.MVVM.ViewModel
 {
-    public class LEDParameterViewModel
+    public class LEDParameterViewModel : ViewModelBase
     {
         public string _gIntensity { get; set; }
         public string GreenIntensity
@@ -32,14 +32,15 @@ namespace C490_App.MVVM.ViewModel
             set { _bIntensity = value; }
 
         }
-        ObservableCollection<LEDParameter> lEDs { get; set; }
+        ObservableCollection<LEDParameter> lEDs;
 
         public RelayCommand Save { get; set; }
 
         public RelayCommand Cancel { get; set; }
 
-        public LEDParameterViewModel()
+        public LEDParameterViewModel(ObservableCollection<LEDParameter> ledParameters)
         {
+            //lEDs = ledParameters;
 
             Save = new RelayCommand(o => save(), o => true);
 
