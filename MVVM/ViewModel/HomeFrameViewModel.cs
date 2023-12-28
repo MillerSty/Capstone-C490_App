@@ -81,7 +81,6 @@ namespace C490_App.MVVM.ViewModel
         private void GraphOpen()
         {
             GraphFrame graphFrame = new GraphFrame();
-
             graphFrame.Show();
         }
         private void LEDOpen()
@@ -96,17 +95,16 @@ namespace C490_App.MVVM.ViewModel
             //we  should be able to dynamically set which  experiment to open here... and  itll be clunky butwe  can make it better
             if (_dpvEnabled)
             {
-                //we can pass things to constructor aswell to pass data?
-                ExperimentLocal.setModel(_dpvModel);
+                ExperimentLocal.setModel(new DPVModel());
                 DPVExperimentFrame dpv = new DPVExperimentFrame();
 
                 dpv.DataContext = new ExperimentParameterViewModel(ExperimentLocal);
-
                 dpv.Show();
             }
             else if (_cvEnabled)
             {
                 CVExperimentFrame cv = new CVExperimentFrame();
+                ExperimentLocal.setModel(new CVModel());
 
                 cv.DataContext = new ExperimentParameterViewModel(ExperimentLocal);
                 cv.Show();
@@ -114,6 +112,9 @@ namespace C490_App.MVVM.ViewModel
             else if (_caEnabled)
             {
                 CAExperimentFrame ca = new CAExperimentFrame();
+                ExperimentLocal.setModel(new CAModel());
+
+                ca.DataContext = new ExperimentParameterViewModel(ExperimentLocal);
                 ca.Show();
 
             }

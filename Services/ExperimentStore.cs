@@ -29,6 +29,7 @@ namespace C490_App.Services
 
         public ExperimentModel getModel() { return model; }
         public void setModel(ExperimentModel model) { this.model = model; }
+
         public ObservableCollection<LEDParameter> initLedArray()
         {
 
