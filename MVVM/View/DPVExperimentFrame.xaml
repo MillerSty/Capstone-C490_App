@@ -1,0 +1,140 @@
+﻿<Window x:Class="C490_App.MVVM.View.DPVExperimentFrame"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:C490_App.MVVM.View"
+        xmlns:viewmodel="clr-namespace:C490_App.MVVM.ViewModel"
+        mc:Ignorable="d"
+        Title="DPVExperimentFrame" Height="450" Width="500">
+    <!--<Window.DataContext>
+    <viewmodel:ExperimentParameterViewModel>
+    </viewmodel:ExperimentParameterViewModel>
+    </Window.DataContext>-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0"
+                   FontSize="20"
+                   Text="Parameter:"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="1" Grid.Column="0"
+                   FontSize="20"
+                   Text="Starting Voltage (V)"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="2" Grid.Column="0"
+                   FontSize="20"
+                   Text="End Voltage (V)"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="3" Grid.Column="0"
+                   FontSize="20"
+                   Text="Step Size (V)"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="4" Grid.Column="0"
+                   FontSize="20"
+                   Text="Scan Rate (V/s)"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="5" Grid.Column="0"
+                   FontSize="20"
+                   Text="Pulse Potential (V) "
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="6" Grid.Column="0"
+                   FontSize="20"
+                   Text="Pulse time (s)"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+
+
+        <TextBlock Grid.Row="0" Grid.Column="1"
+                   FontSize="20"
+                   Text="Input:"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"/>
+
+        <TextBox Grid.Row="1" Grid.Column="1"
+                 FontSize="20"
+                 Text="{Binding DpvModel.startVoltage, UpdateSourceTrigger=LostFocus}"
+                 Width="100" Height="40"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Center"
+                 IsEnabled="True"
+                 BorderBrush="Pink"
+                 BorderThickness="2"
+                 >
+            <!--I think with textboxes we can disable the "onselect" highlighting-->
+        </TextBox>
+        <TextBox Grid.Row="2" Grid.Column="2"
+                 FontSize="20"
+                 Text="{Binding DpvModel.endVoltage, UpdateSourceTrigger=LostFocus}"
+                 Width="100" Height="40"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Center"
+                 IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
+        </TextBox>
+        <TextBox Grid.Row="3" Grid.Column="1"
+                 FontSize="20"
+                 Text="{Binding DpvModel.stepSize, UpdateSourceTrigger=LostFocus}"
+                 Width="100" Height="40"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Center"
+                 IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
+        </TextBox>
+        <TextBox Grid.Row="4" Grid.Column="1"
+                 FontSize="20"
+                 Text="{Binding DpvModel.scanRate, UpdateSourceTrigger=LostFocus}"
+                 Width="100" Height="40"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Center"
+                 IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
+        </TextBox>
+        <TextBox Grid.Row="5" Grid.Column="1"
+                 FontSize="20"
+                 Text="{Binding DpvModel.pulsePotential, UpdateSourceTrigger=LostFocus}"
+                 Width="100" Height="40"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Center"
+                 IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
+        </TextBox>
+        <TextBox Grid.Row="6" Grid.Column="1"
+                 FontSize="20"
+                 Text="{Binding DpvModel.pulseTime, UpdateSourceTrigger=LostFocus}"
+                 Width="100" Height="40"
+                 VerticalAlignment="Center"
+                 HorizontalAlignment="Center"
+                 IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
+        </TextBox>
+        <Button Grid.Column="0" Grid.Row="8"
+                Style="{StaticResource HomeButton}"
+                Height="30" Width="100"
+                Content="Save"
+                FontWeight="Bold"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Command="{Binding Save}"></Button>
+        <Button Grid.Column="1" Grid.Row="8"
+                Style="{StaticResource HomeButton}"
+                Height="30" Width="100"
+                Content="Cancel"
+                FontWeight="Bold"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Command="{Binding Cancel}"></Button>
+    </Grid>
+</Window>

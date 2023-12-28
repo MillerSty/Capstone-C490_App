@@ -3,15 +3,16 @@
 namespace C490_App.MVVM.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for LEDParameterFrame.xaml
     /// </summary>
-    public partial class HomeFrame : Window
+    public partial class LEDParameterFrame : Window
     {
-        public HomeFrame()
-        {
 
+        public LEDParameterFrame()
+        {
             InitializeComponent();
         }
+
 
     }
 }

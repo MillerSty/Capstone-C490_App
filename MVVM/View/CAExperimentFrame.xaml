@@ -1,0 +1,149 @@
+﻿<Window x:Class="C490_App.MVVM.View.CAExperimentFrame"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:C490_App.MVVM.View" xmlns:viewmodel="clr-namespace:C490_App.MVVM.ViewModel"
+        mc:Ignorable="d"
+        Title="CAExperimentFrame" Height="450" Width="800">
+    <Window.DataContext>
+        <viewmodel:ExperimentParameterViewModel>
+        </viewmodel:ExperimentParameterViewModel>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0"
+                   FontSize="20"
+                   Text="Parameter:"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center" />
+
+        <TextBlock Grid.Row="1" Grid.Column="0"
+            FontSize="20"
+            Text="Voltage Range (V)"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center" />
+        <TextBlock Grid.Row="2" Grid.Column="0"
+           FontSize="20"
+           Text="Total Run Time (s)"
+           VerticalAlignment="Center"
+           HorizontalAlignment="Center" />
+        <TextBlock Grid.Row="3" Grid.Column="0"
+           FontSize="20"
+           Text="Sampling Interval (s)"
+           VerticalAlignment="Center"
+           HorizontalAlignment="Center" />
+
+        <TextBlock Grid.Row="0" Grid.Column="1"
+                   FontSize="20"
+                   Text="Input:"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center" />
+        <StackPanel Grid.Row="1" Grid.Column="1"
+                   VerticalAlignment="Stretch"
+                    Margin="0 25 0 0"
+                   HorizontalAlignment="Stretch">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBox    FontSize="20"
+                            Text="{Binding CaModel.voltageRangeStart, UpdateSourceTrigger=LostFocus}"
+                            Width="100" Height="40"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            IsEnabled="True"
+                            BorderBrush="Pink"
+                            BorderThickness="2">
+                    <!--I think with textboxes we can disable the "onselect" highlighting-->
+                </TextBox>
+                <TextBlock  Grid.Column="1" Text="to"
+                            VerticalAlignment="Center" HorizontalAlignment="Center"
+                            FontSize="20" />
+                <TextBox    FontSize="20"
+                            Grid.Column="2"
+                            Text="{Binding CaModel.voltageRangeEnd, UpdateSourceTrigger=LostFocus}"
+                            Width="100" Height="40"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            IsEnabled="True"
+                            BorderBrush="Pink"
+                            BorderThickness="2">
+                    <!--I think with textboxes we can disable the "onselect" highlighting-->
+                </TextBox>
+            </Grid>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="1"
+           VerticalAlignment="Stretch"
+            Margin="0 25 0 0"
+           HorizontalAlignment="Stretch">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBox    FontSize="20"
+                    Text="{Binding CaModel.runTimeStart, UpdateSourceTrigger=LostFocus}"
+                    Width="100" Height="40"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    IsEnabled="True"
+                    BorderBrush="Pink"
+                    BorderThickness="2">
+                    <!--I think with textboxes we can disable the "onselect" highlighting-->
+                </TextBox>
+                <TextBlock  Grid.Column="1" Text="to"
+                    VerticalAlignment="Center" HorizontalAlignment="Center"
+                    FontSize="20" />
+                <TextBox    FontSize="20"
+                    Grid.Column="2"
+                    Text="{Binding CaModel.runTimeEnd, UpdateSourceTrigger=LostFocus}"
+                    Width="100" Height="40"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    IsEnabled="True"
+                    BorderBrush="Pink"
+                    BorderThickness="2">
+                    <!--I think with textboxes we can disable the "onselect" highlighting-->
+                </TextBox>
+            </Grid>
+        </StackPanel>
+        <TextBox Grid.Row="3" Grid.Column="1"
+                   FontSize="20"
+                   Text="{Binding CaModel.sampleInterval, UpdateSourceTrigger=LostFocus}"
+                   Width="100" Height="40"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
+        </TextBox>
+
+        <Button Grid.Column="0" Grid.Row="8"
+                Style="{StaticResource HomeButton}"
+                Height="30" Width="100"
+                Content="Save"
+                FontWeight="Bold"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Command="{Binding Save}"></Button>
+        <Button Grid.Column="1" Grid.Row="8"
+                Style="{StaticResource HomeButton}"
+                Height="30" Width="100"
+                Content="Cancel"
+                FontWeight="Bold"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Command="{Binding Cancel}"></Button>
+    </Grid>
+</Window>

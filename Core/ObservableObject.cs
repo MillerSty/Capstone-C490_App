@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 namespace C490_App.Core
 {
 
-    class ObservableObject : INotifyPropertyChanged
+    public class ObservableObject : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string propertyname = null)
