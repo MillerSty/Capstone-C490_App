@@ -83,6 +83,7 @@
                   Height="auto" 
                   Background="LightGray"
                   ItemsSource="{Binding Path = potsActive}"
+                  SelectedItem="{Binding SelectedPotName}"
                   BorderThickness="2"
                   BorderBrush="Gray" 
                   >
