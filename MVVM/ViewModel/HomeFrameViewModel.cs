@@ -103,6 +103,12 @@ namespace C490_App.MVVM.ViewModel
                 CVExperimentFrame cv = new CVExperimentFrame();
                 cv.Show();
             }
+            else if (_caEnabled)
+            {
+                CAExperimentFrame ca = new CAExperimentFrame();
+                ca.Show();
+
+            }
             else
             {
 
