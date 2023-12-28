@@ -111,6 +111,12 @@ namespace C490_App.MVVM.ViewModel
                 cv.DataContext = new ExperimentParameterViewModel(ExperimentLocal);
                 cv.Show();
             }
+            else if (_caEnabled)
+            {
+                CAExperimentFrame ca = new CAExperimentFrame();
+                ca.Show();
+
+            }
             else
             {
 
