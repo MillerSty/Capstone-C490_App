@@ -1,13 +1,13 @@
 ﻿using C490_App.Core;
 using C490_App.MVVM.Model;
+using C490_App.Services;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 
 namespace C490_App.MVVM.ViewModel
 {
 
 
-    public class LedArrayViewModel
+    public class LedArrayViewModel : ViewModelBase
     {
 
         public RelayCommand ledSelect { get; set; }
@@ -19,21 +19,15 @@ namespace C490_App.MVVM.ViewModel
         public ObservableCollection<bool> isSelected { get; set; }
         ObservableCollection<LEDParameter> ledParameters { get; set; }
 
-
-        public LedArrayViewModel()
+        ExperimentStore ExperimentLocal { get; set; }
+        public LedArrayViewModel(ExperimentStore ExperimentSingleton)
         {
+            ExperimentLocal = ExperimentSingleton;
             isSelected = new ObservableCollection<bool>();
             ledParameters = new ObservableCollection<LEDParameter>(initLedArray());
-
-            doNothing = new RelayCommand(o => empty(o), o => true);
             ledSelect = new RelayCommand(o => SelectLed(o), o => true);
-
-
         }
-        public void empty(object o)
-        {
-            Trace.WriteLine("THIS LED SELECTION EMPTY  " + this.isSelected[0]);
-        }
+
 
         /*SelectLed 
          * @binding control checkboxes
@@ -65,6 +59,8 @@ namespace C490_App.MVVM.ViewModel
                     this.isSelected[i] = set;
                 }
             }
+            //this is to test datapassing 
+            ExperimentLocal.ledParameters = ledParameters;
         }
 
         internal List<LEDParameter> initLedArray()
@@ -76,16 +72,9 @@ namespace C490_App.MVVM.ViewModel
                 ledParameters.Add(new LEDParameter(false, Convert.ToUInt32(i)));
                 this.isSelected.Add(false);
             }
-            //this.isSelected[42] = true; //this is like a control jawn atm
-            UInt32 addr = ledParameters[16].Address;
-            bool check = ledParameters[16].isSelected;
+
             return ledParameters;
         }
-
-        //public List<LEDP> GetLeds()
-        //{
-        //    return ledParameters;
-        //}
 
     }
 }

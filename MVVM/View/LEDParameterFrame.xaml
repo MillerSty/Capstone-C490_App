@@ -7,10 +7,10 @@
         xmlns:viewmodel="clr-namespace:C490_App.MVVM.ViewModel"
         mc:Ignorable="d"
         Title="LEDParameterFrame" Height="500" Width="400">
-    <Window.DataContext>
-        <viewmodel:LEDParameterViewModel>
-        </viewmodel:LEDParameterViewModel>
-    </Window.DataContext>
+    <!--<Window.DataContext>
+    <viewmodel:LEDParameterViewModel>
+    </viewmodel:LEDParameterViewModel>
+    </Window.DataContext>-->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>

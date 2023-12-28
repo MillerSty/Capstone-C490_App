@@ -1,11 +1,12 @@
 ﻿using C490_App.Core;
 using C490_App.MVVM.Model;
 using C490_App.MVVM.View;
+using C490_App.Services;
 using System.Windows;
 
 namespace C490_App.MVVM.ViewModel
 {
-    public class HomeFrameViewModel : ObservableObject
+    public class HomeFrameViewModel : ViewModelBase
     {
 
         public PotentiostatViewModel PotentiostatViewModel { get; }
@@ -59,14 +60,16 @@ namespace C490_App.MVVM.ViewModel
 
         public RelayCommand openGraphResults { get; set; }
 
-
-        public HomeFrameViewModel()
+        // public IExperimentStore m { get; set; }
+        ExperimentStore ExperimentLocal { get; set; }
+        public HomeFrameViewModel(ExperimentStore ExperimentSingleton)
         {
+            ExperimentLocal = ExperimentSingleton;
             _caModel = new CAModel();
             _dpvModel = new DPVModel();
             _cvModel = new CVModel();
-            PotentiostatViewModel = new PotentiostatViewModel();
-            LedArrayViewModel = new LedArrayViewModel();
+            PotentiostatViewModel = new PotentiostatViewModel(ExperimentLocal);
+            LedArrayViewModel = new LedArrayViewModel(ExperimentLocal);
 
             ExperimentCheck = new RelayCommand(o => experimentCheck(o), o => true);
             openWindow = new RelayCommand(o => experimentOpen(), o => true);
@@ -83,9 +86,9 @@ namespace C490_App.MVVM.ViewModel
         }
         private void LEDOpen()
         {
-            LEDParameterFrame dpv = new LEDParameterFrame();
-
-            dpv.Show();
+            LEDParameterFrame ledFrameNavigation = new LEDParameterFrame();
+            ledFrameNavigation.DataContext = new LEDParameterViewModel(ExperimentLocal);
+            ledFrameNavigation.Show();
         }
 
         public void experimentOpen()
@@ -94,19 +97,24 @@ namespace C490_App.MVVM.ViewModel
             if (_dpvEnabled)
             {
                 //we can pass things to constructor aswell to pass data?
+                ExperimentLocal.setModel(_dpvModel);
                 DPVExperimentFrame dpv = new DPVExperimentFrame();
+
+                dpv.DataContext = new ExperimentParameterViewModel(ExperimentLocal);
 
                 dpv.Show();
             }
             else if (_cvEnabled)
             {
                 CVExperimentFrame cv = new CVExperimentFrame();
+
+                cv.DataContext = new ExperimentParameterViewModel(ExperimentLocal);
                 cv.Show();
             }
             else
             {
 
-                MessageBox.Show("This works  as expected  but  janky    ");
+                MessageBox.Show("No Experiment Selected");
             }
 
         }

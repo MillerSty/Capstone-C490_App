@@ -1,10 +1,11 @@
 ﻿using C490_App.Core;
 using C490_App.MVVM.Model;
+using C490_App.Services;
 using System.Diagnostics;
 
 namespace C490_App.MVVM.ViewModel
 {
-    internal class ExperimentParameterViewModel : ObservableObject
+    internal class ExperimentParameterViewModel : ViewModelBase
     {
         DPVModel _dpvModel { get; set; }
         public DPVModel DpvModel
@@ -52,11 +53,13 @@ namespace C490_App.MVVM.ViewModel
         public RelayCommand Save { get; set; }
 
         public RelayCommand Cancel { get; set; }
-
-        public ExperimentParameterViewModel()
+        ExperimentStore ExperimentLocal;
+        public ExperimentParameterViewModel(ExperimentStore ExperimentSingleton)
         {
+            ExperimentLocal = ExperimentSingleton;
             DpvModel = new DPVModel();
             CvModel = new CVModel();
+            CaModel = new CAModel();
             Save = new RelayCommand(o => save(), o => true);
 
             Cancel = new RelayCommand(o => cancel(), o => true);
@@ -65,6 +68,7 @@ namespace C490_App.MVVM.ViewModel
 
         public void save()
         {
+            ExperimentLocal.setModel(experiment);
             Trace.WriteLine("Saving");
         }
         public void cancel() { Trace.WriteLine("Canceling"); }

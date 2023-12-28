@@ -1,11 +1,12 @@
 ﻿using C490_App.Core;
 using C490_App.MVVM.Model;
+using C490_App.Services;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
 namespace C490_App.MVVM.ViewModel
 {
-    public class LEDParameterViewModel
+    public class LEDParameterViewModel : ViewModelBase
     {
         public string _gIntensity { get; set; }
         public string GreenIntensity
@@ -38,9 +39,11 @@ namespace C490_App.MVVM.ViewModel
 
         public RelayCommand Cancel { get; set; }
 
-        public LEDParameterViewModel()
+        ExperimentStore ExperimentLocal { get; set; }
+        public LEDParameterViewModel(ExperimentStore ExperimentSingleton)
         {
 
+            ExperimentLocal = ExperimentSingleton;
             Save = new RelayCommand(o => save(), o => true);
 
             Cancel = new RelayCommand(o => cancel(), o => true);

@@ -1,6 +1,6 @@
 ﻿namespace C490_App.MVVM.Model
 {
-    public class CAModel
+    public class CAModel : ExperimentModel
     {
         public bool? isEnabled;
         public double voltageRangeStart;

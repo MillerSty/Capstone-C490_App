@@ -8,10 +8,10 @@
              mc:Ignorable="d"
              d:DesignHeight="200" d:DesignWidth="350">
 
-    <UserControl.DataContext>
-        <viewmodel:LedArrayViewModel>
-        </viewmodel:LedArrayViewModel>
-    </UserControl.DataContext>
+    <!--<UserControl.DataContext>
+    <viewmodel:LedArrayViewModel>
+    </viewmodel:LedArrayViewModel>
+    </UserControl.DataContext>-->
 
     <Grid Background="White">
         <Grid.ColumnDefinitions>
@@ -48,208 +48,208 @@
         Checkboxes for fix example... maybe export it to a style-->
 
         <CheckBox
-            Command="{Binding ledSelect}" 
+            Command="{Binding ledSelect}"
             IsChecked="{Binding controlCheck}"
             CommandParameter="0,5"
-            Grid.Column=" 1 "  Grid.Row="1"  
-            VerticalAlignment="Center" 
-            HorizontalAlignment="Center" 
+            Grid.Column=" 1 "  Grid.Row="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
-            <TextBlock Grid.Column=" 1 "  
-                       Grid.Row="1" Text="0" 
-                       VerticalAlignment="Center" 
+            <TextBlock Grid.Column=" 1 "
+                       Grid.Row="1" Text="0"
+                       VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
         </CheckBox>
         <!--<TextBlock Grid.Column="1"  Grid.Row="1" Text="0" VerticalAlignment="Center" HorizontalAlignment="Center" />-->
 
         <CheckBox
-            Command="{Binding ledSelect}" 
+            Command="{Binding ledSelect}"
             CommandParameter="5,10"
-            Grid.Column=" 2 "  Grid.Row="1"  
-            VerticalAlignment="Center" 
-            HorizontalAlignment="Center" 
+            Grid.Column=" 2 "  Grid.Row="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
-            <TextBlock Grid.Column=" 1 "  
-                       Grid.Row="2" Text="1" 
-                       VerticalAlignment="Center" 
+            <TextBlock Grid.Column=" 1 "
+                       Grid.Row="2" Text="1"
+                       VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
         </CheckBox>
-        
+
         <!--<TextBlock Grid.Column="2"  Grid.Row="1" Text="1" VerticalAlignment="Center" HorizontalAlignment="Center" />-->
 
         <CheckBox
-            Command="{Binding ledSelect}" 
+            Command="{Binding ledSelect}"
             CommandParameter="10,15"
-            Grid.Column=" 3 "  Grid.Row="1"  
-            VerticalAlignment="Center" 
-            HorizontalAlignment="Center" 
+            Grid.Column=" 3 "  Grid.Row="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
-            <TextBlock Grid.Column=" 3 "  
-                       Grid.Row="1" Text="2" 
-                       VerticalAlignment="Center" 
+            <TextBlock Grid.Column=" 3 "
+                       Grid.Row="1" Text="2"
+                       VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
         </CheckBox>
         <!--<TextBlock Grid.Column="3"  Grid.Row="1" Text="2" VerticalAlignment="Center" HorizontalAlignment="Center" />-->
 
         <CheckBox
-            Command="{Binding ledSelect}" 
+            Command="{Binding ledSelect}"
             CommandParameter="15,20"
-            Grid.Column=" 4 "  Grid.Row="1"  
-            VerticalAlignment="Center" 
-            HorizontalAlignment="Center" 
+            Grid.Column=" 4 "  Grid.Row="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
-            <TextBlock Grid.Column=" 4 "  
-                       Grid.Row="1" Text="3" 
-                       VerticalAlignment="Center" 
+            <TextBlock Grid.Column=" 4 "
+                       Grid.Row="1" Text="3"
+                       VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
         </CheckBox>
         <!--<TextBlock Grid.Column="4"  Grid.Row="1" Text="3" VerticalAlignment="Center" HorizontalAlignment="Center" />-->
 
         <CheckBox
-            Command="{Binding ledSelect}" 
+            Command="{Binding ledSelect}"
             CommandParameter="20,25"
-            Grid.Column=" 5 "  Grid.Row="1"  
-            VerticalAlignment="Center" 
-            HorizontalAlignment="Center" 
+            Grid.Column=" 5 "  Grid.Row="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
-            <TextBlock Grid.Column=" 5 "  
-                       Grid.Row="1" Text="4" 
-                       VerticalAlignment="Center" 
+            <TextBlock Grid.Column=" 5 "
+                       Grid.Row="1" Text="4"
+                       VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
         </CheckBox>
         <!--<TextBlock Grid.Column="5"  Grid.Row="1" Text="4" VerticalAlignment="Center" HorizontalAlignment="Center" />-->
 
         <CheckBox
-            Command="{Binding ledSelect}" 
+            Command="{Binding ledSelect}"
             CommandParameter="25,30"
-            Grid.Column=" 6 "  Grid.Row="1"  
-            VerticalAlignment="Center" 
-            HorizontalAlignment="Center" 
+            Grid.Column=" 6 "  Grid.Row="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
-            <TextBlock Grid.Column=" 6 "  
-                       Grid.Row="1" Text="5" 
-                       VerticalAlignment="Center" 
+            <TextBlock Grid.Column=" 6 "
+                       Grid.Row="1" Text="5"
+                       VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
         </CheckBox>
         <!--<TextBlock Grid.Column="6"  Grid.Row="1" Text="5" VerticalAlignment="Center" HorizontalAlignment="Center" />-->
 
         <CheckBox
-            Command="{Binding ledSelect}" 
+            Command="{Binding ledSelect}"
             CommandParameter="30,35"
-            Grid.Column=" 7 "  Grid.Row="1"  
-            VerticalAlignment="Center" 
-            HorizontalAlignment="Center" 
+            Grid.Column=" 7 "  Grid.Row="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
-            <TextBlock Grid.Column=" 7 "  
-                       Grid.Row="1" Text="6" 
-                       VerticalAlignment="Center" 
+            <TextBlock Grid.Column=" 7 "
+                       Grid.Row="1" Text="6"
+                       VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
         </CheckBox>
         <!--<TextBlock Grid.Column="7"  Grid.Row="1" Text="6" VerticalAlignment="Center" HorizontalAlignment="Center" />-->
 
         <CheckBox
-            Command="{Binding ledSelect}" 
+            Command="{Binding ledSelect}"
             CommandParameter="35,40"
-            Grid.Column=" 8 "  Grid.Row="1"  
-            VerticalAlignment="Center" 
-            HorizontalAlignment="Center" 
+            Grid.Column=" 8 "  Grid.Row="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
-            <TextBlock Grid.Column=" 8 "  
-                       Grid.Row="1" Text="7" 
-                       VerticalAlignment="Center" 
+            <TextBlock Grid.Column=" 8 "
+                       Grid.Row="1" Text="7"
+                       VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
         </CheckBox>
         <!--<TextBlock Grid.Column="8"  Grid.Row="1" Text="7" VerticalAlignment="Center" HorizontalAlignment="Center" />-->
 
         <CheckBox
-            Command="{Binding ledSelect}" 
+            Command="{Binding ledSelect}"
             CommandParameter="40,45"
-            Grid.Column=" 9 "  Grid.Row="1"  
-            VerticalAlignment="Center" 
-            HorizontalAlignment="Center" 
+            Grid.Column=" 9 "  Grid.Row="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
-            <TextBlock Grid.Column=" 9 "  
-                       Grid.Row="1" Text="8" 
-                       VerticalAlignment="Center" 
+            <TextBlock Grid.Column=" 9 "
+                       Grid.Row="1" Text="8"
+                       VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
         </CheckBox>
         <!--<TextBlock Grid.Column="9"  Grid.Row="1" Text="8" VerticalAlignment="Center" HorizontalAlignment="Center" />-->
 
         <CheckBox
-            Command="{Binding ledSelect}" 
+            Command="{Binding ledSelect}"
             CommandParameter="45,50"
-            Grid.Column=" 10 "  Grid.Row="1"  
-            VerticalAlignment="Center" 
-            HorizontalAlignment="Center" 
+            Grid.Column=" 10 "  Grid.Row="1"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
-            <TextBlock Text="9" 
-                       VerticalAlignment="Center" 
+            <TextBlock Text="9"
+                       VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
         </CheckBox>
         <!--<TextBlock Grid.Column="10" Grid.Row="1" Text="9" VerticalAlignment="Center" HorizontalAlignment="Center" />-->
 
 
         <CheckBox
-            Command="{Binding ledSelect}" 
+            Command="{Binding ledSelect}"
             CommandParameter="0,5,0"
-            Grid.Column=" 0 "  Grid.Row="2"  
-            VerticalAlignment="Center" 
-            HorizontalAlignment="Center" 
+            Grid.Column=" 0 "  Grid.Row="2"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
-            <TextBlock Text="0" 
-                       VerticalAlignment="Center" 
+            <TextBlock Text="0"
+                       VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
         </CheckBox>
         <!--<TextBlock Grid.Column="0" Grid.Row="2" Text="0" VerticalAlignment="Center" HorizontalAlignment="Center" />-->
 
         <CheckBox
-            Command="{Binding ledSelect}" 
+            Command="{Binding ledSelect}"
             CommandParameter="1,5,0"
-            Grid.Column=" 0 "  Grid.Row="3"  
-            VerticalAlignment="Center" 
-            HorizontalAlignment="Center" 
+            Grid.Column=" 0 "  Grid.Row="3"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
-            <TextBlock Text="1" 
-                       VerticalAlignment="Center" 
+            <TextBlock Text="1"
+                       VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
         </CheckBox>
         <!--<TextBlock Grid.Column="0" Grid.Row="3" Text="1" VerticalAlignment="Center" HorizontalAlignment="Center" />-->
 
         <CheckBox
-            Command="{Binding ledSelect}" 
+            Command="{Binding ledSelect}"
             CommandParameter="2,5,0"
-            Grid.Column=" 0 "  Grid.Row="4"  
-            VerticalAlignment="Center" 
-            HorizontalAlignment="Center" 
+            Grid.Column=" 0 "  Grid.Row="4"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
-            <TextBlock Text="2" 
-                       VerticalAlignment="Center" 
+            <TextBlock Text="2"
+                       VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
         </CheckBox>
         <!--<TextBlock Grid.Column="0" Grid.Row="4" Text="2" VerticalAlignment="Center" HorizontalAlignment="Center" />-->
 
         <CheckBox
-            Command="{Binding ledSelect}" 
+            Command="{Binding ledSelect}"
             CommandParameter="3,5,0"
-            Grid.Column=" 0 "  Grid.Row="5"  
-            VerticalAlignment="Center" 
-            HorizontalAlignment="Center" 
+            Grid.Column=" 0 "  Grid.Row="5"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
-            <TextBlock Text="3" 
-                       VerticalAlignment="Center" 
+            <TextBlock Text="3"
+                       VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
         </CheckBox>
         <!--<TextBlock Grid.Column="0" Grid.Row="5" Text="3" VerticalAlignment="Center" HorizontalAlignment="Center" />-->
 
         <CheckBox
-            Command="{Binding ledSelect}" 
+            Command="{Binding ledSelect}"
             CommandParameter="4,5,0"
-            Grid.Column=" 0 "  Grid.Row="66"  
-            VerticalAlignment="Center" 
-            HorizontalAlignment="Center" 
+            Grid.Column=" 0 "  Grid.Row="66"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
-            <TextBlock Text="4" 
-                       VerticalAlignment="Center" 
+            <TextBlock Text="4"
+                       VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
         </CheckBox>
         <!--<TextBlock Grid.Column="0" Grid.Row="6" Text="4" VerticalAlignment="Center" HorizontalAlignment="Center" />-->
@@ -270,19 +270,19 @@
         <CheckBox HorizontalAlignment="Right"  Grid.Column="1" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[2], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="1" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[3], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="1" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[4], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }" />
-                
+
         <CheckBox HorizontalAlignment="Right"  Grid.Column="2" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[5], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="2" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[6], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="2" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[7], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="2" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[8], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="2" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[9], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                   
+
         <CheckBox HorizontalAlignment="Right"  Grid.Column="3" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[10], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="3" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[11], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="3" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[12], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="3" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[13], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="3" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[14], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                  
+
         <CheckBox HorizontalAlignment="Right"  Grid.Column="4" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[15], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="4" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[16], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="4" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[17], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
@@ -294,31 +294,31 @@
         <CheckBox HorizontalAlignment="Right"  Grid.Column="5" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[22], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="5" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[23], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="5" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[24], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                 
+
         <CheckBox HorizontalAlignment="Right"  Grid.Column="6" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[25], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="6" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[26], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="6" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[27], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="6" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[28], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="6" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[29], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                   
+
         <CheckBox HorizontalAlignment="Right"  Grid.Column="7" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[30], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="7" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[31], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="7" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[32], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="7" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[33], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="7" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[34], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                   
+
         <CheckBox HorizontalAlignment="Right"  Grid.Column="8" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[35], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="8" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[36], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="8" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[37], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="8" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[38], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="8" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[39], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                    
+
         <CheckBox HorizontalAlignment="Right"  Grid.Column="9" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[40], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="9" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[41], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="9" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[42], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="9" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[43], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="9" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[44], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                    
+
         <CheckBox HorizontalAlignment="Right"  Grid.Column="10" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[45], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="10" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[46], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="10" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[47], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />

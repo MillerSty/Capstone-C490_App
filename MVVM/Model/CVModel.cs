@@ -1,6 +1,6 @@
 ﻿namespace C490_App.MVVM.Model
 {
-    public class CVModel
+    public class CVModel : ExperimentModel
     {
         public bool? isEnabled { get; set; }
         public double startVoltage { get; set; }

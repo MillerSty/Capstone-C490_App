@@ -3,21 +3,34 @@ using System.Collections.ObjectModel;
 
 namespace C490_App.Services
 {
-    class ExperimentStore
+
+    //public interface IExperimentStore
+    //{
+
+    //    public ObservableCollection<LEDParameter> ledParameters { get; set; }
+
+    //    ObservableCollection<LEDParameter> initLedArray();
+    //}
+    public class ExperimentStore
     {
 
 
-        ObservableCollection<LEDParameter> ledParameters { get; set; }
+
         public ExperimentStore()
         {
             ledParameters = new ObservableCollection<LEDParameter>(initLedArray());
+            model = new ExperimentModel();
         }
 
 
 
-        public List<LEDParameter> initLedArray()
+        private ExperimentModel model;
+        public ObservableCollection<LEDParameter> ledParameters { get; set; } = new();
+
+        public ExperimentModel getModel() { return model; }
+        public void setModel(ExperimentModel model) { this.model = model; }
+        public ObservableCollection<LEDParameter> initLedArray()
         {
-            List<LEDParameter> ledParameters = new List<LEDParameter>();
 
             for (int i = 0; i < 50; i++)
             {
