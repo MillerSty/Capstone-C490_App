@@ -12,11 +12,11 @@ namespace C490_App.MVVM.ViewModel
         public RelayCommand ledSelect { get; set; }
 
         //<controlCheck>
-        //this List represents the outside checkboxes of the array
-        //it is used for control logic of what is selected?
-        //0 is select all
-        //1-5 is row index
-        //6-16 is column index
+        //these Lists represents the outside checkboxes of the array
+        //it is used for control logic of what is selected using LEDSelect and appropriate called functions
+        //controlCheckAll is select all
+        //controlCheckRow is row checkbox's
+        //controlCheckCol is column checkbox's
         public bool controlCheckAll { get; set; }
 
         public List<bool> controlCheckRow { get; set; } = new List<bool>() { false, false, false, false, false };
@@ -34,11 +34,11 @@ namespace C490_App.MVVM.ViewModel
         public LedArrayViewModel(ExperimentStore ExperimentSingleton)
         {
             ExperimentLocal = ExperimentSingleton;
-            isSelected = new ObservableCollection<bool>(initLedArray()); //this could probably be handled more eloquently
-            ledSelect = new RelayCommand(o => SelectLed(o), o => true);
+            isSelected = new ObservableCollection<bool>(initIsSelected()); //this could probably be handled more eloquently
+            ledSelect = new RelayCommand(o => SelectLed2(o), o => true);
         }
 
-
+        // Should be deprecated now
         /*SelectLed 
          * @binding control checkboxes
          * @param is a tuple i,k,j
@@ -83,7 +83,63 @@ namespace C490_App.MVVM.ViewModel
             ExperimentLocal.UpdateLEDS(isSelected);
         }
 
-        internal List<bool> initLedArray()
+        //is new selectled!
+        //TODO add param list to this
+        public void SelectLed2(object commandParameter)
+        {
+            SelectAllLED(0, 50);
+
+            foreach (var selected in controlCheckRow.Select((truth, index) => (truth, index)))
+            {
+                if (selected.truth)
+                {
+                    SelectRowLED(selected.index);
+                }
+            }
+            foreach (var selected in controlCheckCol.Select((truth, index) => (truth, index)))
+            {
+                if (selected.truth)
+                {
+                    SelectColLED(selected.index * 5, selected.index * 5 + 5);
+                }
+            }
+
+
+            ExperimentLocal.UpdateLEDS(isSelected);
+        }
+        private void SelectRowLED(int startIndex)
+        {
+            int counter = startIndex;
+
+            for (int i = 0; i < 10; i++)
+            {
+                bool set = controlCheckRow[startIndex];
+                this.isSelected[counter] = set;
+                counter += 5;
+            }
+
+        }
+        private void SelectColLED(int startIndex, int endIndex)
+        {
+            for (int i = startIndex; i < endIndex; i++)
+            {
+                bool set = controlCheckCol[i / 5];
+                this.isSelected[i] = set;
+            }
+
+        }
+        private void SelectAllLED(int startIndex, int endIndex)
+        {
+            for (int i = startIndex; i < endIndex; i++)
+            {
+                bool set = controlCheckAll;
+                this.isSelected[i] = set;
+            }
+
+        }
+
+
+        internal List<bool> initIsSelected()
         {
             List<bool> result = new List<bool>();
 
