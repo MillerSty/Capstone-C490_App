@@ -128,7 +128,7 @@
 
         <!--This is the LedArray, and pot grid
         It will bind itno HomeFrameViewModel, onto its own ViewModel object-->
-        <components:LedArray Grid.Column="1" Grid.Row="1" Padding="20" DataContext="{Binding LedArrayViewModel}"/>
+        <components:LedArray Grid.Column="1" Grid.Row="1" Padding="20" DataContext="{Binding LedArrayViewModel}" />
         <components:PotentioStatSelect Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Padding="20" DataContext="{Binding PotentiostatViewModel}" />
     </Grid>
 </Window>
