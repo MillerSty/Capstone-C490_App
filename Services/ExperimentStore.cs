@@ -19,18 +19,16 @@ namespace C490_App.Services
         public ExperimentStore()
         {
             ledParameters = new ObservableCollection<LEDParameter>(initLedArray());
-            model = new ExperimentModel();
+            Model = new ExperimentModel();
         }
 
-
+        public ExperimentModel Model { get => model; set => model = value; }
 
         private ExperimentModel model;
         public ObservableCollection<LEDParameter> ledParameters { get; set; } = new();
 
         public ObservableCollection<String> ledNames { get; set; } = new();
 
-        public ExperimentModel getModel() { return model; }
-        public void setModel(ExperimentModel model) { this.model = model; }
 
         public ObservableCollection<LEDParameter> initLedArray()
         {
@@ -40,10 +38,18 @@ namespace C490_App.Services
                 ledParameters.Add(new LEDParameter(false, Convert.ToUInt32(i), $"LED {i}"));
                 ledNames.Add($"LED {i}");
             }
-            //this.isSelected[42] = true; //this is like a control jawn atm
-            UInt32 addr = ledParameters[16].Address;
-            bool check = ledParameters[16].isSelected;
             return ledParameters;
         }
+
+        public void UpdateLEDS(ObservableCollection<bool> ledsSelected)
+        {
+            for (int i = 0; i < 50; i++)
+            {
+                ledParameters[i].IsSelected = ledsSelected[i];
+            }
+        }
+
+
+
     }
 }

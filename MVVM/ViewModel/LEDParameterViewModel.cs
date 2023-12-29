@@ -7,73 +7,160 @@ namespace C490_App.MVVM.ViewModel
 {
     public class LEDParameterViewModel : ViewModelBase
     {
-        public string _gIntensity { get; set; }
+        //Grouped into GRB
+        //Sets all attributes per group, ie: G on, G off, G int, R on, R off, R int...
+
+        private int _GonTime;
+
+        public int GOnTime
+        {
+            get { return _GonTime; }
+            set
+            {
+                _GonTime = value;
+                ExperimentLocal.ledParameters[SelectedIndex].GOnTime = (UInt32)_GonTime;
+                OnPropertyChanged();
+            }
+        }
+        private int _GoffTime;
+
+        public int GOffTime
+        {
+            get { return _GoffTime; }
+            set
+            {
+                _GoffTime = value;
+                ExperimentLocal.ledParameters[SelectedIndex].GOffTime = (UInt32)_GoffTime;
+                OnPropertyChanged();
+            }
+        }
+        private string _gIntensity { get; set; }
         public string GreenIntensity
         {
             get { return _gIntensity; }
             set
             {
                 _gIntensity = double.Floor(double.Parse(value)).ToString();
+                ExperimentLocal.ledParameters[SelectedIndex].GIntensity = UInt32.Parse(_gIntensity);
+                OnPropertyChanged();
 
             }
-
         }
-        public string _rIntensity { get; set; }
+        private int _RonTime;
+
+        public int ROnTime
+        {
+            get { return _RonTime; }
+            set
+            {
+                _RonTime = value;
+                ExperimentLocal.ledParameters[SelectedIndex].ROnTime = (UInt32)_RonTime;
+                OnPropertyChanged();
+            }
+        }
+        private int _RoffTime;
+
+        public int ROffTime
+        {
+            get { return _RoffTime; }
+            set
+            {
+                _RoffTime = value;
+                ExperimentLocal.ledParameters[SelectedIndex].ROffTime = (UInt32)_RoffTime;
+                OnPropertyChanged();
+            }
+        }
+        private string _rIntensity { get; set; }
         public string RedIntensity
         {
             get { return _rIntensity; }
             set
             {
                 _rIntensity = double.Floor(double.Parse(value)).ToString();
+                ExperimentLocal.ledParameters[SelectedIndex].RIntensity = UInt32.Parse(_rIntensity);
+                OnPropertyChanged();
             }
 
         }
-        public string _bIntensity { get; set; }
+        private int _BonTime;
+
+        public int BOnTime
+        {
+            get { return _BonTime; }
+            set
+            {
+                _BonTime = value;
+                ExperimentLocal.ledParameters[SelectedIndex].BOnTime = (UInt32)_BonTime;
+                OnPropertyChanged();
+            }
+        }
+
+        private int _BoffTime;
+
+        public int BOffTime
+        {
+            get { return _BoffTime; }
+            set
+            {
+                _BoffTime = value;
+                ExperimentLocal.ledParameters[SelectedIndex].BOffTime = (UInt32)_BoffTime;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _bIntensity { get; set; }
         public string BlueIntensity
         {
             get { return _bIntensity; }
             set
             {
                 _bIntensity = double.Floor(double.Parse(value)).ToString();
+                ExperimentLocal.ledParameters[SelectedIndex].BIntensity = UInt32.Parse(_bIntensity);
+                OnPropertyChanged();
             }
 
         }
-        public int selectedIndex { get; set; }
+        private int selectedIndex { get; set; }
         public int SelectedIndex
         {
             get => selectedIndex;
-            set { selectedIndex = value; OnPropertyChanged(); }
+            set
+            {
+                selectedIndex = value;
+                BlueIntensity = "0";
+                GreenIntensity = "0";
+                RedIntensity = "0";
+                OnPropertyChanged();
+            }
         }
-        public ObservableCollection<String> lEDs { get; set; }
+        private ObservableCollection<String> _leds { get; set; }
         public ObservableCollection<String> LEDS
         {
-            get => lEDs;
-            set { lEDs = value; OnPropertyChanged(); }
+            get => _leds;
+            set { _leds = value; OnPropertyChanged(); }
         }
 
         public RelayCommand Save { get; set; }
 
         public RelayCommand Cancel { get; set; }
 
-        ExperimentStore ExperimentLocal { get; set; }
+        public ExperimentStore ExperimentLocal { get; set; }
         public LEDParameterViewModel(ExperimentStore ExperimentSingleton)
         {
-
             ExperimentLocal = ExperimentSingleton;
             check();
-            //lEDs = ExperimentLocal.ledParameters;
             Save = new RelayCommand(o => save(), o => true);
 
             Cancel = new RelayCommand(o => cancel(), o => true);
         }
-        public void check()
+        public void check() // maybe do this with data trigger ?
         {
-            lEDs = new ObservableCollection<string>(new List<String>(50));
+            _leds = new ObservableCollection<string>(new List<String>(50));
             foreach (var led in ExperimentLocal.ledParameters)
             {
-                if (led.isSelected)
+                if (led.IsSelected)
                 {
-                    lEDs.Add(led.name);
+                    _leds.Add(led.name);
                 }
             }
 

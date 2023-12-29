@@ -68,7 +68,7 @@ namespace C490_App.MVVM.ViewModel
 
         public void save()
         {
-            ExperimentLocal.setModel(experiment);
+            ExperimentLocal.Model = experiment;
             Trace.WriteLine("Saving");
         }
         public void cancel() { Trace.WriteLine("Canceling"); }

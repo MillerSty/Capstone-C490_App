@@ -2,37 +2,42 @@
 {
     public class LEDParameter : Parameter
     {
-        public string name;
-        public UInt32 Address;
-        public bool isSelected;
+        public string name { get; set; }
+        public uint GIntensity { get => gIntensity; set => gIntensity = value; }
+        public uint Address { get => address; set => address = value; }
+        public bool IsSelected { get => isSelected; set => isSelected = value; }
+        public uint GOnTime { get => gOnTime; set => gOnTime = value; }
+        public uint GOffTime { get => gOffTime; set => gOffTime = value; }
+        public uint ROnTime { get => rOnTime; set => rOnTime = value; }
+        public uint ROffTime { get => rOffTime; set => rOffTime = value; }
+        public uint RIntensity { get => rIntensity; set => rIntensity = value; }
+        public uint BOnTime { get => bOnTime; set => bOnTime = value; }
+        public uint BOffTime { get => bOffTime; set => bOffTime = value; }
+        public uint BIntensity { get => bIntensity; set => bIntensity = value; }
 
-        public UInt32 gOnTime;
-        public UInt32 gOffTime;
-        public UInt32 gIntensity;
+        private UInt32 address;
+        private bool isSelected;
 
-        public UInt32 rOnTime;
-        public UInt32 rgOffTime;
-        public UInt32 rIntensity;
+        private UInt32 gOnTime;
+        private UInt32 gOffTime;
+        private UInt32 gIntensity;
 
-        public UInt32 bOnTime;
-        public UInt32 bOffTime;
-        public UInt32 bIntensity;
+        private UInt32 rOnTime;
+        private UInt32 rOffTime;
+        private UInt32 rIntensity;
+
+        private UInt32 bOnTime;
+        private UInt32 bOffTime;
+        private UInt32 bIntensity;
 
         public LEDParameter(bool set, UInt32 addr, string name)
         {
             Address = addr;
-            isSelected = set;
+            IsSelected = set;
             this.name = name;
         }
 
-        public void setIsSelected(bool set)
-        {
-            isSelected = set;
-        }
-        public void setAddress(UInt32 set)
-        {
-            Address = set;
-        }
+
 
 
     }

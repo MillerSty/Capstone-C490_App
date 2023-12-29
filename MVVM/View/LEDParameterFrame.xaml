@@ -29,8 +29,7 @@
         <ComboBox Grid.Column="0" Grid.Row="0"
                   Height="25" Width="150"
                   ItemsSource="{Binding Path = LEDS}"
-                  
-                  SelectedIndex="{Binding Path= SelectedIndex}"/>
+                  SelectedIndex="{Binding Path= SelectedIndex,FallbackValue=0}"/>
         <Button Grid.Column="1" Grid.Row="0"
                 Height="25" Width="150"
                 Content="Stop Selected LED"></Button>
@@ -51,9 +50,9 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="0" Background="#33008000"   />
-                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="1" Background="#33F15B5B"/>
-                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="2" Background="#335F93FB"/>
+                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="0" Background="#33008000" Text="{Binding GOnTime, UpdateSourceTrigger=PropertyChanged}"  />
+                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="1" Background="#33F15B5B" Text="{Binding ROnTime, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="2" Background="#335F93FB" Text="{Binding BOnTime, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Stretch" Margin="0 25 0 0 " >
@@ -63,9 +62,9 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="0" Background="#33008000"   />
-                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="1" Background="#33F15B5B"/>
-                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="2" Background="#335F93FB"/>
+                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="0" Background="#33008000" Text="{Binding GOffTime, UpdateSourceTrigger=PropertyChanged}"  />
+                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="1" Background="#33F15B5B" Text="{Binding ROffTime, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="2" Background="#335F93FB" Text="{Binding BOffTime, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
         </StackPanel>
 

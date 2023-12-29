@@ -60,7 +60,6 @@ namespace C490_App.MVVM.ViewModel
 
         public RelayCommand openGraphResults { get; set; }
 
-        // public IExperimentStore m { get; set; }
         ExperimentStore ExperimentLocal { get; set; }
         public HomeFrameViewModel(ExperimentStore ExperimentSingleton)
         {
@@ -86,6 +85,9 @@ namespace C490_App.MVVM.ViewModel
         private void LEDOpen()
         {
             LEDParameterFrame ledFrameNavigation = new LEDParameterFrame();
+
+            ExperimentLocal.UpdateLEDS(LedArrayViewModel.isSelected);
+
             ledFrameNavigation.DataContext = new LEDParameterViewModel(ExperimentLocal);
             ledFrameNavigation.Show();
         }
@@ -95,25 +97,22 @@ namespace C490_App.MVVM.ViewModel
             //we  should be able to dynamically set which  experiment to open here... and  itll be clunky butwe  can make it better
             if (_dpvEnabled)
             {
-                ExperimentLocal.setModel(new DPVModel());
                 DPVExperimentFrame dpv = new DPVExperimentFrame();
-
+                ExperimentLocal.Model = new DPVModel();
                 dpv.DataContext = new ExperimentParameterViewModel(ExperimentLocal);
                 dpv.Show();
             }
             else if (_cvEnabled)
             {
                 CVExperimentFrame cv = new CVExperimentFrame();
-                ExperimentLocal.setModel(new CVModel());
-
+                ExperimentLocal.Model = new CVModel();
                 cv.DataContext = new ExperimentParameterViewModel(ExperimentLocal);
                 cv.Show();
             }
             else if (_caEnabled)
             {
                 CAExperimentFrame ca = new CAExperimentFrame();
-                ExperimentLocal.setModel(new CAModel());
-
+                ExperimentLocal.Model = new CAModel();
                 ca.DataContext = new ExperimentParameterViewModel(ExperimentLocal);
                 ca.Show();
 

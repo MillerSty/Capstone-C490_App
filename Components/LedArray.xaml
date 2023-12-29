@@ -49,8 +49,8 @@
 
         <CheckBox
             Command="{Binding ledSelect}"
-            IsChecked="{Binding controlCheck}"
             CommandParameter="0,5"
+            IsChecked="{Binding controlCheckCol[0]}"
             Grid.Column=" 1 "  Grid.Row="1"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
@@ -65,6 +65,7 @@
         <CheckBox
             Command="{Binding ledSelect}"
             CommandParameter="5,10"
+            IsChecked="{Binding controlCheckCol[1]}"
             Grid.Column=" 2 "  Grid.Row="1"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
@@ -80,6 +81,7 @@
         <CheckBox
             Command="{Binding ledSelect}"
             CommandParameter="10,15"
+            IsChecked="{Binding controlCheckCol[2]}"
             Grid.Column=" 3 "  Grid.Row="1"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
@@ -94,6 +96,7 @@
         <CheckBox
             Command="{Binding ledSelect}"
             CommandParameter="15,20"
+            IsChecked="{Binding controlCheckCol[3]}"
             Grid.Column=" 4 "  Grid.Row="1"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
@@ -108,6 +111,7 @@
         <CheckBox
             Command="{Binding ledSelect}"
             CommandParameter="20,25"
+            IsChecked="{Binding controlCheckCol[4]}"
             Grid.Column=" 5 "  Grid.Row="1"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
@@ -122,6 +126,7 @@
         <CheckBox
             Command="{Binding ledSelect}"
             CommandParameter="25,30"
+            IsChecked="{Binding controlCheckCol[5]}"
             Grid.Column=" 6 "  Grid.Row="1"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
@@ -136,6 +141,7 @@
         <CheckBox
             Command="{Binding ledSelect}"
             CommandParameter="30,35"
+            IsChecked="{Binding controlCheckCol[6]}"
             Grid.Column=" 7 "  Grid.Row="1"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
@@ -150,6 +156,7 @@
         <CheckBox
             Command="{Binding ledSelect}"
             CommandParameter="35,40"
+            IsChecked="{Binding controlCheckCol[7]}"
             Grid.Column=" 8 "  Grid.Row="1"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
@@ -164,6 +171,7 @@
         <CheckBox
             Command="{Binding ledSelect}"
             CommandParameter="40,45"
+            IsChecked="{Binding controlCheckCol[8]}"
             Grid.Column=" 9 "  Grid.Row="1"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
@@ -178,6 +186,7 @@
         <CheckBox
             Command="{Binding ledSelect}"
             CommandParameter="45,50"
+            IsChecked="{Binding controlCheckCol[9]}"
             Grid.Column=" 10 "  Grid.Row="1"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
@@ -192,10 +201,11 @@
         <CheckBox
             Command="{Binding ledSelect}"
             CommandParameter="0,5,0"
+            IsChecked="{Binding controlCheckRow[0]}"
             Grid.Column=" 0 "  Grid.Row="2"
             VerticalAlignment="Center"
-            HorizontalAlignment="Center"
-            FlowDirection="RightToLeft">
+            HorizontalAlignment="Right"
+            FlowDirection="RightToLeft" Margin="0,0,3,0">
             <TextBlock Text="0"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
@@ -205,6 +215,7 @@
         <CheckBox
             Command="{Binding ledSelect}"
             CommandParameter="1,5,0"
+            IsChecked="{Binding controlCheckRow[1]}"
             Grid.Column=" 0 "  Grid.Row="3"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
@@ -218,6 +229,7 @@
         <CheckBox
             Command="{Binding ledSelect}"
             CommandParameter="2,5,0"
+            IsChecked="{Binding controlCheckRow[2]}"
             Grid.Column=" 0 "  Grid.Row="4"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
@@ -231,6 +243,7 @@
         <CheckBox
             Command="{Binding ledSelect}"
             CommandParameter="3,5,0"
+            IsChecked="{Binding controlCheckRow[3]}"
             Grid.Column=" 0 "  Grid.Row="5"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
@@ -244,6 +257,7 @@
         <CheckBox
             Command="{Binding ledSelect}"
             CommandParameter="4,5,0"
+            IsChecked="{Binding controlCheckRow[4]}"
             Grid.Column=" 0 "  Grid.Row="66"
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
@@ -262,6 +276,7 @@
                   Height="20" Width="20"
                   Command="{Binding ledSelect}"
                   CommandParameter="0,50"
+                  IsChecked="{Binding controlCheckAll}"
                   Tag="50501"></CheckBox>
 
         <CheckBox HorizontalAlignment="Right" Grid.Column="1" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20"  IsChecked="{Binding Path=isSelected[0], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  ></CheckBox>

@@ -10,10 +10,25 @@ namespace C490_App.MVVM.ViewModel
     {
 
         public RelayCommand ledSelect { get; set; }
-        public bool controlCheck { get; set; }
 
-        public ObservableCollection<bool> isSelected { get; set; }
+        //<controlCheck>
+        //this List represents the outside checkboxes of the array
+        //it is used for control logic of what is selected?
+        //0 is select all
+        //1-5 is row index
+        //6-16 is column index
+        public bool controlCheckAll { get; set; }
 
+        public List<bool> controlCheckRow { get; set; } = new List<bool>() { false, false, false, false, false };
+
+        public List<bool> controlCheckCol { get; set; } = new List<bool>() { false, false, false, false, false, false, false, false, false, false };
+
+
+        public ObservableCollection<bool> isSelected
+        {
+            get;
+            set;
+        }
         ExperimentStore ExperimentLocal { get; set; }
 
         public LedArrayViewModel(ExperimentStore ExperimentSingleton)
@@ -37,23 +52,35 @@ namespace C490_App.MVVM.ViewModel
             if (parameterSubString.Length == 3)
             {
                 int k = int.Parse(parameterSubString[0]);
+                int controlIndex = k;
+
                 for (int i = 0; i < 10; i++)
                 {
-                    bool set = !ExperimentLocal.ledParameters[k].isSelected;
-                    this.ExperimentLocal.ledParameters[k].isSelected = set;
+                    bool set = controlCheckRow[controlIndex];
+                    //bool set = !ExperimentLocal.ledParameters[k].IsSelected;
                     this.isSelected[k] = set;
                     k += int.Parse(parameterSubString[1]);
                 }
             }
             else
             {
-                for (int i = int.Parse(parameterSubString[0]); i < int.Parse(parameterSubString[1]); i++)
+                if (controlCheckAll)
                 {
-                    bool set = !ExperimentLocal.ledParameters[i].isSelected;
-                    this.ExperimentLocal.ledParameters[i].isSelected = set;
-                    this.isSelected[i] = set;
+                    for (int i = int.Parse(parameterSubString[0]); i < int.Parse(parameterSubString[1]); i++)
+                    {
+                        bool set = controlCheckAll;
+                        this.isSelected[i] = set;
+                    }
                 }
+                else
+                    for (int i = int.Parse(parameterSubString[0]); i < int.Parse(parameterSubString[1]); i++)
+                    {
+                        bool set;
+                        set = controlCheckCol[i / 5];
+                        this.isSelected[i] = set;
+                    }
             }
+            ExperimentLocal.UpdateLEDS(isSelected);
         }
 
         internal List<bool> initLedArray()
