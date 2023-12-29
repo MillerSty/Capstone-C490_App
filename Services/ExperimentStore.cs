@@ -27,6 +27,8 @@ namespace C490_App.Services
         private ExperimentModel model;
         public ObservableCollection<LEDParameter> ledParameters { get; set; } = new();
 
+        public ObservableCollection<String> ledNames { get; set; } = new();
+
         public ExperimentModel getModel() { return model; }
         public void setModel(ExperimentModel model) { this.model = model; }
 
@@ -35,7 +37,8 @@ namespace C490_App.Services
 
             for (int i = 0; i < 50; i++)
             {
-                ledParameters.Add(new LEDParameter(false, Convert.ToUInt32(i)));
+                ledParameters.Add(new LEDParameter(false, Convert.ToUInt32(i), $"LED {i}"));
+                ledNames.Add($"LED {i}");
             }
             //this.isSelected[42] = true; //this is like a control jawn atm
             UInt32 addr = ledParameters[16].Address;

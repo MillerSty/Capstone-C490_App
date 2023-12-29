@@ -48,7 +48,7 @@ namespace C490_App.MVVM.ViewModel
         {
             for (int i = 0; i < 50; i++)
             {
-                o.Add($"Potetionstat {i}");
+                o.Add($"Potentiostat {i}");
             }
 
         }
