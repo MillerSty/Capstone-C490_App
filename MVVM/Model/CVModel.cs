@@ -2,6 +2,7 @@
 {
     public class CVModel : ExperimentModel
     {
+        static string type = "CVModel";
         public bool? isEnabled { get; set; }
         public double startVoltage { get; set; }
         public double voltageThresholdOne { get; set; }

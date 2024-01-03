@@ -2,6 +2,7 @@
 {
     public class CAModel : ExperimentModel
     {
+        static string type = "CAModel";
         public bool? isEnabled { get; set; }
         public double voltageRangeStart { get; set; }
         public double voltageRangeEnd { get; set; }

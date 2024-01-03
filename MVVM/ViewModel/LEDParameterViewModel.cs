@@ -19,6 +19,7 @@ namespace C490_App.MVVM.ViewModel
             {
                 _GonTime = value;
                 ExperimentLocal.ledParameters[SelectedIndex].GOnTime = (UInt32)_GonTime;
+
                 OnPropertyChanged();
             }
         }
@@ -34,7 +35,7 @@ namespace C490_App.MVVM.ViewModel
                 OnPropertyChanged();
             }
         }
-        private string _gIntensity { get; set; }
+        private string? _gIntensity { get; set; }
         public string GreenIntensity
         {
             get { return _gIntensity; }
@@ -70,7 +71,7 @@ namespace C490_App.MVVM.ViewModel
                 OnPropertyChanged();
             }
         }
-        private string _rIntensity { get; set; }
+        private string? _rIntensity { get; set; }
         public string RedIntensity
         {
             get { return _rIntensity; }
@@ -108,7 +109,7 @@ namespace C490_App.MVVM.ViewModel
             }
         }
 
-        private string _bIntensity { get; set; }
+        private string? _bIntensity { get; set; }
         public string BlueIntensity
         {
             get { return _bIntensity; }
@@ -120,19 +121,30 @@ namespace C490_App.MVVM.ViewModel
             }
 
         }
-        private int selectedIndex { get; set; }
+        private int selectedIndex { get; set; } = 0;
         public int SelectedIndex
         {
             get => selectedIndex;
             set
             {
                 selectedIndex = value;
-                BlueIntensity = "0";
-                GreenIntensity = "0";
-                RedIntensity = "0";
+                BlueIntensity = ExperimentLocal.ledParameters[SelectedIndex].BIntensity.ToString();
+                BOnTime = (int)ExperimentLocal.ledParameters[SelectedIndex].BOnTime;
+                BOffTime = (int)ExperimentLocal.ledParameters[SelectedIndex].BOffTime;
+
+                GreenIntensity = ExperimentLocal.ledParameters[SelectedIndex].GIntensity.ToString();
+                GOnTime = (int)ExperimentLocal.ledParameters[SelectedIndex].GOnTime;
+                GOffTime = (int)ExperimentLocal.ledParameters[SelectedIndex].GOffTime;
+
+
+                RedIntensity = ExperimentLocal.ledParameters[SelectedIndex].RIntensity.ToString();
+                ROnTime = (int)ExperimentLocal.ledParameters[SelectedIndex].ROnTime;
+                ROffTime = (int)ExperimentLocal.ledParameters[SelectedIndex].ROffTime;
+
                 OnPropertyChanged();
             }
         }
+        private ObservableCollection<int> isModified { get; set; }
         private ObservableCollection<String> _leds { get; set; }
         public ObservableCollection<String> LEDS
         {
@@ -145,13 +157,14 @@ namespace C490_App.MVVM.ViewModel
         public RelayCommand Cancel { get; set; }
 
         public ExperimentStore ExperimentLocal { get; set; }
+
         public LEDParameterViewModel(ExperimentStore ExperimentSingleton)
         {
             ExperimentLocal = ExperimentSingleton;
             check();
             Save = new RelayCommand(o => save(), o => true);
 
-            Cancel = new RelayCommand(o => cancel(), o => true);
+            Cancel = new RelayCommand(o => this.cancel(o), o => true);
         }
         public void check() // maybe do this with data trigger ?
         {
@@ -169,9 +182,23 @@ namespace C490_App.MVVM.ViewModel
         {
             Trace.WriteLine("Saving");
         }
-        public void cancel() { Trace.WriteLine("Canceling"); }
+        public void cancel(Object o)
+        {
+            Trace.WriteLine("Canceling");
+            close();
+        }
 
-
+        private void close()
+        {
+            //reset everything that wasnt modified?
+            foreach (System.Windows.Window window in System.Windows.Application.Current.Windows)
+            {
+                if (window.DataContext == this)
+                {
+                    window.Close();
+                }
+            }
+        }
 
 
     }

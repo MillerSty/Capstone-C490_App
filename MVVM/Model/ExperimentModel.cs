@@ -2,5 +2,7 @@
 {
     public class ExperimentModel
     {
+        public virtual void setIsEnabled() { }
+        public virtual string getType() { return ""; }
     }
 }

@@ -2,34 +2,32 @@
 using C490_App.MVVM.Model;
 using C490_App.MVVM.View;
 using C490_App.Services;
+using System.Diagnostics;
 using System.Windows;
 
 namespace C490_App.MVVM.ViewModel
 {
     public class HomeFrameViewModel : ViewModelBase
     {
-
         public PotentiostatViewModel PotentiostatViewModel { get; }
-
 
         public LedArrayViewModel LedArrayViewModel { get; }
         private CAModel _caModel;
         private DPVModel _dpvModel;
         private CVModel _cvModel;
 
-        //public bool _dpvEnabled, _cvEnabled;
         public bool _cvEnabled;
         public bool cvEnabled
         {
             get { return _cvEnabled; }
             set
             {
-
                 _cvEnabled = value;
                 _cvModel.isEnabled = _cvEnabled;
                 OnPropertyChanged();
             }
         }
+
         public bool _dpvEnabled;
         public bool dpvEnabled
         {
@@ -41,6 +39,7 @@ namespace C490_App.MVVM.ViewModel
                 OnPropertyChanged();
             }
         }
+
         public bool _caEnabled;
         public bool caEnabled
         {
@@ -59,8 +58,10 @@ namespace C490_App.MVVM.ViewModel
         public RelayCommand openWindowLED { get; set; }
 
         public RelayCommand openGraphResults { get; set; }
+        public RelayCommand imexParams { get; set; }
 
-        ExperimentStore ExperimentLocal { get; set; }
+        private ExperimentStore ExperimentLocal { get; set; }
+
         public HomeFrameViewModel(ExperimentStore ExperimentSingleton)
         {
             ExperimentLocal = ExperimentSingleton;
@@ -74,14 +75,68 @@ namespace C490_App.MVVM.ViewModel
             openWindow = new RelayCommand(o => experimentOpen(), o => true);
             openWindowLED = new RelayCommand(o => LEDOpen(), o => true);
             openGraphResults = new RelayCommand(o => GraphOpen(), o => true);
+            imexParams = new RelayCommand(o => IMEXParams(o), o => true);
+        }
+
+        private void IMEXParams(object o)
+        {
+            FileHandler f = new FileHandler();
+
+            if (bool.Parse(o.ToString()))
+            {
+                Trace.WriteLine("Import params in VM");
+                bool returned = f.fileImport(o, ExperimentLocal, LedArrayViewModel);
+                if (returned)
+                {
+                    if (ExperimentLocal.Model.getType().ToLower().Contains("dpv"))
+                    {
+                        dpvEnabled = true;
+                    }
+                    else if (ExperimentLocal.Model.getType().ToLower().ToLower().Contains("ca"))
+                    {
+                        caEnabled = true;
+                    }
+                    else if (ExperimentLocal.Model.getType().ToLower().ToLower().Contains("cv"))
+                    {
+                        cvEnabled = true;
+                    }
+
+                    else
+                    {
+                        Trace.WriteLine("Not valid experiment file");
+                    }
+                }
+                else
+                {
+                    {
+                        Trace.WriteLine("Load File Failed");
+                    }
+                }
+                Trace.WriteLine("Import params");
+
+
+            }
+            else
+            {
+                Trace.WriteLine("Export in VM");
+                f.fileExport(ExperimentLocal);
+            }
+
 
 
         }
+
+
+
+
+
+
         private void GraphOpen()
         {
             GraphFrame graphFrame = new GraphFrame();
             graphFrame.Show();
         }
+
         private void LEDOpen()
         {
             LEDParameterFrame ledFrameNavigation = new LEDParameterFrame();
@@ -95,35 +150,44 @@ namespace C490_App.MVVM.ViewModel
         public void experimentOpen()
         {
             //we  should be able to dynamically set which  experiment to open here... and  itll be clunky butwe  can make it better
+            //This might be able to be replaced with switch statement too using get type
             if (_dpvEnabled)
             {
+                if (ExperimentLocal.Model == null)
+                {
+                    ExperimentLocal.Model = new DPVModel();
+                }
+                Trace.WriteLine(ExperimentLocal.Model.getType());
                 DPVExperimentFrame dpv = new DPVExperimentFrame();
-                ExperimentLocal.Model = new DPVModel();
                 dpv.DataContext = new ExperimentParameterViewModel(ExperimentLocal);
                 dpv.Show();
             }
             else if (_cvEnabled)
             {
                 CVExperimentFrame cv = new CVExperimentFrame();
-                ExperimentLocal.Model = new CVModel();
+                if (ExperimentLocal.Model == null)
+                {
+                    ExperimentLocal.Model = new CVModel();
+                }
                 cv.DataContext = new ExperimentParameterViewModel(ExperimentLocal);
                 cv.Show();
             }
             else if (_caEnabled)
             {
                 CAExperimentFrame ca = new CAExperimentFrame();
-                ExperimentLocal.Model = new CAModel();
+                if (ExperimentLocal.Model == null)
+                {
+                    ExperimentLocal.Model = new CAModel();
+                }
                 ca.DataContext = new ExperimentParameterViewModel(ExperimentLocal);
                 ca.Show();
-
             }
             else
             {
-
                 MessageBox.Show("No Experiment Selected");
             }
-
         }
+
         public void experimentCheck(object o)
         {
             switch (o.ToString())
@@ -135,7 +199,5 @@ namespace C490_App.MVVM.ViewModel
                 case "ca": dpvEnabled = false; cvEnabled = false; break;
             }
         }
-
-
     }
 }

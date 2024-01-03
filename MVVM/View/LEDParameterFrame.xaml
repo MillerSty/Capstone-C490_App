@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:C490_App.MVVM.View"
         xmlns:viewmodel="clr-namespace:C490_App.MVVM.ViewModel"
         mc:Ignorable="d"
-        Title="LEDParameterFrame" Height="500" Width="400">
+        Title="LEDParameterFrame"
+        x:Name="LEDFrame"
+        Height="500" Width="400">
     <!--<Window.DataContext>
     <viewmodel:LEDParameterViewModel>
     </viewmodel:LEDParameterViewModel>
@@ -29,6 +31,7 @@
         <ComboBox Grid.Column="0" Grid.Row="0"
                   Height="25" Width="150"
                   ItemsSource="{Binding Path = LEDS}"
+                  ItemStringFormat=" LED {0}"
                   SelectedIndex="{Binding Path= SelectedIndex,FallbackValue=0}"/>
         <Button Grid.Column="1" Grid.Row="0"
                 Height="25" Width="150"
@@ -92,7 +95,8 @@
                 Content="Cancel"
                 FontWeight="Bold"
                 HorizontalAlignment="Center" VerticalAlignment="Center"
-                Command="{Binding Cancel}"></Button>
+                Command="{Binding Cancel}"
+                CommandParameter="Binding ElementName=LEDFrame"></Button>
         <StackPanel Grid.Column="1" Grid.Row="4" Grid.RowSpan="2">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -135,9 +139,9 @@
                         TickFrequency="10" TickPlacement="BottomRight"
                         Value="{Binding BlueIntensity,  FallbackValue=0.0 }"
                         Foreground="Black" Background="#335F93FB"/>
-                <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding GreenIntensity, StringFormat={}{0} of 250}"/>
-                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding RedIntensity, StringFormat={}{0} of 250}"/>
-                <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding BlueIntensity, StringFormat={}{0} of 250}"/>
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding GreenIntensity, StringFormat={}{0} of 250, TargetNullValue=0 of 250}"/>
+                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding RedIntensity, StringFormat={}{0} of 250, TargetNullValue=0 of 250}"/>
+                <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding BlueIntensity, StringFormat={}{0} of 250, TargetNullValue=0 of 250}"/>
             </Grid>
         </StackPanel>
     </Grid>

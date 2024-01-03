@@ -14,7 +14,6 @@ namespace C490_App
     public partial class App : Application
     {
         private readonly ServiceProvider _serviceProvider;
-        private readonly TestStore _testStore;
         public App()
         {
             IServiceCollection services = new ServiceCollection();
