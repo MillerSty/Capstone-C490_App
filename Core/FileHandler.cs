@@ -112,6 +112,7 @@ namespace C490_App.Core
             Trace.WriteLine("Export");
             // OpenFileDialog openFileDialogClose = new OpenFileDialog();
             SaveFileDialog saveFileDialogClose = new SaveFileDialog();
+            saveFileDialogClose.DefaultExt = ".csv";
             if (saveFileDialogClose.ShowDialog() == true)
             {
                 if (saveFileDialogClose.FileName != "")
