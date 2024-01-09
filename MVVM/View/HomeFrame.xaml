@@ -9,7 +9,6 @@
         ResizeMode="CanResize"
         mc:Ignorable="d"
         Height="500" Width="900"
-        WindowStyle="SingleBorderWindow"
         Title="HomeFrame">
     <!--Remove WindowStyle and title For made menu-->
 
@@ -17,6 +16,7 @@
     <viewmodel:HomeFrameViewModel>
     </viewmodel:HomeFrameViewModel>
     </Window.DataContext>-->
+
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
@@ -31,7 +31,20 @@
 
         <!--Menu Bar-->
         <!--Note WPF has Menu item-->
-        <!--<Menu> </Menu> Look into this-->
+        <Menu Grid.ColumnSpan="2">
+
+            <MenuItem Header="_File">
+                <MenuItem Header="_Exit" />
+            </MenuItem>
+            <MenuItem Header="_Tools">
+                <MenuItem Header="_Import Experiment Parameters" Command="{Binding imexParams}" CommandParameter="true">
+                </MenuItem>
+                <MenuItem Header="_Export Experiment Parameters" Command="{Binding imexParams}" CommandParameter="false"/>
+            </MenuItem>
+            <MenuItem Header="_Save Results" >
+            </MenuItem>
+        </Menu>
+        <!--KCLook into this-->
         <!--<Border Grid.ColumnSpan="2"
         Background="White"
         BorderBrush="Gray"
@@ -128,7 +141,7 @@
 
         <!--This is the LedArray, and pot grid
         It will bind itno HomeFrameViewModel, onto its own ViewModel object-->
-        <components:LedArray Grid.Column="1" Grid.Row="1" Padding="20" DataContext="{Binding LedArrayViewModel}"/>
+        <components:LedArray Grid.Column="1" Grid.Row="1" Padding="20" DataContext="{Binding LedArrayViewModel}" />
         <components:PotentioStatSelect Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Padding="20" DataContext="{Binding PotentiostatViewModel}" />
     </Grid>
 </Window>

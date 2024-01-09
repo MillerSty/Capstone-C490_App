@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:C490_App.MVVM.View"
         xmlns:viewmodel="clr-namespace:C490_App.MVVM.ViewModel"
         mc:Ignorable="d"
-        Title="LEDParameterFrame" Height="500" Width="400">
+        Title="LEDParameterFrame"
+        x:Name="LEDFrame"
+        Height="500" Width="400">
     <!--<Window.DataContext>
     <viewmodel:LEDParameterViewModel>
     </viewmodel:LEDParameterViewModel>
@@ -27,7 +29,10 @@
         </Grid.ColumnDefinitions>
 
         <ComboBox Grid.Column="0" Grid.Row="0"
-                  Height="25" Width="150"/>
+                  Height="25" Width="150"
+                  ItemsSource="{Binding Path = LEDS}"
+                  ItemStringFormat=" LED {0}"
+                  SelectedIndex="{Binding Path= SelectedIndex,FallbackValue=0}"/>
         <Button Grid.Column="1" Grid.Row="0"
                 Height="25" Width="150"
                 Content="Stop Selected LED"></Button>
@@ -48,9 +53,9 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="0" Background="#33008000"   />
-                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="1" Background="#33F15B5B"/>
-                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="2" Background="#335F93FB"/>
+                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="0" Background="#33008000" Text="{Binding GOnTime, UpdateSourceTrigger=PropertyChanged}"  />
+                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="1" Background="#33F15B5B" Text="{Binding ROnTime, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="2" Background="#335F93FB" Text="{Binding BOnTime, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
         </StackPanel>
         <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Stretch" Margin="0 25 0 0 " >
@@ -60,9 +65,9 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="0" Background="#33008000"   />
-                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="1" Background="#33F15B5B"/>
-                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="2" Background="#335F93FB"/>
+                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="0" Background="#33008000" Text="{Binding GOffTime, UpdateSourceTrigger=PropertyChanged}"  />
+                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="1" Background="#33F15B5B" Text="{Binding ROffTime, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="2" Background="#335F93FB" Text="{Binding BOffTime, UpdateSourceTrigger=PropertyChanged}" />
             </Grid>
         </StackPanel>
 
@@ -90,7 +95,8 @@
                 Content="Cancel"
                 FontWeight="Bold"
                 HorizontalAlignment="Center" VerticalAlignment="Center"
-                Command="{Binding Cancel}"></Button>
+                Command="{Binding Cancel}"
+                CommandParameter="Binding ElementName=LEDFrame"></Button>
         <StackPanel Grid.Column="1" Grid.Row="4" Grid.RowSpan="2">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -133,9 +139,9 @@
                         TickFrequency="10" TickPlacement="BottomRight"
                         Value="{Binding BlueIntensity,  FallbackValue=0.0 }"
                         Foreground="Black" Background="#335F93FB"/>
-                <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding GreenIntensity, StringFormat={}{0} of 250}"/>
-                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding RedIntensity, StringFormat={}{0} of 250}"/>
-                <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding BlueIntensity, StringFormat={}{0} of 250}"/>
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding GreenIntensity, StringFormat={}{0} of 250, TargetNullValue=0 of 250}"/>
+                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding RedIntensity, StringFormat={}{0} of 250, TargetNullValue=0 of 250}"/>
+                <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding BlueIntensity, StringFormat={}{0} of 250, TargetNullValue=0 of 250}"/>
             </Grid>
         </StackPanel>
     </Grid>

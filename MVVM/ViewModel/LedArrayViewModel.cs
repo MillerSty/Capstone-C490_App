@@ -1,5 +1,4 @@
 ﻿using C490_App.Core;
-using C490_App.MVVM.Model;
 using C490_App.Services;
 using System.Collections.ObjectModel;
 
@@ -11,24 +10,35 @@ namespace C490_App.MVVM.ViewModel
     {
 
         public RelayCommand ledSelect { get; set; }
-        public RelayCommand doNothing { get; set; }
-        public bool controlCheck { get; set; }
+
+        //<controlCheck>
+        //these Lists represents the outside checkboxes of the array
+        //it is used for control logic of what is selected using LEDSelect and appropriate called functions
+        //controlCheckAll is select all
+        //controlCheckRow is row checkbox's
+        //controlCheckCol is column checkbox's
+        public bool controlCheckAll { get; set; }
+
+        public List<bool> controlCheckRow { get; set; } = new List<bool>() { false, false, false, false, false };
+
+        public List<bool> controlCheckCol { get; set; } = new List<bool>() { false, false, false, false, false, false, false, false, false, false };
 
 
-        private ObservableCollection<LEDParameter> lEDParameters { get; set; }
-        public ObservableCollection<bool> isSelected { get; set; }
-        ObservableCollection<LEDParameter> ledParameters { get; set; }
-
+        public ObservableCollection<bool> isSelected
+        {
+            get;
+            set;
+        }
         ExperimentStore ExperimentLocal { get; set; }
+
         public LedArrayViewModel(ExperimentStore ExperimentSingleton)
         {
             ExperimentLocal = ExperimentSingleton;
-            isSelected = new ObservableCollection<bool>();
-            ledParameters = new ObservableCollection<LEDParameter>(initLedArray());
-            ledSelect = new RelayCommand(o => SelectLed(o), o => true);
+            isSelected = new ObservableCollection<bool>(initIsSelected()); //this could probably be handled more eloquently
+            ledSelect = new RelayCommand(o => SelectLed2(o), o => true);
         }
 
-
+        // Should be deprecated now
         /*SelectLed 
          * @binding control checkboxes
          * @param is a tuple i,k,j
@@ -42,38 +52,103 @@ namespace C490_App.MVVM.ViewModel
             if (parameterSubString.Length == 3)
             {
                 int k = int.Parse(parameterSubString[0]);
+                int controlIndex = k;
+
                 for (int i = 0; i < 10; i++)
                 {
-                    bool set = !ledParameters[k].isSelected;
-                    this.ledParameters[k].isSelected = set;
+                    bool set = controlCheckRow[controlIndex];
+                    //bool set = !ExperimentLocal.ledParameters[k].IsSelected;
                     this.isSelected[k] = set;
                     k += int.Parse(parameterSubString[1]);
                 }
             }
             else
             {
-                for (int i = int.Parse(parameterSubString[0]); i < int.Parse(parameterSubString[1]); i++)
+                if (controlCheckAll)
                 {
-                    bool set = !ledParameters[i].isSelected;
-                    this.ledParameters[i].isSelected = set;
-                    this.isSelected[i] = set;
+                    for (int i = int.Parse(parameterSubString[0]); i < int.Parse(parameterSubString[1]); i++)
+                    {
+                        bool set = controlCheckAll;
+                        this.isSelected[i] = set;
+                    }
                 }
+                else
+                    for (int i = int.Parse(parameterSubString[0]); i < int.Parse(parameterSubString[1]); i++)
+                    {
+                        bool set;
+                        set = controlCheckCol[i / 5];
+                        this.isSelected[i] = set;
+                    }
             }
-            //this is to test datapassing 
-            ExperimentLocal.ledParameters = ledParameters;
+            ExperimentLocal.UpdateLEDS(isSelected);
         }
 
-        internal List<LEDParameter> initLedArray()
+        //is new selectled!
+        //TODO add param list to this
+        public void SelectLed2(object commandParameter)
         {
-            List<LEDParameter> ledParameters = new List<LEDParameter>();
+            SelectAllLED(0, 50);
+
+            foreach (var selected in controlCheckRow.Select((truth, index) => (truth, index)))
+            {
+                if (selected.truth)
+                {
+                    SelectRowLED(selected.index);
+                }
+            }
+            foreach (var selected in controlCheckCol.Select((truth, index) => (truth, index)))
+            {
+                if (selected.truth)
+                {
+                    SelectColLED(selected.index * 5, selected.index * 5 + 5);
+                }
+            }
+
+
+            ExperimentLocal.UpdateLEDS(isSelected);
+        }
+        private void SelectRowLED(int startIndex)
+        {
+            int counter = startIndex;
+
+            for (int i = 0; i < 10; i++)
+            {
+                bool set = controlCheckRow[startIndex];
+                this.isSelected[counter] = set;
+                counter += 5;
+            }
+
+        }
+        private void SelectColLED(int startIndex, int endIndex)
+        {
+            for (int i = startIndex; i < endIndex; i++)
+            {
+                bool set = controlCheckCol[i / 5];
+                this.isSelected[i] = set;
+            }
+
+        }
+        private void SelectAllLED(int startIndex, int endIndex)
+        {
+            for (int i = startIndex; i < endIndex; i++)
+            {
+                bool set = controlCheckAll;
+                this.isSelected[i] = set;
+            }
+
+        }
+
+
+        internal List<bool> initIsSelected()
+        {
+            List<bool> result = new List<bool>();
 
             for (int i = 0; i < 50; i++)
             {
-                ledParameters.Add(new LEDParameter(false, Convert.ToUInt32(i)));
-                this.isSelected.Add(false);
+                result.Add(false);
             }
 
-            return ledParameters;
+            return result;
         }
 
     }

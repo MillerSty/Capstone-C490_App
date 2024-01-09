@@ -14,28 +14,20 @@ namespace C490_App
     public partial class App : Application
     {
         private readonly ServiceProvider _serviceProvider;
-        private readonly TestStore _testStore;
         public App()
         {
             IServiceCollection services = new ServiceCollection();
-            _testStore = new TestStore();
 
-            services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<INavigationService, NavigationService>();// not sure we using this
 
-            services.AddSingleton<HomeFrameViewModel>();
+            services.AddSingleton<HomeFrameViewModel>(); //might be neccesary to delete
 
             services.AddSingleton<HomeFrame>(provider => new HomeFrame
             {
                 DataContext = provider.GetRequiredService<HomeFrameViewModel>()
             });
-            //services.AddSingleton<LEDParameterFrame>(provider => new LEDParameterFrame
-            //{
-            //    DataContext = provider.GetRequiredService<LEDParameterViewModel>()
-            //});
 
             services.AddSingleton<ExperimentStore>();
-
-            //services.AddSingleton<INavigationService, NavigationService>();
 
             _serviceProvider = services.BuildServiceProvider();
 
@@ -43,23 +35,12 @@ namespace C490_App
         }
         protected override void OnStartup(StartupEventArgs e)
         {
-
-            //HomeFrame homeFrame = new HomeFrame()
-            //{
-            //    DataContext = new HomeFrameViewModel(i)
-            //};
             var k = _serviceProvider.GetRequiredService<ExperimentStore>();
             var viewmodel = new HomeFrameViewModel(k);
             var mainWindow = _serviceProvider.GetRequiredService<HomeFrame>();
             mainWindow.DataContext = viewmodel;
             mainWindow.Show();
 
-
-            //homeFrame.Show();
-            // Navigation.NavigateTo<LEDParameterViewModel>()
-
-            //var service = _serviceProvider.GetRequiredService<INavigationService>();
-            //service.NavigateTo<HomeFrameViewModel>();
             base.OnStartup(e);
         }
 

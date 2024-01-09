@@ -57,9 +57,17 @@ namespace C490_App.MVVM.ViewModel
         public ExperimentParameterViewModel(ExperimentStore ExperimentSingleton)
         {
             ExperimentLocal = ExperimentSingleton;
-            DpvModel = new DPVModel();
-            CvModel = new CVModel();
-            CaModel = new CAModel();
+            switch (ExperimentLocal.Model.getType())
+            {
+                case "DPVModel": DpvModel = (DPVModel)ExperimentLocal.Model; break;
+                case "CAModel": CaModel = (CAModel)ExperimentLocal.Model; break;
+                case "CVModel": CvModel = (CVModel)ExperimentLocal.Model; break;
+                default:
+                    DpvModel = new DPVModel();
+                    CvModel = new CVModel();
+                    CaModel = new CAModel(); break;
+            }
+
             Save = new RelayCommand(o => save(), o => true);
 
             Cancel = new RelayCommand(o => cancel(), o => true);
@@ -68,7 +76,7 @@ namespace C490_App.MVVM.ViewModel
 
         public void save()
         {
-            ExperimentLocal.setModel(experiment);
+            ExperimentLocal.Model = experiment;
             Trace.WriteLine("Saving");
         }
         public void cancel() { Trace.WriteLine("Canceling"); }
