@@ -1,4 +1,6 @@
 ﻿using C490_App.MVVM.Model;
+using OxyPlot.Axes;
+using OxyPlot;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,6 +16,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using CsvHelper;
+using OxyPlot.Series;
+using System.Globalization;
 
 namespace C490_App.MVVM.View
 {
@@ -22,10 +27,22 @@ namespace C490_App.MVVM.View
     /// </summary>
     public partial class GraphFrame : Window
     {
+        private PlotModel plotModel;
         public GraphFrame()
         {
             InitializeComponent();
             LoadCsvFileNames();
+            InitializePlotModel();
+        }
+
+        private void InitializePlotModel()
+        {
+            plotModel = new PlotModel();
+            plotView.Model = plotModel;
+
+            
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-Axis" });
+            plotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-Axis" });
         }
 
         private void LoadCsvFileNames()
@@ -52,21 +69,34 @@ namespace C490_App.MVVM.View
                 PlotCsvFile(selectedCsvFileName);
             }
         }
-
         private void PlotCsvFile(string csvFileName)
         {
-            // Clear the plot
-            plotView.Model = null;
-
-            // Load the CSV file
             string appFolder = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory.Split(new[] { "\\bin\\" }, StringSplitOptions.None)[0], "Resources", "CSV Readings");
-            string csvFilePath = appFolder + csvFileName + ".csv";
+            string csvFilePath = System.IO.Path.Combine(appFolder, $"{csvFileName}.csv");
 
-            // Read the CSV file
-            var csvFile = new CsvReadingsModel(csvFilePath);
+            using (var reader = new StreamReader(csvFilePath))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                // CSV has two columns: X and Y
+                var records = csv.GetRecords<CsvReadingsModel>();
 
-            // Plot the CSV file
-            plotView.Model = csvFile.PlotModel;
-        }   
+
+                // Create a LineSeries to plot the data
+                var lineSeries = new LineSeries();
+
+                foreach (var record in records)
+                {
+                    lineSeries.Points.Add(new DataPoint(record.X, record.Y));
+                }
+
+                // Add the new series to the existing plot model
+                plotModel.Series.Add(lineSeries);
+
+                // Refresh the plot
+                plotModel.InvalidatePlot(true);
+            }
+        }
+
+
     }
 }
