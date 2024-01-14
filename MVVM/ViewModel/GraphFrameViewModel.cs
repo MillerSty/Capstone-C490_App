@@ -157,7 +157,12 @@ namespace C490_App.MVVM.ViewModel
             {
                 var records = csv.GetRecords<CsvReadingsModel>();
 
-                var lineSeries = new LineSeries();
+                var lineSeries = new LineSeries
+                {
+                    Title = csvFileName,
+                    MarkerType = MarkerType.Circle,
+                    
+                };
 
                 foreach (var record in records)
                 {
@@ -165,6 +170,7 @@ namespace C490_App.MVVM.ViewModel
                 }
 
                 PlotModel.Series.Add(lineSeries);
+                
             }
         }
     }
