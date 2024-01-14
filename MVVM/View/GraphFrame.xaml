@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:C490_App.MVVM.View" xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:local="clr-namespace:C490_App.MVVM.View"
+        xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
         Title="GraphFrame" Height="450" Width="800">
     <Grid>
@@ -13,7 +14,13 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Background="Pink">
-            <ListBox x:Name="csvListBox" ItemsSource="{Binding CsvFileNames}" SelectedItem="{Binding SelectedCsvFileName}" />
+            <ListBox x:Name="csvListBox" ItemsSource="{Binding CsvFilesInfo}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <CheckBox Content="{Binding FileName}" IsChecked="{Binding IsVisible, Mode=TwoWay}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </StackPanel>
 
         <oxy:PlotView x:Name="plotView" Grid.Column="1" Model="{Binding PlotModel}" />

@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -9,13 +10,14 @@ using CsvHelper;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using System.ComponentModel;
 
 namespace C490_App.MVVM.ViewModel
 {
     public class GraphFrameViewModel : ViewModelBase
     {
         private PlotModel plotModel;
-        private ObservableCollection<string> csvFileNames;
+        private ObservableCollection<CsvFileInfo> csvFilesInfo;
         private string selectedCsvFileName;
 
         public PlotModel PlotModel
@@ -31,15 +33,15 @@ namespace C490_App.MVVM.ViewModel
             }
         }
 
-        public ObservableCollection<string> CsvFileNames
+        public ObservableCollection<CsvFileInfo> CsvFilesInfo
         {
-            get { return csvFileNames; }
+            get { return csvFilesInfo; }
             set
             {
-                if (csvFileNames != value)
+                if (csvFilesInfo != value)
                 {
-                    csvFileNames = value;
-                    OnPropertyChanged(nameof(CsvFileNames));
+                    csvFilesInfo = value;
+                    OnPropertyChanged(nameof(CsvFilesInfo));
                 }
             }
         }
@@ -55,18 +57,20 @@ namespace C490_App.MVVM.ViewModel
                     OnPropertyChanged(nameof(SelectedCsvFileName));
 
                     // Load and plot the selected CSV file
-                    PlotCsvFile(selectedCsvFileName);
+                    PlotCsvFile(SelectedCsvFileName);
                 }
             }
         }
 
         public ICommand LoadSelectedCsvCommand { get; private set; }
+        public ICommand ToggleCsvVisibilityCommand { get; private set; }
 
         public GraphFrameViewModel()
         {
             LoadCsvFileNames();
             InitializePlotModel();
             LoadSelectedCsvCommand = new RelayCommand(ExecuteLoadSelectedCsv, CanExecuteLoadSelectedCsv);
+            ToggleCsvVisibilityCommand = new RelayCommand(ExecuteToggleCsvVisibility, CanExecuteToggleCsvVisibility);
         }
 
         private void InitializePlotModel()
@@ -83,7 +87,22 @@ namespace C490_App.MVVM.ViewModel
 
             string[] csvFiles = Directory.GetFiles(appFolder, "*.csv");
 
-            CsvFileNames = new ObservableCollection<string>(csvFiles.Select(csvFile => Path.GetFileNameWithoutExtension(csvFile)));
+            CsvFilesInfo = new ObservableCollection<CsvFileInfo>(
+                csvFiles.Select(csvFile => new CsvFileInfo { FileName = Path.GetFileNameWithoutExtension(csvFile), IsVisible = false })
+            );
+
+            foreach (var fileInfo in CsvFilesInfo)
+            {
+                fileInfo.PropertyChanged += CsvFileInfo_PropertyChanged;
+            }
+        }
+
+        private void CsvFileInfo_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(CsvFileInfo.IsVisible))
+            {
+                ReloadVisibleCsvFiles();
+            }
         }
 
         private void ExecuteLoadSelectedCsv(object parameter)
@@ -94,8 +113,38 @@ namespace C490_App.MVVM.ViewModel
 
         private bool CanExecuteLoadSelectedCsv(object parameter)
         {
-            // You can add conditions for whether the command can be executed or not
+            // Can add conditions for whether the command can be executed or not
             return !string.IsNullOrEmpty(SelectedCsvFileName);
+        }
+
+        private void ExecuteToggleCsvVisibility(object parameter)
+        {
+            // Handle the execution of the ToggleCsvVisibilityCommand
+            if (parameter is CsvFileInfo csvFileInfo)
+            {
+                csvFileInfo.IsVisible = !csvFileInfo.IsVisible;
+            }
+        }
+
+        private bool CanExecuteToggleCsvVisibility(object parameter)
+        {
+            // Can add conditions for whether the command can be executed or not
+            return parameter is CsvFileInfo;
+        }
+
+        private void ReloadVisibleCsvFiles()
+        {
+            // Clear existing series in the plot
+            PlotModel.Series.Clear();
+
+            // Add visible CSV files to the plot
+            foreach (var csvFileInfo in CsvFilesInfo.Where(info => info.IsVisible))
+            {
+                PlotCsvFile(csvFileInfo.FileName);
+            }
+
+            // Refresh the plot
+            PlotModel.InvalidatePlot(true);
         }
 
         public void PlotCsvFile(string csvFileName)
@@ -116,7 +165,26 @@ namespace C490_App.MVVM.ViewModel
                 }
 
                 PlotModel.Series.Add(lineSeries);
-                PlotModel.InvalidatePlot(true);
+            }
+        }
+    }
+
+    public class CsvFileInfo : ViewModelBase
+    {
+        private bool isVisible;
+
+        public string FileName { get; set; }
+
+        public bool IsVisible
+        {
+            get { return isVisible; }
+            set
+            {
+                if (isVisible != value)
+                {
+                    isVisible = value;
+                    OnPropertyChanged(nameof(IsVisible));
+                }
             }
         }
     }
