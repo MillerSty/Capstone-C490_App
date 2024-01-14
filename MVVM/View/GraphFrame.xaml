@@ -13,13 +13,9 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.Column="0" Background="Pink">
-			<ListBox x:Name="csvListBox" SelectionChanged="CsvListBox_SelectionChanged">
-				<!-- Populate ListBox with available CSV file names -->
-			</ListBox>
-
+            <ListBox x:Name="csvListBox" ItemsSource="{Binding CsvFileNames}" SelectedItem="{Binding SelectedCsvFileName}" />
         </StackPanel>
 
-        <oxy:PlotView x:Name="plotView" Grid.Column="1"/>
-        <!--<OxyPlot here-->
+        <oxy:PlotView x:Name="plotView" Grid.Column="1" Model="{Binding PlotModel}" />
     </Grid>
 </Window>
