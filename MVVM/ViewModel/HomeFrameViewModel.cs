@@ -3,6 +3,7 @@ using C490_App.MVVM.Model;
 using C490_App.MVVM.View;
 using C490_App.Services;
 using System.Diagnostics;
+using System.IO.Ports;
 using System.Windows;
 
 namespace C490_App.MVVM.ViewModel
@@ -59,6 +60,7 @@ namespace C490_App.MVVM.ViewModel
 
         public RelayCommand openGraphResults { get; set; }
         public RelayCommand imexParams { get; set; }
+        public RelayCommand serialCommunicate { get; set; }
 
         private ExperimentStore ExperimentLocal { get; set; }
 
@@ -76,8 +78,33 @@ namespace C490_App.MVVM.ViewModel
             openWindowLED = new RelayCommand(o => LEDOpen(), o => true);
             openGraphResults = new RelayCommand(o => GraphOpen(), o => true);
             imexParams = new RelayCommand(o => IMEXParams(o), o => true);
+            serialCommunicate = new RelayCommand(o => SimpleSerial(), o => true);
         }
+        private int btnstate { get; set; } = 0;
 
+
+
+        private void SimpleSerial()
+        {
+            SerialPort mySerialPort = new SerialPort("COM3", 9600);
+            if (btnstate == 0)
+            {
+                mySerialPort.Open();
+                mySerialPort.Write("1");
+                Thread.Sleep(1000);
+                mySerialPort.Close();
+                btnstate = 1;
+            }
+            else
+            {
+                mySerialPort.Open();
+                mySerialPort.Write("2");
+                mySerialPort.Close();
+                btnstate = 0;
+            }
+
+
+        }
         private void IMEXParams(object o)
         {
             FileHandler f = new FileHandler();

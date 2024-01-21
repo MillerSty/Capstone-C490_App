@@ -1,0 +1,28 @@
+﻿int led1 = 2;
+char mychar;
+
+
+void setup()
+{
+    pinMode(led1, OUTPUT);
+    Serial.begin(9600);
+}
+
+
+void loop()
+{  
+        Serial.println("hello"); //for future serial testing
+	      while (Serial.available()>0)
+	      {
+        mychar = Serial.read();
+        if(mychar == '1')
+        {
+        Serial.println(mychar);
+            digitalWrite(led1, HIGH);
+        }
+        else
+        {   
+            digitalWrite(led1,LOW);
+        }
+    }
+}

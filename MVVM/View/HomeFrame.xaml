@@ -128,7 +128,8 @@
             <Button Grid.Column="0"
                     Grid.Row="1"
                     Content="Start / Stop Experiment"
-                    Style="{StaticResource HomeButton}">
+                    Style="{StaticResource HomeButton}"
+                    Command="{Binding serialCommunicate}">
             </Button>
             <Button Grid.Column="0"
                     Grid.Row="1"
