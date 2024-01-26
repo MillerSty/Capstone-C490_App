@@ -8,21 +8,60 @@
         mc:Ignorable="d"
         Title="GraphFrame" Height="450" Width="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="3*"/>
-        </Grid.ColumnDefinitions>
+        <!-- Top Row for Menu Bar -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0" Background="Pink">
-            <ListBox x:Name="csvListBox" ItemsSource="{Binding CsvFilesInfo}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <CheckBox Content="{Binding FileName}" IsChecked="{Binding IsVisible, Mode=TwoWay}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </StackPanel>
+        <!-- Menu Bar -->
+        <Menu Grid.Row="0">
+    <MenuItem Header="_Options">
+        <MenuItem Header="Reset Plot Axes" Command="{Binding ResetPlotAxes}"/>
+    </MenuItem>
+    <MenuItem Header="_Marker Type">
+        <MenuItem Header="None" />
+        <MenuItem Header="Circle" />
+        <MenuItem Header="Square" />
+        <MenuItem Header="Diamond" />
+        <MenuItem Header="Triangle" />
+        <MenuItem Header="Cross" />
+        <MenuItem Header="Plus" />
+        <MenuItem Header="Star" />
+    </MenuItem>
+</Menu>
 
-        <oxy:PlotView x:Name="plotView" Grid.Column="1" Model="{Binding PlotModel}" />
+
+        <!-- Main Content Rows -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Column: Pink Box with Scrollable List -->
+            <ScrollViewer Grid.Column="0">
+                <StackPanel Background="Pink">
+                    <!-- Select All CheckBox -->
+                    <CheckBox Content="Select All" IsChecked="{Binding IsSelectAllChecked}" />
+                    <ListBox x:Name="csvListBox" ItemsSource="{Binding CsvFilesInfo}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox Content="{Binding FileName}" IsChecked="{Binding IsVisible, Mode=TwoWay}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Reset Button -->
+            <Grid Grid.Row="1" Grid.Column="0">
+                <Button Content="Reset Selected Checkboxes" Command="{Binding ResetSelectedCheckboxesCommand}" Height="22" VerticalAlignment="Bottom" />
+            </Grid>
+            <!-- Right Two-Thirds: PlotView -->
+            <oxy:PlotView x:Name="plotView" Grid.Column="1" Model="{Binding PlotModel}" />
+        </Grid>
     </Grid>
 </Window>

@@ -11,6 +11,8 @@ using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using System.ComponentModel;
+using OxyPlot.Wpf;
+using System.Windows;
 
 namespace C490_App.MVVM.ViewModel
 {
@@ -19,6 +21,7 @@ namespace C490_App.MVVM.ViewModel
         private PlotModel plotModel;
         private ObservableCollection<CsvFileInfo> csvFilesInfo;
         private string selectedCsvFileName;
+        private bool isSelectAllChecked;
 
         public PlotModel PlotModel
         {
@@ -64,6 +67,9 @@ namespace C490_App.MVVM.ViewModel
 
         public ICommand LoadSelectedCsvCommand { get; private set; }
         public ICommand ToggleCsvVisibilityCommand { get; private set; }
+        public ICommand SelectAllCommand { get; private set; }
+        public ICommand ResetSelectedCheckboxesCommand { get; private set; }
+        public ICommand ResetPlotAxes { get; private set; }
 
         public GraphFrameViewModel()
         {
@@ -71,7 +77,95 @@ namespace C490_App.MVVM.ViewModel
             InitializePlotModel();
             LoadSelectedCsvCommand = new RelayCommand(ExecuteLoadSelectedCsv, CanExecuteLoadSelectedCsv);
             ToggleCsvVisibilityCommand = new RelayCommand(ExecuteToggleCsvVisibility, CanExecuteToggleCsvVisibility);
+            SelectAllCommand = new RelayCommand(ExecuteSelectAll, CanExecuteSelectAll);
+            ResetSelectedCheckboxesCommand = new RelayCommand(ExecuteResetSelectedCheckboxes, CanExecuteResetSelectedCheckboxes);
+            ResetPlotAxes = new RelayCommand(ExecuteResetPlotAxes, CanExecuteResetPlotAxes);
         }
+
+        private bool CanExecuteResetPlotAxes(object parameter)
+        {
+            return true; // You can add conditions for whether the command can be executed or not
+        }
+
+        private void ExecuteResetPlotAxes(object parameter)
+        {
+            plotModel.ResetAllAxes();
+        }
+
+        private void ExecuteSelectAll(object parameter)
+        {
+            // Handle the "Select All" checkbox state change
+            IsSelectAllChecked = !IsSelectAllChecked;
+
+            if (IsSelectAllChecked)
+            {
+                foreach (var fileInfo in CsvFilesInfo)
+                {
+                    fileInfo.IsVisible = true;
+                }
+            }
+            else
+            {
+                foreach (var fileInfo in CsvFilesInfo)
+                {
+                    fileInfo.IsVisible = false;
+                }
+            }
+        }
+
+        private bool CanExecuteSelectAll(object parameter)
+        {
+            return true; // You can add conditions for whether the command can be executed or not
+        }
+
+        public bool IsSelectAllChecked
+        {
+            get { return isSelectAllChecked; }
+            set
+            {
+                if (isSelectAllChecked != value)
+                {
+                    isSelectAllChecked = value;
+                    OnPropertyChanged(nameof(IsSelectAllChecked));
+
+                    // Handle the "Select All" checkbox state change
+                    if (value)
+                    {
+                        foreach (var fileInfo in CsvFilesInfo)
+                        {
+                            fileInfo.IsVisible = true;
+                        }
+                    }
+                    else
+                    {
+                        foreach (var fileInfo in CsvFilesInfo)
+                        {
+                            fileInfo.IsVisible = false;
+                        }
+                    }
+
+                }
+            }
+        }
+        private void ExecuteResetSelectedCheckboxes(object parameter)
+        {
+            isSelectAllChecked = false;
+            OnPropertyChanged(nameof(IsSelectAllChecked));
+            foreach (var csvFileInfo in CsvFilesInfo)
+            {
+                csvFileInfo.IsVisible = false;
+            }
+        }
+
+        private bool CanExecuteResetSelectedCheckboxes(object parameter)
+        {
+            // Add any conditions for whether the command can be executed or not
+            return true;
+        }
+
+        // Dictionnary for file string colours
+        private Dictionary<string, OxyColor> fileColors = new Dictionary<string, OxyColor>();
+        private Random rand = new Random();
 
         private void InitializePlotModel()
         {
@@ -164,13 +258,22 @@ namespace C490_App.MVVM.ViewModel
                     
                 };
 
+                // Use existing color or generate a new one and store it
+                if (!fileColors.TryGetValue(csvFileName, out OxyColor seriesColor))
+                {
+                    seriesColor = OxyColor.FromRgb((byte)rand.Next(0, 256), (byte)rand.Next(0, 256), (byte)rand.Next(0, 256));
+                    fileColors.Add(csvFileName, seriesColor);
+                }
+
+                lineSeries.Color = seriesColor;
+
                 foreach (var record in records)
                 {
                     lineSeries.Points.Add(new DataPoint(record.X, record.Y));
                 }
 
                 PlotModel.Series.Add(lineSeries);
-                
+
             }
         }
     }
