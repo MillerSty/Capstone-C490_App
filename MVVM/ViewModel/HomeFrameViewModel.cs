@@ -81,16 +81,22 @@ namespace C490_App.MVVM.ViewModel
             imexParams = new RelayCommand(o => IMEXParams(o), o => true);
             serialCommunicate = new RelayCommand(o => SimpleSerial(), o => true);
         }
+        //btn state is just for simple led turn on
         private int btnstate { get; set; } = 0;
+        private SerialPort mySerialPort = new SerialPort();
         private void SimpleSerial()
         {
-            SerialPort mySerialPort = new SerialPort("COM3", 9600);
-            mySerialPort.NewLine = "\r\n";
-            mySerialPort.ReadTimeout = 500;
-            mySerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
+
             if (!mySerialPort.IsOpen)
             {
+                //mySerialPort = new SerialPort("COM3", 9600);
+                mySerialPort.BaudRate = 9600;
+                mySerialPort.PortName = "COM3";
                 mySerialPort.Open();
+
+                mySerialPort.NewLine = "\r\n";
+                mySerialPort.ReadTimeout = 500;
+                mySerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
             }
 
             if (btnstate == 0)
@@ -106,7 +112,7 @@ namespace C490_App.MVVM.ViewModel
             //Adjust value if your output is not showing received data
             int value = 50;
             Thread.Sleep(value);
-            mySerialPort.Close();
+            //mySerialPort.Close();
 
 
         }
