@@ -13,6 +13,7 @@ namespace C490_App.MVVM.ViewModel
         public PotentiostatViewModel PotentiostatViewModel { get; }
 
         public LedArrayViewModel LedArrayViewModel { get; }
+
         private CAModel _caModel;
         private DPVModel _dpvModel;
         private CVModel _cvModel;
@@ -81,29 +82,40 @@ namespace C490_App.MVVM.ViewModel
             serialCommunicate = new RelayCommand(o => SimpleSerial(), o => true);
         }
         private int btnstate { get; set; } = 0;
-
-
-
         private void SimpleSerial()
         {
             SerialPort mySerialPort = new SerialPort("COM3", 9600);
-            if (btnstate == 0)
+            mySerialPort.NewLine = "\r\n";
+            mySerialPort.ReadTimeout = 500;
+            mySerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
+            if (!mySerialPort.IsOpen)
             {
                 mySerialPort.Open();
+            }
+
+            if (btnstate == 0)
+            {
                 mySerialPort.Write("1");
-                Thread.Sleep(1000);
-                mySerialPort.Close();
                 btnstate = 1;
             }
             else
             {
-                mySerialPort.Open();
                 mySerialPort.Write("2");
-                mySerialPort.Close();
                 btnstate = 0;
             }
+            //Adjust value if your output is not showing received data
+            int value = 50;
+            Thread.Sleep(value);
+            mySerialPort.Close();
 
 
+        }
+
+        private void OnDataRecieved(object sender, SerialDataReceivedEventArgs e)
+        {
+            var serialDevice = sender as SerialPort;
+            var indata = serialDevice.ReadExisting();
+            Trace.WriteLine(indata.ToString());
         }
         private void IMEXParams(object o)
         {

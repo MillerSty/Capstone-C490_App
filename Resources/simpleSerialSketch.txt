@@ -11,13 +11,19 @@ void setup()
 
 void loop()
 {  
-        Serial.println("hello"); //for future serial testing
+        //for future serial testing
 	      while (Serial.available()>0)
-	      {
+	      { 
+          for (int i=0;i<10;i++){
+              Serial.println(i);
+          }
+
         mychar = Serial.read();
         if(mychar == '1')
         {
-        Serial.println(mychar);
+          
+           Serial.println(mychar);                    
+          // delay(5);
             digitalWrite(led1, HIGH);
         }
         else
