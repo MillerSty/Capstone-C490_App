@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -13,16 +14,31 @@ using OxyPlot.Series;
 using System.ComponentModel;
 using OxyPlot.Wpf;
 using System.Windows;
+using System.Reflection.Metadata;
+using System.Windows.Media;
 
 namespace C490_App.MVVM.ViewModel
 {
     public class GraphFrameViewModel : ViewModelBase
     {
-        private PlotModel plotModel;
+        public PlotModel plotModel;
         private ObservableCollection<CsvFileInfo> csvFilesInfo;
         private string selectedCsvFileName;
         private bool isSelectAllChecked;
+        private MarkerType selectedMarkerType = MarkerType.Circle;
 
+        public MarkerType SelectedMarkerType
+        {
+            get { return selectedMarkerType; }
+            set
+            {
+                if (selectedMarkerType != value)
+                {
+                    selectedMarkerType = value;
+                    OnPropertyChanged(nameof(SelectedMarkerType));
+                }
+            }
+        }
         public PlotModel PlotModel
         {
             get { return plotModel; }
@@ -65,34 +81,64 @@ namespace C490_App.MVVM.ViewModel
             }
         }
 
-        public ICommand LoadSelectedCsvCommand { get; private set; }
-        public ICommand ToggleCsvVisibilityCommand { get; private set; }
-        public ICommand SelectAllCommand { get; private set; }
-        public ICommand ResetSelectedCheckboxesCommand { get; private set; }
-        public ICommand ResetPlotAxes { get; private set; }
+        public RelayCommand LoadSelectedCsv { get; set; }
+        public RelayCommand ToggleCsvVisibility { get; set; }
+        public RelayCommand SelectAll { get; private set; }
+        public RelayCommand ResetSelectedCheckboxes { get; set; }
+        public RelayCommand ResetPlotAxes { get; set; }
+        public RelayCommand MarkerTypeClick { get; set; }
 
         public GraphFrameViewModel()
         {
             LoadCsvFileNames();
             InitializePlotModel();
-            LoadSelectedCsvCommand = new RelayCommand(ExecuteLoadSelectedCsv, CanExecuteLoadSelectedCsv);
-            ToggleCsvVisibilityCommand = new RelayCommand(ExecuteToggleCsvVisibility, CanExecuteToggleCsvVisibility);
-            SelectAllCommand = new RelayCommand(ExecuteSelectAll, CanExecuteSelectAll);
-            ResetSelectedCheckboxesCommand = new RelayCommand(ExecuteResetSelectedCheckboxes, CanExecuteResetSelectedCheckboxes);
-            ResetPlotAxes = new RelayCommand(ExecuteResetPlotAxes, CanExecuteResetPlotAxes);
+            LoadSelectedCsv = new RelayCommand(o => ExecuteLoadSelectedCsv(o), o => true);
+            ToggleCsvVisibility = new RelayCommand(o => ExecuteToggleCsvVisibility(o), o => true);
+            SelectAll = new RelayCommand(o => ExecuteSelectAll(o), o => true);
+            ResetSelectedCheckboxes = new RelayCommand(o => ExecuteResetSelectedCheckboxes(o), o => true);
+            ResetPlotAxes = new RelayCommand(o => ExecuteResetPlotAxes(o), o => true);
+            MarkerTypeClick = new RelayCommand(o => ExecuteMarkerTypeClick(o), o => true);
         }
 
-        private bool CanExecuteResetPlotAxes(object parameter)
+        private void ExecuteMarkerTypeClick(object o)
         {
-            return true; // You can add conditions for whether the command can be executed or not
+            string menuItemName = o as string;
+
+            switch (menuItemName)
+            {
+                case "Circle":
+                    SelectedMarkerType = MarkerType.Circle;
+                    break;
+                case "Diamond":
+                    SelectedMarkerType = MarkerType.Diamond;
+                    break;
+                case "Square":
+                    SelectedMarkerType = MarkerType.Square;
+                    break;
+                case "Triangle":
+                    SelectedMarkerType = MarkerType.Triangle;
+                    break;
+                case "None":
+                    SelectedMarkerType = MarkerType.None;
+                    break;
+                default:
+                    break;
+            }
+            ReloadVisibleCsvFiles();
+
         }
 
-        private void ExecuteResetPlotAxes(object parameter)
+        private void ExecuteResetPlotAxes(object o)
         {
-            plotModel.ResetAllAxes();
+            if (plotModel != null)
+            {
+                plotModel.ResetAllAxes();
+                PlotModel.InvalidatePlot(true);
+            }
+
         }
 
-        private void ExecuteSelectAll(object parameter)
+        private void ExecuteSelectAll(object o)
         {
             // Handle the "Select All" checkbox state change
             IsSelectAllChecked = !IsSelectAllChecked;
@@ -111,11 +157,6 @@ namespace C490_App.MVVM.ViewModel
                     fileInfo.IsVisible = false;
                 }
             }
-        }
-
-        private bool CanExecuteSelectAll(object parameter)
-        {
-            return true; // You can add conditions for whether the command can be executed or not
         }
 
         public bool IsSelectAllChecked
@@ -147,7 +188,8 @@ namespace C490_App.MVVM.ViewModel
                 }
             }
         }
-        private void ExecuteResetSelectedCheckboxes(object parameter)
+
+        private void ExecuteResetSelectedCheckboxes(object o)
         {
             isSelectAllChecked = false;
             OnPropertyChanged(nameof(IsSelectAllChecked));
@@ -157,10 +199,20 @@ namespace C490_App.MVVM.ViewModel
             }
         }
 
-        private bool CanExecuteResetSelectedCheckboxes(object parameter)
+
+        private void ExecuteLoadSelectedCsv(object o)
         {
-            // Add any conditions for whether the command can be executed or not
-            return true;
+            // Handle the execution of the LoadSelectedCsvCommand
+            PlotCsvFile(SelectedCsvFileName);
+        }
+
+        private void ExecuteToggleCsvVisibility(object o)
+        {
+            // Handle the execution of the ToggleCsvVisibilityCommand
+            if (o is CsvFileInfo csvFileInfo)
+            {
+                csvFileInfo.IsVisible = !csvFileInfo.IsVisible;
+            }
         }
 
         // Dictionnary for file string colours
@@ -199,33 +251,6 @@ namespace C490_App.MVVM.ViewModel
             }
         }
 
-        private void ExecuteLoadSelectedCsv(object parameter)
-        {
-            // Handle the execution of the LoadSelectedCsvCommand
-            PlotCsvFile(SelectedCsvFileName);
-        }
-
-        private bool CanExecuteLoadSelectedCsv(object parameter)
-        {
-            // Can add conditions for whether the command can be executed or not
-            return !string.IsNullOrEmpty(SelectedCsvFileName);
-        }
-
-        private void ExecuteToggleCsvVisibility(object parameter)
-        {
-            // Handle the execution of the ToggleCsvVisibilityCommand
-            if (parameter is CsvFileInfo csvFileInfo)
-            {
-                csvFileInfo.IsVisible = !csvFileInfo.IsVisible;
-            }
-        }
-
-        private bool CanExecuteToggleCsvVisibility(object parameter)
-        {
-            // Can add conditions for whether the command can be executed or not
-            return parameter is CsvFileInfo;
-        }
-
         private void ReloadVisibleCsvFiles()
         {
             // Clear existing series in the plot
@@ -254,8 +279,7 @@ namespace C490_App.MVVM.ViewModel
                 var lineSeries = new LineSeries
                 {
                     Title = csvFileName,
-                    MarkerType = MarkerType.Circle,
-                    
+                    MarkerType = SelectedMarkerType,
                 };
 
                 // Use existing color or generate a new one and store it
@@ -266,6 +290,13 @@ namespace C490_App.MVVM.ViewModel
                 }
 
                 lineSeries.Color = seriesColor;
+
+                var fileInfo = CsvFilesInfo.FirstOrDefault(info => info.FileName == csvFileName);
+                if (fileInfo != null)
+                {
+                    fileInfo.Color = seriesColor;
+                }
+
 
                 foreach (var record in records)
                 {
@@ -281,6 +312,35 @@ namespace C490_App.MVVM.ViewModel
     public class CsvFileInfo : ViewModelBase
     {
         private bool isVisible;
+        private OxyColor color;
+        private SolidColorBrush wpfColor;
+
+        public SolidColorBrush WpfColor
+        {
+            get { return wpfColor; }
+            set
+            {
+                if (wpfColor != value)
+                {
+                    wpfColor = value;
+                    OnPropertyChanged(nameof(WpfColor));
+                }
+            }
+        }
+
+        public OxyColor Color
+        {
+            get { return color; }
+            set
+            {
+                if (color != value)
+                {
+                    color = value;
+                    WpfColor = new SolidColorBrush(OxyColor.FromRgb(color.R, color.G, color.B).ToColor());
+                    OnPropertyChanged(nameof(Color));
+                }
+            }
+        }
 
         public string FileName { get; set; }
 
@@ -297,4 +357,5 @@ namespace C490_App.MVVM.ViewModel
             }
         }
     }
+
 }

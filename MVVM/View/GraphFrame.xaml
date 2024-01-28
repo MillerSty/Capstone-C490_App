@@ -16,20 +16,17 @@
 
         <!-- Menu Bar -->
         <Menu Grid.Row="0">
-    <MenuItem Header="_Options">
-        <MenuItem Header="Reset Plot Axes" Command="{Binding ResetPlotAxes}"/>
-    </MenuItem>
-    <MenuItem Header="_Marker Type">
-        <MenuItem Header="None" />
-        <MenuItem Header="Circle" />
-        <MenuItem Header="Square" />
-        <MenuItem Header="Diamond" />
-        <MenuItem Header="Triangle" />
-        <MenuItem Header="Cross" />
-        <MenuItem Header="Plus" />
-        <MenuItem Header="Star" />
-    </MenuItem>
-</Menu>
+            <MenuItem Header="_Options">
+                <MenuItem Header="Reset Plot Axes" Command="{Binding ResetPlotAxes}"/>
+            </MenuItem>
+            <MenuItem Header="_Marker Type">
+                <MenuItem Header="None" Command="{Binding MarkerTypeClick}" CommandParameter="None"/>
+                <MenuItem Header="Circle" Command="{Binding MarkerTypeClick}" CommandParameter="Circle"/>
+                <MenuItem Header="Square" Command="{Binding MarkerTypeClick}" CommandParameter="Square"/>
+                <MenuItem Header="Diamond" Command="{Binding MarkerTypeClick}" CommandParameter="Diamond"/>
+                <MenuItem Header="Triangle" Command="{Binding MarkerTypeClick}" CommandParameter="Triangle"/>
+            </MenuItem>
+        </Menu>
 
 
         <!-- Main Content Rows -->
@@ -48,6 +45,10 @@
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
+                                    <!-- Colored Circle -->
+                                    <Border Width="16" Height="16" CornerRadius="8" Background="{Binding WpfColor}" Margin="0,0,5,0">
+                                        <Ellipse />
+                                    </Border>
                                     <CheckBox Content="{Binding FileName}" IsChecked="{Binding IsVisible, Mode=TwoWay}" />
                                 </StackPanel>
                             </DataTemplate>
@@ -58,7 +59,7 @@
 
             <!-- Reset Button -->
             <Grid Grid.Row="1" Grid.Column="0">
-                <Button Content="Reset Selected Checkboxes" Command="{Binding ResetSelectedCheckboxesCommand}" Height="22" VerticalAlignment="Bottom" />
+                <Button Content="Reset Selected Checkboxes" Command="{Binding ResetSelectedCheckboxes}" Height="22" VerticalAlignment="Bottom" />
             </Grid>
             <!-- Right Two-Thirds: PlotView -->
             <oxy:PlotView x:Name="plotView" Grid.Column="1" Model="{Binding PlotModel}" />
