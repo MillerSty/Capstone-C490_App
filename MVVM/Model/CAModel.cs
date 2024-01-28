@@ -1,4 +1,7 @@
-﻿namespace C490_App.MVVM.Model
+﻿using System.Diagnostics;
+using System.IO.Ports;
+
+namespace C490_App.MVVM.Model
 {
     public class CAModel : ExperimentModel
     {
@@ -13,6 +16,17 @@
         {
 
         }
+        public override void setIsEnabled()
+        {
+            this.isEnabled = true;
 
+        }
+
+        public override void runExperiment(SerialPort _serialPort)
+
+        {
+            _serialPort.WriteLine("1");
+            Trace.WriteLine("CA Experiment running");
+        }
     }
 }
