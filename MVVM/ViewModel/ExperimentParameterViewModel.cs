@@ -59,9 +59,12 @@ namespace C490_App.MVVM.ViewModel
             ExperimentLocal = ExperimentSingleton;
             switch (ExperimentLocal.Model.getType())
             {
-                case "DPVModel": DpvModel = (DPVModel)ExperimentLocal.Model; break;
-                case "CAModel": CaModel = (CAModel)ExperimentLocal.Model; break;
-                case "CVModel": CvModel = (CVModel)ExperimentLocal.Model; break;
+                case "DPVModel":
+                    DpvModel = (DPVModel)ExperimentLocal.Model; break;
+                case "CAModel":
+                    CaModel = (CAModel)ExperimentLocal.Model; break;
+                case "CVModel":
+                    CvModel = (CVModel)ExperimentLocal.Model; break;
                 default:
                     DpvModel = new DPVModel();
                     CvModel = new CVModel();
