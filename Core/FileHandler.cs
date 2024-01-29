@@ -12,6 +12,94 @@ namespace C490_App.Core
 {
     public class FileHandler
     {
+        public void readExperiment()
+        {
+            using (var reader = new StreamReader("P:/Git repos/C490_App/Resources/paramExport.csv"))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                csv.Read();
+                csv.ReadHeader();
+                csv.Read();
+
+                //can probably use the raw data of csv object to iterate through things
+                String sx = csv.GetField<String>("x");
+                String sy = csv.GetField<String>("y");
+
+            }
+
+
+        }
+        public void writeExperiment()
+        {
+            Trace.WriteLine("Export");
+            // OpenFileDialog openFileDialogClose = new OpenFileDialog();
+            SaveFileDialog saveFileDialogClose = new SaveFileDialog();
+            saveFileDialogClose.DefaultExt = ".csv";
+            if (saveFileDialogClose.ShowDialog() == true)
+            {
+                if (saveFileDialogClose.FileName != "")
+                {
+                    using (var writer = new StreamWriter(saveFileDialogClose.FileName))
+                    using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                    {
+                        //Experiment (dateTime stamp)
+                        csv.WriteComment("Experiment 2024");
+
+                        csv.NextRecord();
+                        //for each 'region x' in experiment 
+                        for (int i = 0; i < 1; i++)
+                        {
+                            csv.WriteField("Pot " + i);
+                            csv.WriteField("");
+                        }
+                        //end for each
+
+                        //for each 'region x' in experimnt Z let x= z.xValue and y= z.yValue
+                        csv.NextRecord();
+                        for (int i = 0; i < 1; i++)
+                        {
+                            csv.WriteField("x");
+                            csv.WriteField("y");
+                        }
+                        //csv.WriteField("X");
+                        //csv.WriteField("Y");
+                        csv.NextRecord();
+                        //for each 'region x' in experiment, append value
+                        csv.WriteField("1");
+                        csv.WriteField("2");
+                        //csv.WriteField("3");
+                        //csv.WriteField("4");
+                        //csv.WriteField("5");
+                        //csv.WriteField("6");
+
+
+
+                    }
+                }
+            }
+
+
+        }
+
+        public void appendExperiment()
+        {
+            // Append to the file.
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                // Don't write the header again.
+                HasHeaderRecord = false,
+            };
+            using (var stream = File.Open("P:/Git repos/C490_App/Resources/paramExport.csv", FileMode.Append))
+            using (var writer = new StreamWriter(stream))
+            using (var csv = new CsvWriter(writer, config))
+            {
+                csv.NextRecord();
+                csv.WriteField("7");
+                csv.WriteField("8");
+            }
+
+
+        }
 
         public bool fileImport(Object o, ExperimentStore ExperimentLocal, LedArrayViewModel LedArrayViewModel)
         {

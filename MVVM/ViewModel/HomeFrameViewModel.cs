@@ -114,41 +114,42 @@ namespace C490_App.MVVM.ViewModel
         /// </summary>
         private void SimpleSerial()
         {
-            try
-            {
-                if (!mySerialPort.IsOpen)
-                {
-                    //mySerialPort = new SerialPort("COM3", 9600);
-                    mySerialPort.BaudRate = 9600;
-                    mySerialPort.PortName = "COM3";
-                    mySerialPort.NewLine = "\r\n";
-                    mySerialPort.ReadTimeout = 500;
-                    mySerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
+            ExperimentLocal.ExperimentRun();
+            //try
+            //{
+            //    if (!mySerialPort.IsOpen)
+            //    {
+            //        //mySerialPort = new SerialPort("COM3", 9600);
+            //        mySerialPort.BaudRate = 9600;
+            //        mySerialPort.PortName = "COM3";
+            //        mySerialPort.NewLine = "\r\n";
+            //        mySerialPort.ReadTimeout = 500;
+            //        mySerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
 
-                    mySerialPort.Open();
+            //        mySerialPort.Open();
 
-                }
+            //    }
 
-                ExperimentLocal.Model.runExperiment(mySerialPort);
-                if (btnstate == 0)
-                {
-                    mySerialPort.Write("1");
-                    btnstate = 1;
-                }
-                else
-                {
-                    mySerialPort.Write("2");
-                    btnstate = 0;
-                }
-                //Adjust value if your output is not showing received data
-                int value = 50;
-                Thread.Sleep(value);
+            //    ExperimentLocal.Model.runExperiment(mySerialPort);
+            //    if (btnstate == 0)
+            //    {
+            //        mySerialPort.Write("1");
+            //        btnstate = 1;
+            //    }
+            //    else
+            //    {
+            //        mySerialPort.Write("2");
+            //        btnstate = 0;
+            //    }
+            //    //Adjust value if your output is not showing received data
+            //    int value = 50;
+            //    Thread.Sleep(value);
 
-            }
-            catch
-            {
-                Trace.WriteLine("Error with serial");
-            }
+            //}
+            //catch
+            //{
+            //    Trace.WriteLine("Error with serial");
+            //}
             //mySerialPort.Close();
 
 
@@ -159,13 +160,13 @@ namespace C490_App.MVVM.ViewModel
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e">SerialDataReceivedEventArgs</param>
-        private void OnDataRecieved(object sender, SerialDataReceivedEventArgs e)
-        {
-            var serialDevice = sender as SerialPort;
-            var indata = serialDevice.ReadExisting();
-            Trace.WriteLine(indata.ToString());
-            Thread.Sleep(50);
-        }
+        //private void OnDataRecieved(object sender, SerialDataReceivedEventArgs e)
+        //{
+        //    var serialDevice = sender as SerialPort;
+        //    var indata = serialDevice.ReadExisting();
+        //    Trace.WriteLine(indata.ToString());
+        //    Thread.Sleep(50);
+        //}
 
         /// <summary>
         /// Utilises the file handler class to import and export parameters
@@ -211,7 +212,10 @@ namespace C490_App.MVVM.ViewModel
             else
             {
                 Trace.WriteLine("Export in VM");
-                f.fileExport(ExperimentLocal);
+                //f.fileExport(ExperimentLocal);
+                f.writeExperiment();
+                f.appendExperiment();
+                f.readExperiment();
             }
 
 
