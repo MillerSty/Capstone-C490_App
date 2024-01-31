@@ -40,7 +40,7 @@
 
             <!-- Left Column: Pink Box with Scrollable List -->
             <ScrollViewer Grid.Column="0">
-                <StackPanel Background="Pink">
+                <StackPanel Background="LightGray">
                     <!-- Select All CheckBox -->
                     <CheckBox Content="Select All" IsChecked="{Binding IsSelectAllChecked}" />
                     <ListBox x:Name="csvListBox" ItemsSource="{Binding CsvFilesInfo}">
