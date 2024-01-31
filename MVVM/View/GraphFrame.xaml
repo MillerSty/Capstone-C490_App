@@ -14,6 +14,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+
         <!-- Menu Bar -->
         <Menu Grid.Row="0">
             <MenuItem Header="_Options">
@@ -27,6 +28,7 @@
                 <MenuItem Header="Triangle" Command="{Binding MarkerTypeClick}" CommandParameter="Triangle"/>
             </MenuItem>
         </Menu>
+
 
 
         <!-- Main Content Rows -->

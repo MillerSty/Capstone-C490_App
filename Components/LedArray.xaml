@@ -55,6 +55,11 @@
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
+            <CheckBox.Resources>
+                <Style TargetType="{x:Type Path}">
+                    <Setter Property="FlowDirection" Value="LeftToRight" />
+                </Style>
+            </CheckBox.Resources>
             <TextBlock Grid.Column=" 1 "
                        Grid.Row="1" Text="0"
                        VerticalAlignment="Center"
@@ -70,6 +75,11 @@
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
+            <CheckBox.Resources>
+                <Style TargetType="{x:Type Path}">
+                    <Setter Property="FlowDirection" Value="LeftToRight" />
+                </Style>
+            </CheckBox.Resources>
             <TextBlock Grid.Column=" 1 "
                        Grid.Row="2" Text="1"
                        VerticalAlignment="Center"
@@ -86,6 +96,11 @@
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
+            <CheckBox.Resources>
+                <Style TargetType="{x:Type Path}">
+                    <Setter Property="FlowDirection" Value="LeftToRight" />
+                </Style>
+            </CheckBox.Resources>
             <TextBlock Grid.Column=" 3 "
                        Grid.Row="1" Text="2"
                        VerticalAlignment="Center"
@@ -101,6 +116,11 @@
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
+            <CheckBox.Resources>
+                <Style TargetType="{x:Type Path}">
+                    <Setter Property="FlowDirection" Value="LeftToRight" />
+                </Style>
+            </CheckBox.Resources>
             <TextBlock Grid.Column=" 4 "
                        Grid.Row="1" Text="3"
                        VerticalAlignment="Center"
@@ -116,6 +136,11 @@
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
+            <CheckBox.Resources>
+                <Style TargetType="{x:Type Path}">
+                    <Setter Property="FlowDirection" Value="LeftToRight" />
+                </Style>
+            </CheckBox.Resources>
             <TextBlock Grid.Column=" 5 "
                        Grid.Row="1" Text="4"
                        VerticalAlignment="Center"
@@ -131,6 +156,11 @@
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
+            <CheckBox.Resources>
+                <Style TargetType="{x:Type Path}">
+                    <Setter Property="FlowDirection" Value="LeftToRight" />
+                </Style>
+            </CheckBox.Resources>
             <TextBlock Grid.Column=" 6 "
                        Grid.Row="1" Text="5"
                        VerticalAlignment="Center"
@@ -146,6 +176,11 @@
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
+            <CheckBox.Resources>
+                <Style TargetType="{x:Type Path}">
+                    <Setter Property="FlowDirection" Value="LeftToRight" />
+                </Style>
+            </CheckBox.Resources>
             <TextBlock Grid.Column=" 7 "
                        Grid.Row="1" Text="6"
                        VerticalAlignment="Center"
@@ -161,6 +196,11 @@
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
+            <CheckBox.Resources>
+                <Style TargetType="{x:Type Path}">
+                    <Setter Property="FlowDirection" Value="LeftToRight" />
+                </Style>
+            </CheckBox.Resources>
             <TextBlock Grid.Column=" 8 "
                        Grid.Row="1" Text="7"
                        VerticalAlignment="Center"
@@ -176,6 +216,11 @@
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
+            <CheckBox.Resources>
+                <Style TargetType="{x:Type Path}">
+                    <Setter Property="FlowDirection" Value="LeftToRight" />
+                </Style>
+            </CheckBox.Resources>
             <TextBlock Grid.Column=" 9 "
                        Grid.Row="1" Text="8"
                        VerticalAlignment="Center"
@@ -191,6 +236,11 @@
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
+            <CheckBox.Resources>
+                <Style TargetType="{x:Type Path}">
+                    <Setter Property="FlowDirection" Value="LeftToRight" />
+                </Style>
+            </CheckBox.Resources>
             <TextBlock Text="9"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
@@ -204,8 +254,13 @@
             IsChecked="{Binding controlCheckRow[0]}"
             Grid.Column=" 0 "  Grid.Row="2"
             VerticalAlignment="Center"
-            HorizontalAlignment="Right"
-            FlowDirection="RightToLeft" Margin="0,0,3,0">
+            HorizontalAlignment="Center"
+            FlowDirection="RightToLeft" >
+            <CheckBox.Resources>
+                <Style TargetType="{x:Type Path}">
+                    <Setter Property="FlowDirection" Value="LeftToRight" />
+                </Style>
+            </CheckBox.Resources>
             <TextBlock Text="0"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
@@ -220,6 +275,11 @@
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
+            <CheckBox.Resources>
+                <Style TargetType="{x:Type Path}">
+                    <Setter Property="FlowDirection" Value="LeftToRight" />
+                </Style>
+            </CheckBox.Resources>
             <TextBlock Text="1"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
@@ -234,6 +294,11 @@
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
+            <CheckBox.Resources>
+                <Style TargetType="{x:Type Path}">
+                    <Setter Property="FlowDirection" Value="LeftToRight" />
+                </Style>
+            </CheckBox.Resources>
             <TextBlock Text="2"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
@@ -248,6 +313,11 @@
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
+            <CheckBox.Resources>
+                <Style TargetType="{x:Type Path}">
+                    <Setter Property="FlowDirection" Value="LeftToRight" />
+                </Style>
+            </CheckBox.Resources>
             <TextBlock Text="3"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
@@ -262,6 +332,11 @@
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
             FlowDirection="RightToLeft">
+            <CheckBox.Resources>
+                <Style TargetType="{x:Type Path}">
+                    <Setter Property="FlowDirection" Value="LeftToRight" />
+                </Style>
+            </CheckBox.Resources>
             <TextBlock Text="4"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center" />

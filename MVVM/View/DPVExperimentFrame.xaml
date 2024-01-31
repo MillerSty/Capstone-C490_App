@@ -77,7 +77,7 @@
                  VerticalAlignment="Center"
                  HorizontalAlignment="Center"
                  IsEnabled="True"
-                 BorderBrush="Pink"
+                 BorderBrush="LightGray"
                  BorderThickness="2"
                  >
             <!--I think with textboxes we can disable the "onselect" highlighting-->
@@ -88,7 +88,7 @@
                  Width="100" Height="40"
                  VerticalAlignment="Center"
                  HorizontalAlignment="Center"
-                 IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
+                 IsEnabled="True" BorderBrush="LightGray" BorderThickness="2">
         </TextBox>
         <TextBox Grid.Row="3" Grid.Column="1"
                  FontSize="20"
@@ -96,7 +96,7 @@
                  Width="100" Height="40"
                  VerticalAlignment="Center"
                  HorizontalAlignment="Center"
-                 IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
+                 IsEnabled="True" BorderBrush="LightGray" BorderThickness="2">
         </TextBox>
         <TextBox Grid.Row="4" Grid.Column="1"
                  FontSize="20"
@@ -104,7 +104,7 @@
                  Width="100" Height="40"
                  VerticalAlignment="Center"
                  HorizontalAlignment="Center"
-                 IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
+                 IsEnabled="True" BorderBrush="LightGray" BorderThickness="2">
         </TextBox>
         <TextBox Grid.Row="5" Grid.Column="1"
                  FontSize="20"
@@ -112,7 +112,7 @@
                  Width="100" Height="40"
                  VerticalAlignment="Center"
                  HorizontalAlignment="Center"
-                 IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
+                 IsEnabled="True" BorderBrush="LightGray" BorderThickness="2">
         </TextBox>
         <TextBox Grid.Row="6" Grid.Column="1"
                  FontSize="20"
@@ -120,7 +120,7 @@
                  Width="100" Height="40"
                  VerticalAlignment="Center"
                  HorizontalAlignment="Center"
-                 IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
+                 IsEnabled="True" BorderBrush="LightGray" BorderThickness="2">
         </TextBox>
         <Button Grid.Column="0" Grid.Row="8"
                 Style="{StaticResource HomeButton}"

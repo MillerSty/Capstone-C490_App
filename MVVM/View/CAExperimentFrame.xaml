@@ -66,7 +66,7 @@
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             IsEnabled="True"
-                            BorderBrush="Pink"
+                            BorderBrush="LightGray"
                             BorderThickness="2">
                     <!--I think with textboxes we can disable the "onselect" highlighting-->
                 </TextBox>
@@ -80,7 +80,7 @@
                             VerticalAlignment="Center"
                             HorizontalAlignment="Center"
                             IsEnabled="True"
-                            BorderBrush="Pink"
+                            BorderBrush="LightGray"
                             BorderThickness="2">
                     <!--I think with textboxes we can disable the "onselect" highlighting-->
                 </TextBox>
@@ -102,7 +102,7 @@
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
                     IsEnabled="True"
-                    BorderBrush="Pink"
+                    BorderBrush="LightGray"
                     BorderThickness="2">
                     <!--I think with textboxes we can disable the "onselect" highlighting-->
                 </TextBox>
@@ -116,7 +116,7 @@
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center"
                     IsEnabled="True"
-                    BorderBrush="Pink"
+                    BorderBrush="LightGray"
                     BorderThickness="2">
                     <!--I think with textboxes we can disable the "onselect" highlighting-->
                 </TextBox>
@@ -128,7 +128,7 @@
                    Width="100" Height="40"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"
-                   IsEnabled="True" BorderBrush="Pink" BorderThickness="2">
+                   IsEnabled="True" BorderBrush="LightGray" BorderThickness="2">
         </TextBox>
 
         <Button Grid.Column="0" Grid.Row="8"

@@ -13,100 +13,109 @@ namespace C490_App.Core
     public class FileHandler
     {
 
-        public bool fileImport(Object o, ExperimentStore ExperimentLocal, LedArrayViewModel LedArrayViewModel)
+        /// <summary>
+        /// Import from file function
+        /// </summary>
+        /// <param name="imexBool">If true, then its redudent ie: never false </param>
+        /// <param name="ExperimentLocal"> Is the ExperimentStore</param>
+        /// <param name="LedArrayViewModel"> Is used for updating LED values, should be done somewhere else</param>
+        /// <returns>true for no errors, false for error</returns>
+        public bool fileImport(ExperimentStore ExperimentLocal, LedArrayViewModel LedArrayViewModel)
         {
 
-            if (bool.Parse(o.ToString()))
+
+            Trace.WriteLine("Import params");
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            if (openFileDialog.ShowDialog() == true)
             {
-                Trace.WriteLine("Import params");
-                OpenFileDialog openFileDialog = new OpenFileDialog();
+                var config = new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture);
+                config.MissingFieldFound = null;
 
-                if (openFileDialog.ShowDialog() == true)
+                using (var reader = new StreamReader(openFileDialog.FileName))
+
+                using (var csv = new CsvReader(reader, config))
                 {
-                    var config = new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture);
-                    config.MissingFieldFound = null;
+                    csv.Context.RegisterClassMap<CVMap>();
+                    csv.Context.RegisterClassMap<DPVMap>();
+                    csv.Context.RegisterClassMap<CAMap>();
+                    csv.Context.RegisterClassMap<LEDParameterMap>();
 
-                    using (var reader = new StreamReader(openFileDialog.FileName))
 
-                    using (var csv = new CsvReader(reader, config))
+                    var experimentRecords = new List<ExperimentModel>();
+                    var LEDRecords = new List<LEDParameter>();
+                    var isHeader = true;
+
+                    while (csv.Read())
                     {
-                        csv.Context.RegisterClassMap<CVMap>();
-                        csv.Context.RegisterClassMap<DPVMap>();
-                        csv.Context.RegisterClassMap<CAMap>();
-                        csv.Context.RegisterClassMap<LEDParameterMap>();
-
-
-                        var experimentRecords = new List<ExperimentModel>();
-                        var LEDRecords = new List<LEDParameter>();
-                        var isHeader = true;
-
-                        while (csv.Read())
+                        if (isHeader)
                         {
-                            if (isHeader)
-                            {
-                                csv.ReadHeader();
-                                isHeader = false;
-                                continue;
-                            }
-
-                            if (string.IsNullOrEmpty(csv.GetField(0)))
-                            {
-                                isHeader = true;
-                                continue;
-                            }
-
-                            switch (csv.HeaderRecord[0])
-                            {
-                                case "name":
-                                    LEDRecords.Add(csv.GetRecord<LEDParameter>());
-                                    break;
-
-                                case "type":
-                                    string test = csv.Context.Parser.Record[0];
-                                    if (test.ToLower().Contains("dpv"))
-                                    {
-                                        experimentRecords.Add(csv.GetRecord<DPVModel>());
-                                    }
-                                    else if (test.ToLower().Contains("ca"))
-                                    {
-                                        experimentRecords.Add(csv.GetRecord<CAModel>());
-                                    }
-                                    else if (test.ToLower().Contains("cv"))
-                                    {
-                                        experimentRecords.Add(csv.GetRecord<CVModel>());
-                                    }
-
-                                    else
-                                    {
-                                        Trace.WriteLine("Not valid test");
-                                    }
-                                    break;
-
-                                case "pot"://add pots to the import param set-up
-                                    break;
-                            }
+                            csv.ReadHeader();
+                            isHeader = false;
+                            continue;
                         }
 
-                        foreach (var LED in LEDRecords)
+                        if (string.IsNullOrEmpty(csv.GetField(0)))
                         {
-                            //LED.IsSelected = true;
-                            ExperimentLocal.ledParameters[int.Parse(LED.name)].setParamsFromFile(LED);
-                            LedArrayViewModel.isSelected[int.Parse(LED.name)] = true;
+                            isHeader = true;
+                            continue;
                         }
 
-                        experimentRecords[0].setIsEnabled();
-                        ExperimentLocal.Model = experimentRecords[0];
+                        switch (csv.HeaderRecord[0])
+                        {
+                            case "name":
+                                LEDRecords.Add(csv.GetRecord<LEDParameter>());
+                                break;
 
+                            case "type":
+                                string csvParsed = csv.Context.Parser.Record[0];
+                                if (csvParsed.ToLower().Contains("dpv"))
+                                {
+                                    experimentRecords.Add(csv.GetRecord<DPVModel>());
+                                }
+                                else if (csvParsed.ToLower().Contains("ca"))
+                                {
+                                    experimentRecords.Add(csv.GetRecord<CAModel>());
+                                }
+                                else if (csvParsed.ToLower().Contains("cv"))
+                                {
+                                    experimentRecords.Add(csv.GetRecord<CVModel>());
+                                }
+
+                                else
+                                {
+                                    Trace.WriteLine("Not valid test");
+                                }
+                                break;
+
+                            case "pot"://TODO add pots to the import param set-up
+                                break;
+                        }
                     }
-                    return true;
+
+                    foreach (var LED in LEDRecords)
+                    {
+                        //LED.IsSelected = true;
+                        ExperimentLocal.ledParameters[int.Parse(LED.name)].setParamsFromFile(LED);
+                        LedArrayViewModel.isSelected[int.Parse(LED.name)] = true;
+                    }
+
+                    experimentRecords[0].setIsEnabled();
+                    ExperimentLocal.Model = experimentRecords[0];
 
                 }
+                return true;
 
             }
+
+
             return false;
         }
 
-
+        /// <summary>
+        /// Export experimentStore to file
+        /// </summary>
+        /// <param name="ExperimentLocal"> Is the ExperimentStore</param>
         public void fileExport(ExperimentStore ExperimentLocal)
         {
             Trace.WriteLine("Export");
@@ -126,7 +135,7 @@ namespace C490_App.Core
                         csv.Context.RegisterClassMap<LEDParameterMap>();
 
                         var random = ExperimentLocal.ledParameters;
-                        var switchType = ExperimentLocal.Model.getType();
+                        var switchType = ExperimentLocal.Model.GetType().Name.ToString();
                         csv.WriteRecords<LEDParameter>(random);
                         csv.Flush();
 
@@ -141,11 +150,13 @@ namespace C490_App.Core
                                 csv.WriteHeader<DPVModel>();
                                 csv.NextRecord();
 
-                                csv.WriteField(enumerableModelDPV[0].getType());
+                                //TODO this could be split to just write DPV not DPVModel
+                                csv.WriteField(enumerableModelDPV[0].GetType().Name.ToString());
+
                                 csv.WriteRecords<DPVModel>(enumerableModelDPV);
                                 enumerableModelDPV.Clear();
                                 break;
-                            case "ca":
+                            case "CAModel":
 
                                 List<CAModel> enumerableModelCA = [(CAModel)ExperimentLocal.Model];
                                 csv.NextRecord();
@@ -154,11 +165,13 @@ namespace C490_App.Core
                                 csv.WriteHeader<CAModel>();
                                 csv.NextRecord();
 
-                                csv.WriteField(enumerableModelCA[0].getType());
+                                //TODO this could be split to just write CA not CAModel
+                                csv.WriteField(enumerableModelCA[0].GetType().Name.ToString());
+
                                 csv.WriteRecords<CAModel>(enumerableModelCA);
                                 enumerableModelCA.Clear();
                                 break;
-                            case "cv":
+                            case "CVModel":
 
                                 List<CVModel> enumerableModelCV = [(CVModel)ExperimentLocal.Model];
                                 csv.NextRecord();
@@ -167,7 +180,9 @@ namespace C490_App.Core
                                 csv.WriteHeader<CVModel>();
                                 csv.NextRecord();
 
-                                csv.WriteField(enumerableModelCV[0].getType());
+                                //TODO this could be split to just write CV not CVModel
+                                csv.WriteField(enumerableModelCV[0].GetType().Name.ToString());
+
                                 csv.WriteRecords<CVModel>(enumerableModelCV);
                                 enumerableModelCV.Clear();
                                 break;
@@ -181,174 +196,10 @@ namespace C490_App.Core
             }
 
         }
-        //probably deprecated
-        public void fileOpen(Object o, ExperimentStore ExperimentLocal, bool dpvEnabled, bool caEnabled, bool cvEnabled, LedArrayViewModel LedArrayViewModel)
-        {
 
-            if (bool.Parse(o.ToString()))
-            {
-                Trace.WriteLine("Import params in class");
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-
-                if (openFileDialog.ShowDialog() == true)
-                {
-                    var config = new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture);
-                    config.MissingFieldFound = null;
-
-                    using (var reader = new StreamReader(openFileDialog.FileName))
-
-                    using (var csv = new CsvReader(reader, config))
-                    {
-                        csv.Context.RegisterClassMap<CVMap>();
-                        csv.Context.RegisterClassMap<DPVMap>();
-                        csv.Context.RegisterClassMap<CAMap>();
-                        csv.Context.RegisterClassMap<LEDParameterMap>();
-
-
-                        var experimentRecords = new List<ExperimentModel>();
-                        var LEDRecords = new List<LEDParameter>();
-                        var isHeader = true;
-
-                        while (csv.Read())
-                        {
-                            if (isHeader)
-                            {
-                                csv.ReadHeader();
-                                isHeader = false;
-                                continue;
-                            }
-
-                            if (string.IsNullOrEmpty(csv.GetField(0)))
-                            {
-                                isHeader = true;
-                                continue;
-                            }
-                            switch (csv.HeaderRecord[0])
-                            {
-                                case "name":
-                                    LEDRecords.Add(csv.GetRecord<LEDParameter>());
-                                    break;
-                                case "type":
-                                    string test = csv.Context.Parser.Record[0];
-                                    if (test.ToLower().Contains("dpv"))
-                                    {
-                                        dpvEnabled = true;
-                                        experimentRecords.Add(csv.GetRecord<DPVModel>());
-                                    }
-                                    else if (test.ToLower().Contains("ca"))
-                                    {
-                                        caEnabled = true;
-                                        experimentRecords.Add(csv.GetRecord<CAModel>());
-                                    }
-                                    else if (test.ToLower().Contains("cv"))
-                                    {
-                                        cvEnabled = true;
-                                        experimentRecords.Add(csv.GetRecord<CVModel>());
-                                    }
-
-                                    else
-                                    {
-                                        Trace.WriteLine("Not valid test");
-                                    }
-                                    break;
-                                case "pot"://add pots to the import param set-up
-                                    break;
-                            }
-                        }
-
-                        foreach (var LED in LEDRecords)
-                        {
-                            //LED.IsSelected = true;
-                            ExperimentLocal.ledParameters[int.Parse(LED.name)].setParamsFromFile(LED);
-                            LedArrayViewModel.isSelected[int.Parse(LED.name)] = true;
-                        }
-
-                        experimentRecords[0].setIsEnabled();
-                        ExperimentLocal.Model = experimentRecords[0];
-
-                    }
-                    int check = 1000; //used as breakpoint 
-
-                }
-
-            }
-            else
-            {
-                Trace.WriteLine("Export in class");
-                SaveFileDialog saveFileDialogClose = new SaveFileDialog();
-                if (saveFileDialogClose.ShowDialog() == true)
-                {
-                    if (saveFileDialogClose.FileName != "")
-                    {
-                        using (var writer = new StreamWriter(saveFileDialogClose.FileName))
-                        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-                        {
-                            csv.Context.RegisterClassMap<CVMap>();
-                            csv.Context.RegisterClassMap<DPVMap>();
-                            csv.Context.RegisterClassMap<CAMap>();
-                            csv.Context.RegisterClassMap<LEDParameterMap>();
-
-                            var random = ExperimentLocal.ledParameters;
-                            var switchType = ExperimentLocal.Model.getType();
-                            csv.WriteRecords<LEDParameter>(random);
-                            csv.Flush();
-
-                            switch (switchType)
-                            {
-                                case "DPVModel":
-
-                                    List<DPVModel> enumerableModelDPV = [(DPVModel)ExperimentLocal.Model];
-                                    csv.NextRecord();
-                                    csv.WriteField("type");
-
-                                    csv.WriteHeader<DPVModel>();
-                                    csv.NextRecord();
-
-                                    csv.WriteField(enumerableModelDPV[0].getType());
-                                    csv.WriteRecords<DPVModel>(enumerableModelDPV);
-                                    enumerableModelDPV.Clear();
-                                    break;
-                                case "ca":
-
-                                    List<CAModel> enumerableModelCA = [(CAModel)ExperimentLocal.Model];
-                                    csv.NextRecord();
-                                    csv.WriteField("type");
-
-                                    csv.WriteHeader<CAModel>();
-                                    csv.NextRecord();
-
-                                    csv.WriteField(enumerableModelCA[0].getType());
-                                    csv.WriteRecords<CAModel>(enumerableModelCA);
-                                    enumerableModelCA.Clear();
-                                    break;
-                                case "cv":
-
-                                    List<CVModel> enumerableModelCV = [(CVModel)ExperimentLocal.Model];
-                                    csv.NextRecord();
-                                    csv.WriteField("type");
-
-                                    csv.WriteHeader<CVModel>();
-                                    csv.NextRecord();
-
-                                    csv.WriteField(enumerableModelCV[0].getType());
-                                    csv.WriteRecords<CVModel>(enumerableModelCV);
-                                    enumerableModelCV.Clear();
-                                    break;
-                                default: break;
-                            }
-
-
-                        }
-
-                    }
-                }
-
-            }
-
-
-        }
-
-
+        /// <summary>
+        /// Is used to map LEDParameters for CSV
+        /// </summary>
         public sealed class LEDParameterMap : ClassMap<LEDParameter>
         {
             public LEDParameterMap()
@@ -366,6 +217,9 @@ namespace C490_App.Core
                 Map(m => m.IsSelected).Constant(true).Ignore();
             }
         }
+        /// <summary>
+        /// Maps DPVModel for CSV
+        /// </summary>
         public sealed class DPVMap : ClassMap<DPVModel>
         {
             public DPVMap()
@@ -378,6 +232,9 @@ namespace C490_App.Core
                 Map(m => m.pulseTime);
             }
         }
+        /// <summary>
+        /// Maps CVModel for CSV
+        /// </summary>
         public sealed class CVMap : ClassMap<CVModel>
         {
             public CVMap()
@@ -390,6 +247,9 @@ namespace C490_App.Core
                 Map(m => m.numOfScans);
             }
         }
+        /// <summary>
+        /// Maps CAModel for CSV
+        /// </summary>
         public sealed class CAMap : ClassMap<CAModel>
         {
             public CAMap()

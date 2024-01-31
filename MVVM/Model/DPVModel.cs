@@ -26,13 +26,6 @@ namespace C490_App.MVVM.Model
 
         }
 
-        public override string getType()
-        {
-
-            return type.ToString();
-
-        }
-
         public override void runExperiment(SerialPort _serialPort)
 
         {

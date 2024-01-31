@@ -11,12 +11,13 @@ namespace C490_App.MVVM.ViewModel
 
         public RelayCommand ledSelect { get; set; }
 
-        //<controlCheck>
-        //these Lists represents the outside checkboxes of the array
-        //it is used for control logic of what is selected using LEDSelect and appropriate called functions
-        //controlCheckAll is select all
-        //controlCheckRow is row checkbox's
-        //controlCheckCol is column checkbox's
+        /// <summary>
+        /// these Lists represents the outside checkboxes of the array
+        /// it is used for control logic of what is selected using LEDSelect and appropriate called functions
+        /// controlCheckAll is select all
+        /// controlCheckRow is row checkbox's
+        /// controlCheckCol is column checkbox's
+        /// </summary>
         public bool controlCheckAll { get; set; }
 
         public List<bool> controlCheckRow { get; set; } = new List<bool>() { false, false, false, false, false };
@@ -38,7 +39,7 @@ namespace C490_App.MVVM.ViewModel
             ledSelect = new RelayCommand(o => SelectLed2(o), o => true);
         }
 
-        // Should be deprecated now
+        //SelectLed Should be deprecated now
         /*SelectLed 
          * @binding control checkboxes
          * @param is a tuple i,k,j
@@ -83,8 +84,8 @@ namespace C490_App.MVVM.ViewModel
             ExperimentLocal.UpdateLEDS(isSelected);
         }
 
-        //is new selectled!
-        //TODO add param list to this
+        //Replaces deprecated selectLed
+        //TODO add parameter list to this
         public void SelectLed2(object commandParameter)
         {
             SelectAllLED(0, 50);

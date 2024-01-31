@@ -170,25 +170,26 @@ namespace C490_App.MVVM.ViewModel
         /// <summary>
         /// Utilises the file handler class to import and export parameters
         /// </summary>
-        private void IMEXParams(object o)
+        /// <param name="sender"></param>
+        private void IMEXParams(object imexBool)
         {
-            FileHandler f = new FileHandler();
+            FileHandler fileHandler = new FileHandler();
 
-            if (bool.Parse(o.ToString()))
+            if (bool.Parse(imexBool.ToString()))
             {
-                Trace.WriteLine("Import params in VM");
-                bool returned = f.fileImport(o, ExperimentLocal, LedArrayViewModel);
+                Trace.WriteLine("Import params in ViewModel");
+                bool returned = fileHandler.fileImport(ExperimentLocal, LedArrayViewModel);
                 if (returned)
                 {
-                    if (ExperimentLocal.Model.getType().ToLower().Contains("dpv"))
+                    if (ExperimentLocal.Model.GetType().Name.ToString().ToLower().Contains("dpv"))
                     {
                         dpvEnabled = true;
                     }
-                    else if (ExperimentLocal.Model.getType().ToLower().ToLower().Contains("ca"))
+                    else if (ExperimentLocal.Model.GetType().Name.ToString().ToLower().Contains("ca"))
                     {
                         caEnabled = true;
                     }
-                    else if (ExperimentLocal.Model.getType().ToLower().ToLower().Contains("cv"))
+                    else if (ExperimentLocal.Model.GetType().Name.ToString().ToLower().Contains("cv"))
                     {
                         cvEnabled = true;
                     }
@@ -211,7 +212,7 @@ namespace C490_App.MVVM.ViewModel
             else
             {
                 Trace.WriteLine("Export in VM");
-                f.fileExport(ExperimentLocal);
+                fileHandler.fileExport(ExperimentLocal);
             }
 
 
@@ -255,7 +256,9 @@ namespace C490_App.MVVM.ViewModel
                 {
                     ExperimentLocal.Model = new DPVModel();
                 }
-                Trace.WriteLine(ExperimentLocal.Model.getType());
+
+                Trace.WriteLine(ExperimentLocal.Model.GetType().ToString() + "Debugging trace");
+
                 DPVExperimentFrame dpv = new DPVExperimentFrame();
                 dpv.DataContext = new ExperimentParameterViewModel(ExperimentLocal);
                 dpv.Show();

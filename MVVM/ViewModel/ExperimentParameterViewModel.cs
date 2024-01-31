@@ -57,7 +57,7 @@ namespace C490_App.MVVM.ViewModel
         public ExperimentParameterViewModel(ExperimentStore ExperimentSingleton)
         {
             ExperimentLocal = ExperimentSingleton;
-            switch (ExperimentLocal.Model.getType())
+            switch (ExperimentLocal.Model.GetType().Name.ToString())
             {
                 case "DPVModel":
                     DpvModel = (DPVModel)ExperimentLocal.Model; break;
