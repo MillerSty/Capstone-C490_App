@@ -4,18 +4,65 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:C490_App.MVVM.View"
+        xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
         Title="GraphFrame" Height="450" Width="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="3*"/>
-        </Grid.ColumnDefinitions>
+        <!-- Top Row for Menu Bar -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0" Background="Pink">
+        <!-- Menu Bar -->
+        <Menu Grid.Row="0">
+            <MenuItem Header="_Options">
+                <MenuItem Header="Reset Plot Axes" Command="{Binding ResetPlotAxes}"/>
+            </MenuItem>
+            <MenuItem Header="_Marker Type">
+                <MenuItem Header="None" Command="{Binding MarkerTypeClick}" CommandParameter="None"/>
+                <MenuItem Header="Circle" Command="{Binding MarkerTypeClick}" CommandParameter="Circle"/>
+                <MenuItem Header="Square" Command="{Binding MarkerTypeClick}" CommandParameter="Square"/>
+                <MenuItem Header="Diamond" Command="{Binding MarkerTypeClick}" CommandParameter="Diamond"/>
+                <MenuItem Header="Triangle" Command="{Binding MarkerTypeClick}" CommandParameter="Triangle"/>
+            </MenuItem>
+        </Menu>
 
-        </StackPanel>
 
-        <!--<OxyPlot here-->
+        <!-- Main Content Rows -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Left Column: Pink Box with Scrollable List -->
+            <ScrollViewer Grid.Column="0">
+                <StackPanel Background="Pink">
+                    <!-- Select All CheckBox -->
+                    <CheckBox Content="Select All" IsChecked="{Binding IsSelectAllChecked}" />
+                    <ListBox x:Name="csvListBox" ItemsSource="{Binding CsvFilesInfo}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <!-- Colored Circle -->
+                                    <Border Width="16" Height="16" CornerRadius="8" Background="{Binding WpfColor}" Margin="0,0,5,0">
+                                        <Ellipse />
+                                    </Border>
+                                    <CheckBox Content="{Binding FileName}" IsChecked="{Binding IsVisible, Mode=TwoWay}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Reset Button -->
+            <Grid Grid.Row="1" Grid.Column="0">
+                <Button Content="Reset Selected Checkboxes" Command="{Binding ResetSelectedCheckboxes}" Height="22" VerticalAlignment="Bottom" />
+            </Grid>
+            <!-- Right Two-Thirds: PlotView -->
+            <oxy:PlotView x:Name="plotView" Grid.Column="1" Model="{Binding PlotModel}" />
+        </Grid>
     </Grid>
 </Window>
