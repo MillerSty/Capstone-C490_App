@@ -12,7 +12,7 @@
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0" Background="Pink">
+        <StackPanel Grid.Column="0" Background="LightGray">
 
         </StackPanel>
 
