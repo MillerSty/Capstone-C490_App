@@ -54,7 +54,7 @@ namespace C490_App.Core
                             continue;
                         }
 
-                        if (string.IsNullOrEmpty(csv.GetField(0)))
+                        if (string.IsNullOrEmpty(csv.GetField(0)) || csv.GetField(0).Equals(","))
                         {
                             isHeader = true;
                             continue;
@@ -64,6 +64,7 @@ namespace C490_App.Core
                         {
                             case "name":
                                 LEDRecords.Add(csv.GetRecord<LEDParameter>());
+
                                 break;
 
                             case "type":
@@ -145,6 +146,7 @@ namespace C490_App.Core
                     using (var writer = new StreamWriter(saveFileDialogClose.FileName))
                     using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
                     {
+
                         csv.Context.RegisterClassMap<CVMap>();
                         csv.Context.RegisterClassMap<DPVMap>();
                         csv.Context.RegisterClassMap<CAMap>();
@@ -153,7 +155,8 @@ namespace C490_App.Core
                         var random = ExperimentLocal.ledParameters;
                         var switchType = ExperimentLocal.Model.GetType().Name.ToString();
                         csv.WriteRecords<LEDParameter>(random);
-                        csv.Flush();
+                        csv.WriteField(",");
+                        //csv.Flush();
 
                         switch (switchType)
                         {
@@ -161,15 +164,20 @@ namespace C490_App.Core
 
                                 List<DPVModel> enumerableModelDPV = [(DPVModel)ExperimentLocal.Model];
                                 csv.NextRecord();
+                                //writer.Flush();
                                 csv.WriteField("type");
 
                                 csv.WriteHeader<DPVModel>();
                                 csv.NextRecord();
+                                // writer.Flush();
 
                                 //TODO this could be split to just write DPV not DPVModel
                                 csv.WriteField(enumerableModelDPV[0].GetType().Name.ToString());
 
                                 csv.WriteRecords<DPVModel>(enumerableModelDPV);
+                                csv.WriteField(",");
+
+                                //writer.Flush();
                                 enumerableModelDPV.Clear();
                                 break;
                             case "CAModel":
@@ -185,6 +193,7 @@ namespace C490_App.Core
                                 csv.WriteField(enumerableModelCA[0].GetType().Name.ToString());
 
                                 csv.WriteRecords<CAModel>(enumerableModelCA);
+                                csv.WriteField(",");
                                 enumerableModelCA.Clear();
                                 break;
                             case "CVModel":
@@ -200,11 +209,24 @@ namespace C490_App.Core
                                 csv.WriteField(enumerableModelCV[0].GetType().Name.ToString());
 
                                 csv.WriteRecords<CVModel>(enumerableModelCV);
+                                csv.WriteField(",");
                                 enumerableModelCV.Clear();
                                 break;
                             default: break;
                         }
+                        //Write Pots by hand 
+                        csv.NextRecord();
+                        csv.WriteField("Pot");
+                        csv.NextRecord();
 
+                        foreach (var pot in ExperimentLocal.pots)
+                        {
+                            csv.WriteField(pot);
+                            csv.NextRecord();
+
+                        }
+
+                        csv.WriteField(",");
 
                     }
 
