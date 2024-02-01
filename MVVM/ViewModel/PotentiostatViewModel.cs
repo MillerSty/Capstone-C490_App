@@ -1,5 +1,4 @@
 ﻿using C490_App.Core;
-using C490_App.Services;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
@@ -72,6 +71,7 @@ namespace C490_App.MVVM.ViewModel
             SortObservableCollection(potsActive);
             SortObservableCollection(potsInactive);
         }
+
 
         private void SortObservableCollection(ObservableCollection<string> collection)
         {

@@ -1,6 +1,5 @@
 ﻿using C490_App.MVVM.Model;
 using C490_App.MVVM.ViewModel;
-using C490_App.Services;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.Win32;
@@ -20,7 +19,7 @@ namespace C490_App.Core
         /// <param name="ExperimentLocal"> Is the ExperimentStore</param>
         /// <param name="LedArrayViewModel"> Is used for updating LED values, should be done somewhere else</param>
         /// <returns>true for no errors, false for error</returns>
-        public bool fileImport(ExperimentStore ExperimentLocal, LedArrayViewModel LedArrayViewModel)
+        public bool fileImport(ExperimentStore ExperimentLocal, LedArrayViewModel LedArrayViewModel, PotentiostatViewModel PotentiostatViewModel)
         {
 
 
@@ -88,7 +87,12 @@ namespace C490_App.Core
                                 }
                                 break;
 
-                            case "pot"://TODO add pots to the import param set-up
+                            case "Pot":
+                                int puase = 1000;
+
+                                string s = csv.GetField(0);
+                                ExperimentLocal.pots.Add(csv.GetField(0));
+                                Trace.WriteLine($"{s}");
                                 break;
                         }
                     }
@@ -96,8 +100,20 @@ namespace C490_App.Core
                     foreach (var LED in LEDRecords)
                     {
                         //LED.IsSelected = true;
-                        ExperimentLocal.ledParameters[int.Parse(LED.name)].setParamsFromFile(LED);
-                        LedArrayViewModel.isSelected[int.Parse(LED.name)] = true;
+                        ExperimentLocal.ledParameters[int.Parse(LED.Name)].setParamsFromFile(LED);
+                        LedArrayViewModel.isSelected[int.Parse(LED.Name)] = true;
+
+                    }
+                    foreach (var pot in ExperimentLocal.pots)
+                    {
+                        //run designated RelayCommand from Pot...ViewModel following methodology used in Pot...ViewModel
+                        PotentiostatViewModel.SelectedPotName = "Potentiostat " + pot;
+
+                        RelayCommand switchL = new RelayCommand(
+                        o => PotentiostatViewModel.SwitchList(o, PotentiostatViewModel.potsActive, PotentiostatViewModel.potsInactive),
+                        o => true
+                        );
+                        switchL.Execute(this);
                     }
 
                     experimentRecords[0].setIsEnabled();
@@ -204,7 +220,7 @@ namespace C490_App.Core
         {
             public LEDParameterMap()
             {
-                Map(m => m.name).Name("name");
+                Map(m => m.Name).Name("name");
                 Map(m => m.GOnTime);
                 Map(m => m.GOffTime);
                 Map(m => m.GIntensity);

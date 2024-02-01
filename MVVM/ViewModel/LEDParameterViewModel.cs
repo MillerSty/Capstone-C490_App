@@ -1,5 +1,4 @@
 ﻿using C490_App.Core;
-using C490_App.Services;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -173,7 +172,7 @@ namespace C490_App.MVVM.ViewModel
             {
                 if (led.IsSelected)
                 {
-                    _leds.Add(led.name);
+                    _leds.Add(led.Name);
                 }
             }
 
