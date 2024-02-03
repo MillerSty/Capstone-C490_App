@@ -2,6 +2,7 @@
 using C490_App.MVVM.ViewModel;
 using C490_App.Services;
 using Microsoft.Extensions.DependencyInjection;
+using System.IO.Ports;
 using System.Windows;
 
 namespace C490_App
@@ -28,6 +29,7 @@ namespace C490_App
             });
 
             services.AddSingleton<ExperimentStore>();
+            services.AddSingleton<SerialPort>();
 
             _serviceProvider = services.BuildServiceProvider();
 

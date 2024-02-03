@@ -73,6 +73,7 @@ namespace C490_App.MVVM.ViewModel
         public RelayCommand openGraphResults { get; set; }
         public RelayCommand imexParams { get; set; }
         public RelayCommand serialCommunicate { get; set; }
+        public RelayCommand openDebug { get; set; }
 
         private ExperimentStore ExperimentLocal { get; set; }
 
@@ -82,7 +83,7 @@ namespace C490_App.MVVM.ViewModel
         /// Listens for relayCommands.
         /// </summary>
         /// <param name="ExperimentSingleton"> The global experimentStore</param>
-        public HomeFrameViewModel(ExperimentStore ExperimentSingleton)
+        public HomeFrameViewModel(ExperimentStore ExperimentSingleton, SerialPort port)
         {
             ExperimentLocal = ExperimentSingleton;
 
@@ -99,8 +100,15 @@ namespace C490_App.MVVM.ViewModel
             openGraphResults = new RelayCommand(o => GraphOpen(), o => true);
             imexParams = new RelayCommand(o => IMEXParams(o), o => true);
             serialCommunicate = new RelayCommand(o => SimpleSerial(), o => true);
+            openDebug = new RelayCommand(o => OpenDebug(), o => true);
         }
+        private void OpenDebug()
+        {
 
+            DebugView debug = new DebugView();
+            debug.DataContext = new DebugViewModel();
+            debug.Show();
+        }
 
         //btn state is just for simple led turn on
         private int btnstate { get; set; } = 0;
@@ -129,7 +137,7 @@ namespace C490_App.MVVM.ViewModel
 
                 }
 
-                ExperimentLocal.Model.runExperiment(mySerialPort);
+                //ExperimentLocal.Model.runExperiment(mySerialPort);
                 if (btnstate == 0)
                 {
                     mySerialPort.Write("1");

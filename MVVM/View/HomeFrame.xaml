@@ -43,6 +43,9 @@
             </MenuItem>
             <MenuItem Header="_Save Results" >
             </MenuItem>
+
+            <MenuItem Header="_Debug" Command="{Binding openDebug}" >
+            </MenuItem>
         </Menu>
         <!--KCLook into this-->
         <!--<Border Grid.ColumnSpan="2"
