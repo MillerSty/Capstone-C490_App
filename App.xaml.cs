@@ -2,7 +2,6 @@
 using C490_App.MVVM.View;
 using C490_App.MVVM.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
-using System.IO.Ports;
 using System.Windows;
 
 namespace C490_App
@@ -27,10 +26,12 @@ namespace C490_App
             });
 
             services.AddSingleton<ExperimentStore>();
-            services.AddSingleton<SerialPort>();
+
 
             _serviceProvider = services.BuildServiceProvider();
-
+            var ExperimentStore = _serviceProvider.GetService<ExperimentStore>();
+            ExperimentStore.mySerialPort = new System.IO.Ports.SerialPort();
+            ExperimentStore.initSerial();
 
         }
         protected override void OnStartup(StartupEventArgs e)

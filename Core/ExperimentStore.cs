@@ -65,7 +65,8 @@ namespace C490_App.Core
             ledParameters = temp;
         }
         int btnstate = 0;
-        SerialPort mySerialPort = new SerialPort();
+        private SerialPort _serialPort;
+        public SerialPort mySerialPort { get { return _serialPort; } set { _serialPort = value; } }
 
         /// <summary>
         /// SimpleSerial communication.
@@ -189,6 +190,29 @@ namespace C490_App.Core
             {
                 Trace.WriteLine("Error with serial");
             }
+
+        }
+        /// <summary>
+        /// This is for initializing the serial port
+        /// </summary>
+        public void initSerial()
+        {
+            if (!mySerialPort.IsOpen)
+            {
+                mySerialPort.BaudRate = 9600;
+                mySerialPort.PortName = "COM3";
+                mySerialPort.NewLine = "\r\n";
+                mySerialPort.ReadTimeout = 500;
+                // mySerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
+
+
+
+            }
+
+        }
+
+        public void assignEventHandler()
+        {
 
         }
         /// <summary>

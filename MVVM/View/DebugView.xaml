@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:C490_App.MVVM.View"
+        xmlns:n="clr-namespace:C490_App.Core"
         mc:Ignorable="d"
         Title="DebugView" Height="450" Width="400">
     <Grid>
@@ -12,9 +13,10 @@
             <RowDefinition Height="*"/>
 
         </Grid.RowDefinitions>
-
-        <TextBlock Grid.Row="0" Text="{Binding UserEntryRead, Mode=OneWay}" TextAlignment="Justify" TextWrapping="Wrap"/>
-
+        <ScrollViewer Name="ServerScroll"
+                      n:AutoScrollBehavior.AutoScroll="True">
+            <TextBlock Grid.Row="0" Text="{Binding UserEntryRead, Mode=OneWay}" TextAlignment="Justify" TextWrapping="Wrap"/>
+        </ScrollViewer>
         <TextBox Grid.Row="1" Text="{Binding UserEntry, UpdateSourceTrigger=PropertyChanged}">
             <TextBox.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding enter, UpdateSourceTrigger=PropertyChanged}" />

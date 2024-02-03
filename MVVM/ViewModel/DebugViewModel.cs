@@ -1,5 +1,4 @@
 ﻿using C490_App.Core;
-using C490_App.Services;
 using System.Diagnostics;
 using System.IO.Ports;
 
@@ -39,37 +38,43 @@ namespace C490_App.MVVM.ViewModel
 
             int pause = 1000;
             enter = new RelayCommand(o => Enter(), o => true);
-            initSerial(_port);
+            initSerial(store);
         }
-        public void initSerial(SerialPort serialPort)
+        public void initSerial(ExperimentStore store)
         {
-            if (!serialPort.IsOpen)
-            {
-                serialPort.BaudRate = 9600;
-                serialPort.PortName = "COM3";
-                serialPort.NewLine = "\r\n";
-                serialPort.ReadTimeout = 500;
-                serialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
+            _port = store.mySerialPort;
+            _port.DataReceived += new SerialDataReceivedEventHandler(OnDataRecievedHere);
+            if (!_port.IsOpen) { _port.Open(); }
 
-                serialPort.Open();
+            //if (!serialPort.IsOpen)
+            //{
+            //    serialPort.BaudRate = 9600;
+            //    serialPort.PortName = "COM3";
+            //    serialPort.NewLine = "\r\n";
+            //    serialPort.ReadTimeout = 500;
+            //    serialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
 
 
-            }
+
+            //}
 
         }
-        private void OnDataRecieved(object sender, SerialDataReceivedEventArgs e)
+        private void OnDataRecievedHere(object sender, SerialDataReceivedEventArgs e)
         {
             var serialDevice = sender as SerialPort;
-            var indata = serialDevice.ReadExisting();
-            Trace.WriteLine(indata.ToString());
+            var indata = serialDevice.ReadLine();
+            UserEntryRead = "Reply: " + indata.ToString();
+            Trace.WriteLine(" Herro" + indata.ToString());
             Thread.Sleep(50);
         }
         public void Enter()
         {
 
-            UserEntryRead = UserEntry;
-            UserEntry = "";
-            Trace.WriteLine(UserEntryRead);
+            UserEntryRead = "User: " + UserEntry;
+            _port.Write(UserEntry); //enter is happening twice
+            Thread.Sleep(50);
+            UserEntry = null;
+            //Trace.WriteLine(UserEntryRead);
 
 
         }
