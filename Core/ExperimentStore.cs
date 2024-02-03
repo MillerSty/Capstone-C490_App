@@ -86,7 +86,7 @@ namespace C490_App.Core
                     mySerialPort.PortName = "COM3";
                     mySerialPort.NewLine = "\r\n";
                     mySerialPort.ReadTimeout = 500;
-                    mySerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
+                    //mySerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
                     mySerialPort.Open();
 
                 }
@@ -128,11 +128,11 @@ namespace C490_App.Core
                 if (!mySerialPort.IsOpen)
                 {
                     //mySerialPort = new SerialPort("COM3", 9600);
-                    mySerialPort.BaudRate = 9600;
-                    mySerialPort.PortName = "COM3";
-                    mySerialPort.NewLine = "\r\n";
-                    mySerialPort.ReadTimeout = 500;
-                    mySerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
+                    //mySerialPort.BaudRate = 9600;
+                    //mySerialPort.PortName = "COM3";
+                    //mySerialPort.NewLine = "\r\n";
+                    //mySerialPort.ReadTimeout = 500;
+                    //mySerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
                     mySerialPort.Open();
                 }
                 //load target parameters
@@ -170,6 +170,7 @@ namespace C490_App.Core
                     //TODO change to messagebox
                     Trace.WriteLine("No leds selected, running purely potentiostat experiment");
                 }
+
                 //TODO when led params sent to target, add a DateTime stamp to something to track on/off times
 
                 //pots -- load pots in use to MCU
@@ -202,13 +203,9 @@ namespace C490_App.Core
                 mySerialPort.BaudRate = 9600;
                 mySerialPort.PortName = "COM3";
                 mySerialPort.NewLine = "\r\n";
-                mySerialPort.ReadTimeout = 500;
-                // mySerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
-
-
-
+                mySerialPort.ReadTimeout = 50;
+                //mySerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
             }
-
         }
 
         public void assignEventHandler()
@@ -224,6 +221,7 @@ namespace C490_App.Core
         {
             var serialDevice = sender as SerialPort;
             var indata = serialDevice.ReadExisting();
+
             Trace.WriteLine(indata.ToString());
             Thread.Sleep(50);
         }

@@ -45,38 +45,34 @@ namespace C490_App.MVVM.ViewModel
             _port = store.mySerialPort;
             _port.DataReceived += new SerialDataReceivedEventHandler(OnDataRecievedHere);
             if (!_port.IsOpen) { _port.Open(); }
-
-            //if (!serialPort.IsOpen)
-            //{
-            //    serialPort.BaudRate = 9600;
-            //    serialPort.PortName = "COM3";
-            //    serialPort.NewLine = "\r\n";
-            //    serialPort.ReadTimeout = 500;
-            //    serialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
-
-
-
-            //}
-
         }
         private void OnDataRecievedHere(object sender, SerialDataReceivedEventArgs e)
         {
             var serialDevice = sender as SerialPort;
+            /*
+             * Exception thrown: 'System.TimeoutException' in System.IO.Ports.dll
+An unhandled exception of type 'System.TimeoutException' occurred in System.IO.Ports.dll
+The operation has timed out. -> seems to be from multiple onDataReceived starving when other takes over?
+             */
             var indata = serialDevice.ReadLine();
-            UserEntryRead = "Reply: " + indata.ToString();
-            Trace.WriteLine(" Herro" + indata.ToString());
-            Thread.Sleep(50);
+            if (indata.ToString().Equals("D"))
+            {
+                indata = serialDevice.ReadLine();
+                UserEntryRead = "Reply: " + indata.ToString();
+                Trace.WriteLine(" Herro" + indata.ToString());
+                Thread.Sleep(50);
+            }
         }
         public void Enter()
         {
 
             UserEntryRead = "User: " + UserEntry;
-            _port.Write(UserEntry); //enter is happening twice
-            Thread.Sleep(50);
-            UserEntry = null;
-            //Trace.WriteLine(UserEntryRead);
-
-
+            if (!UserEntry.Equals(null))
+            {
+                _port.Write(UserEntry); //enter is happening twice
+                Thread.Sleep(50);
+                UserEntry = null;
+            }
         }
     }
 }

@@ -23,11 +23,12 @@ namespace C490_App.MVVM.Model
             this.isEnabled = true;
 
         }
-
+        int check = 0b1;
         public override void runExperiment(SerialPort _serialPort)
 
         {
-            _serialPort.WriteLine("1");
+            _serialPort.Write(check.ToString());
+            check = ~check;
             Trace.WriteLine("CV Experiment running");
             float temp_volt = 0;
             //from start voltage(sV) increase by stepSize every scanRate...
