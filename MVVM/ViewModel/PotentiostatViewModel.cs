@@ -15,16 +15,16 @@ namespace C490_App.MVVM.ViewModel
         public ObservableCollection<String> _potsActive { get; set; }
         public ObservableCollection<String> potsActive { get; set; }
         public RelayCommand switchL { get; set; }
-        public String SelectedPot;
+        public String _selectedPot;
         public String SelectedPotName
         {
             get
             {
-                return SelectedPot;
+                return _selectedPot;
             }
             set
             {
-                SelectedPot = value;
+                _selectedPot = value;
                 //potsActive.Add(SelectedPot);
                 //OnPropertyChanged();
             }
@@ -47,7 +47,7 @@ namespace C490_App.MVVM.ViewModel
         {
             for (int i = 0; i < 50; i++)
             {
-                o.Add($"Potentiostat {i}");
+                o.Add($"{i}");
             }
 
         }
@@ -70,6 +70,7 @@ namespace C490_App.MVVM.ViewModel
             // Sort both lists
             SortObservableCollection(potsActive);
             SortObservableCollection(potsInactive);
+            ExperimentLocal.UpdatePots(potsActive);
         }
 
 

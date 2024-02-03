@@ -1,7 +1,9 @@
 ﻿using C490_App.MVVM.Model;
+using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO.Ports;
+using System.Text.RegularExpressions;
 
 namespace C490_App.Core
 {
@@ -39,6 +41,10 @@ namespace C490_App.Core
             {
                 ledParameters[i].IsSelected = ledsSelected[i];
             }
+        }
+        public void UpdatePots(ObservableCollection<string> activePotentiostats)
+        {
+            pots = activePotentiostats;
         }
 
         /// <summary>
@@ -151,7 +157,10 @@ namespace C490_App.Core
                         string rintensity = _leds.RIntensity.ToString();
                         string ron = _leds.ROnTime.ToString();
                         string roff = _leds.ROffTime.ToString();
-                        ExperimentLeds += name + " " + gaddress + " " + gintensity + " " + gon + " " + goff;
+                        ExperimentLeds += name;
+                        ExperimentLeds += " " + gaddress + " " + gintensity + " " + gon + " " + goff;
+                        ExperimentLeds += " " + raddress + " " + rintensity + " " + ron + " " + roff;
+                        ExperimentLeds += " " + baddress + " " + bintensity + " " + bon + " " + boff;
                     }
                     else count++;
                 }
@@ -160,11 +169,19 @@ namespace C490_App.Core
                     //TODO change to messagebox
                     Trace.WriteLine("No leds selected, running purely potentiostat experiment");
                 }
-                //when led params sent to target, add a DateTime stamp to something to track on/off times
+                //TODO when led params sent to target, add a DateTime stamp to something to track on/off times
 
-                //pots
+                //pots -- load pots in use to MCU
+                String ExperimentPots = "Potentiostats ";
+                foreach (var pots in this.pots)
+                {
+                    ExperimentPots += " " + pots;
+                }
 
-
+                //run experiment
+                Model.runExperiment(mySerialPort);
+                Trace.WriteLine("Out of sleep");
+                //mySerialPort.Close();
 
 
             }
@@ -186,7 +203,46 @@ namespace C490_App.Core
             Trace.WriteLine(indata.ToString());
             Thread.Sleep(50);
         }
+        /// <summary>
+        /// Used for getting comports used by VID/PID
+        /// </summary>
+        /// <param name="VID"></param>
+        /// <param name="PID"></param>
+        /// <returns></returns>
+        static List<string> ComPortNames()
+        {
+            String VID = "";
+            String PID = "";
+            String pattern = String.Format("^VID_{0}.PID_{1}", VID, PID);
+            Regex _rx = new Regex(pattern, RegexOptions.IgnoreCase);
+            List<string> comports = new List<string>();
 
+            RegistryKey rk1 = Registry.LocalMachine;
+            RegistryKey rk2 = rk1.OpenSubKey("SYSTEM\\CurrentControlSet\\Enum");
+
+            foreach (String s3 in rk2.GetSubKeyNames())
+            {
+
+                RegistryKey rk3 = rk2.OpenSubKey(s3);
+                foreach (String s in rk3.GetSubKeyNames())
+                {
+                    if (_rx.Match(s).Success)
+                    {
+                        RegistryKey rk4 = rk3.OpenSubKey(s);
+                        foreach (String s2 in rk4.GetSubKeyNames())
+                        {
+                            RegistryKey rk5 = rk4.OpenSubKey(s2);
+                            RegistryKey rk6 = rk5.OpenSubKey("Device Parameters");
+                            comports.Add((string)rk6.GetValue("PortName"));
+                        }
+                    }
+                }
+            }
+            return comports;
+        }
+
+        String vid = "2341";
+        String pid = "0043";
 
     }
 }

@@ -27,9 +27,8 @@ namespace C490_App.MVVM.Model
         }
 
         public override void runExperiment(SerialPort _serialPort)
-
         {
-            _serialPort.WriteLine("1");
+            _serialPort.Write("1");
             Trace.WriteLine("DPV Experiment running");
         }
 
