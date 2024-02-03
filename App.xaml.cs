@@ -1,6 +1,6 @@
-﻿using C490_App.MVVM.View;
+﻿using C490_App.Core;
+using C490_App.MVVM.View;
 using C490_App.MVVM.ViewModel;
-using C490_App.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.IO.Ports;
 using System.Windows;
@@ -18,8 +18,6 @@ namespace C490_App
         public App()
         {
             IServiceCollection services = new ServiceCollection();
-
-            services.AddSingleton<INavigationService, NavigationService>();// not sure we using this
 
             services.AddSingleton<HomeFrameViewModel>(); //might be neccesary to delete
 

@@ -1,6 +1,5 @@
 ﻿using C490_App.MVVM.Model;
 using C490_App.MVVM.ViewModel;
-using C490_App.Services;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.Win32;
@@ -20,7 +19,7 @@ namespace C490_App.Core
         /// <param name="ExperimentLocal"> Is the ExperimentStore</param>
         /// <param name="LedArrayViewModel"> Is used for updating LED values, should be done somewhere else</param>
         /// <returns>true for no errors, false for error</returns>
-        public bool fileImport(ExperimentStore ExperimentLocal, LedArrayViewModel LedArrayViewModel)
+        public bool fileImport(ExperimentStore ExperimentLocal, LedArrayViewModel LedArrayViewModel, PotentiostatViewModel PotentiostatViewModel)
         {
 
 
@@ -55,7 +54,7 @@ namespace C490_App.Core
                             continue;
                         }
 
-                        if (string.IsNullOrEmpty(csv.GetField(0)))
+                        if (string.IsNullOrEmpty(csv.GetField(0)) || csv.GetField(0).Equals(","))
                         {
                             isHeader = true;
                             continue;
@@ -65,6 +64,7 @@ namespace C490_App.Core
                         {
                             case "name":
                                 LEDRecords.Add(csv.GetRecord<LEDParameter>());
+
                                 break;
 
                             case "type":
@@ -88,7 +88,12 @@ namespace C490_App.Core
                                 }
                                 break;
 
-                            case "pot"://TODO add pots to the import param set-up
+                            case "Pot":
+                                int puase = 1000;
+
+                                string s = csv.GetField(0);
+                                ExperimentLocal.pots.Add(csv.GetField(0));
+                                Trace.WriteLine($"{s}");
                                 break;
                         }
                     }
@@ -96,8 +101,20 @@ namespace C490_App.Core
                     foreach (var LED in LEDRecords)
                     {
                         //LED.IsSelected = true;
-                        ExperimentLocal.ledParameters[int.Parse(LED.name)].setParamsFromFile(LED);
-                        LedArrayViewModel.isSelected[int.Parse(LED.name)] = true;
+                        ExperimentLocal.ledParameters[int.Parse(LED.Name)].setParamsFromFile(LED);
+                        LedArrayViewModel.isSelected[int.Parse(LED.Name)] = true;
+
+                    }
+                    foreach (var pot in ExperimentLocal.pots)
+                    {
+                        //run designated RelayCommand from Pot...ViewModel following methodology used in Pot...ViewModel
+                        PotentiostatViewModel.SelectedPotName = "Potentiostat " + pot;
+
+                        RelayCommand switchL = new RelayCommand(
+                        o => PotentiostatViewModel.SwitchList(o, PotentiostatViewModel.potsActive, PotentiostatViewModel.potsInactive),
+                        o => true
+                        );
+                        switchL.Execute(this);
                     }
 
                     experimentRecords[0].setIsEnabled();
@@ -129,6 +146,7 @@ namespace C490_App.Core
                     using (var writer = new StreamWriter(saveFileDialogClose.FileName))
                     using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
                     {
+
                         csv.Context.RegisterClassMap<CVMap>();
                         csv.Context.RegisterClassMap<DPVMap>();
                         csv.Context.RegisterClassMap<CAMap>();
@@ -137,7 +155,8 @@ namespace C490_App.Core
                         var random = ExperimentLocal.ledParameters;
                         var switchType = ExperimentLocal.Model.GetType().Name.ToString();
                         csv.WriteRecords<LEDParameter>(random);
-                        csv.Flush();
+                        csv.WriteField(",");
+                        //csv.Flush();
 
                         switch (switchType)
                         {
@@ -145,15 +164,20 @@ namespace C490_App.Core
 
                                 List<DPVModel> enumerableModelDPV = [(DPVModel)ExperimentLocal.Model];
                                 csv.NextRecord();
+                                //writer.Flush();
                                 csv.WriteField("type");
 
                                 csv.WriteHeader<DPVModel>();
                                 csv.NextRecord();
+                                // writer.Flush();
 
                                 //TODO this could be split to just write DPV not DPVModel
                                 csv.WriteField(enumerableModelDPV[0].GetType().Name.ToString());
 
                                 csv.WriteRecords<DPVModel>(enumerableModelDPV);
+                                csv.WriteField(",");
+
+                                //writer.Flush();
                                 enumerableModelDPV.Clear();
                                 break;
                             case "CAModel":
@@ -169,6 +193,7 @@ namespace C490_App.Core
                                 csv.WriteField(enumerableModelCA[0].GetType().Name.ToString());
 
                                 csv.WriteRecords<CAModel>(enumerableModelCA);
+                                csv.WriteField(",");
                                 enumerableModelCA.Clear();
                                 break;
                             case "CVModel":
@@ -184,11 +209,24 @@ namespace C490_App.Core
                                 csv.WriteField(enumerableModelCV[0].GetType().Name.ToString());
 
                                 csv.WriteRecords<CVModel>(enumerableModelCV);
+                                csv.WriteField(",");
                                 enumerableModelCV.Clear();
                                 break;
                             default: break;
                         }
+                        //Write Pots by hand 
+                        csv.NextRecord();
+                        csv.WriteField("Pot");
+                        csv.NextRecord();
 
+                        foreach (var pot in ExperimentLocal.pots)
+                        {
+                            csv.WriteField(pot);
+                            csv.NextRecord();
+
+                        }
+
+                        csv.WriteField(",");
 
                     }
 
@@ -204,7 +242,7 @@ namespace C490_App.Core
         {
             public LEDParameterMap()
             {
-                Map(m => m.name).Name("name");
+                Map(m => m.Name).Name("name");
                 Map(m => m.GOnTime);
                 Map(m => m.GOffTime);
                 Map(m => m.GIntensity);

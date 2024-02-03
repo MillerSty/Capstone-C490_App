@@ -1,5 +1,4 @@
 ﻿using C490_App.Core;
-using C490_App.Services;
 using System.Collections.ObjectModel;
 
 namespace C490_App.MVVM.ViewModel

@@ -47,6 +47,7 @@
                   Height="auto"
                   Background="LightGray"
                   ItemsSource="{Binding Path = potsInactive}"
+                  ItemStringFormat="Potenstiostat {0}"
                   SelectedItem="{Binding SelectedPotName}"
                   BorderThickness="2"
                   BorderBrush="Gray">
@@ -83,6 +84,7 @@
                   Height="auto"
                   Background="LightGray"
                   ItemsSource="{Binding Path = potsActive}"
+                  ItemStringFormat="Potenstiostat {0}"
                   SelectedItem="{Binding SelectedPotName}"
                   BorderThickness="2"
                   BorderBrush="Gray"
