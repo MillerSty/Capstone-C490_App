@@ -1,6 +1,6 @@
 ﻿using C490_App.Core;
+using System.ComponentModel;
 using System.Diagnostics;
-using System.IO.Ports;
 
 
 namespace C490_App.MVVM.ViewModel
@@ -19,59 +19,67 @@ namespace C490_App.MVVM.ViewModel
 
             }
         }
+
         private string _userEntryRead;
         public string UserEntryRead
         {
             get { return _userEntryRead; }
             set
             {
-                _userEntryRead += value + "\n";
+                _userEntryRead += value;
                 OnPropertyChanged();
 
             }
         }
+        private void A_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            Trace.WriteLine("Property biatch");
+            if (_ExperimentStore.debugInfo.Count > 0)
+            {
+                UserEntryRead = "Reply: ";
+                foreach (string data in _ExperimentStore.debugInfo)
+                {
+                    UserEntryRead = data + "\n";
+                }
+            }
 
-        SerialPort _port;
+        }
+        private SerialPortWrapper _experimentStore;
+        public SerialPortWrapper _ExperimentStore
+        {
+            get
+            {
+                return _experimentStore;
+            }
+            set
+            {
+                _experimentStore = value;
+            }
+        }
+
+
+        public SerialPortWrapper _port { get; set; }
         public RelayCommand enter { get; set; }
         public DebugViewModel(ExperimentStore store)
         {
+            _ExperimentStore = store.serialPortWrapper;
+            _ExperimentStore.PropertyChanged += A_PropertyChanged;
 
-            int pause = 1000;
             enter = new RelayCommand(o => Enter(), o => true);
-            initSerial(store);
-        }
-        public void initSerial(ExperimentStore store)
-        {
-            _port = store.mySerialPort;
-            _port.DataReceived += new SerialDataReceivedEventHandler(OnDataRecievedHere);
-            if (!_port.IsOpen) { _port.Open(); }
-        }
-        private void OnDataRecievedHere(object sender, SerialDataReceivedEventArgs e)
-        {
-            var serialDevice = sender as SerialPort;
-            /*
-             * Exception thrown: 'System.TimeoutException' in System.IO.Ports.dll
-An unhandled exception of type 'System.TimeoutException' occurred in System.IO.Ports.dll
-The operation has timed out. -> seems to be from multiple onDataReceived starving when other takes over?
-             */
-            var indata = serialDevice.ReadLine();
-            if (indata.ToString().Equals("D"))
-            {
-                indata = serialDevice.ReadLine();
-                UserEntryRead = "Reply: " + indata.ToString();
-                Trace.WriteLine(" Herro" + indata.ToString());
-                Thread.Sleep(50);
-            }
         }
         public void Enter()
         {
-
-            UserEntryRead = "User: " + UserEntry;
             if (!UserEntry.Equals(null))
             {
-                _port.Write(UserEntry); //enter is happening twice
-                Thread.Sleep(50);
-                UserEntry = null;
+                if (_ExperimentStore.Open())
+                {
+                    _ExperimentStore.SerialPort.Write(UserEntry);
+                    UserEntryRead = "User: " + UserEntry + "\n";
+
+                    Thread.Sleep(50);
+                    UserEntry = null;
+                }
+
             }
         }
     }

@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using System.IO.Ports;
+﻿using C490_App.Core;
+using System.Diagnostics;
 
 namespace C490_App.MVVM.Model
 {
@@ -24,13 +24,17 @@ namespace C490_App.MVVM.Model
 
         }
         int check = 0b1;
-        public override void runExperiment(SerialPort _serialPort)
-
+        public override void runExperiment(ExperimentStore _serialPort)
         {
-            _serialPort.Write(check.ToString());
-            check = ~check;
             Trace.WriteLine("CV Experiment running");
+
+            //little turn of turn off LED 
+            _serialPort.serialPortWrapper.SerialPort.Write(check.ToString());
+            check = ~check;
+            //end little led turn on/off
+
             float temp_volt = 0;
+
             //from start voltage(sV) increase by stepSize every scanRate...
             if (startVoltage <= voltageThresholdOne) runForward();
             else runBackward();

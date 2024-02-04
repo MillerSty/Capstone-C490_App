@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using System.IO.Ports;
+﻿using C490_App.Core;
+using System.Diagnostics;
 
 namespace C490_App.MVVM.Model
 {
@@ -22,10 +22,10 @@ namespace C490_App.MVVM.Model
 
         }
 
-        public override void runExperiment(SerialPort _serialPort)
+        public override void runExperiment(ExperimentStore _serialPort)
 
         {
-            _serialPort.WriteLine("1");
+            _serialPort.serialPortWrapper.SerialPort.WriteLine("1");
             Trace.WriteLine("CA Experiment running");
         }
     }

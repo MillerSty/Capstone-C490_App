@@ -1,9 +1,7 @@
 ﻿using C490_App.MVVM.Model;
-using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO.Ports;
-using System.Text.RegularExpressions;
 
 namespace C490_App.Core
 {
@@ -64,55 +62,19 @@ namespace C490_App.Core
             }
             ledParameters = temp;
         }
-        int btnstate = 0;
+
         private SerialPort _serialPort;
-        public SerialPort mySerialPort { get { return _serialPort; } set { _serialPort = value; } }
-
-        /// <summary>
-        /// SimpleSerial communication.
-        /// Check if port is open, and if not open it and send btn state to turn on LED.
-        /// Does not close port.
-        /// </summary>
-        public void RunExperiment()
+        public SerialPort mySerialPort
         {
-            //List<string> comports = ComPortNames(vid, pid);
+            get { return _serialPort; }
+            set { _serialPort = value; }
+        }
 
-            try
-            {
-                if (!mySerialPort.IsOpen)
-                {
-                    //mySerialPort = new SerialPort("COM3", 9600);
-                    mySerialPort.BaudRate = 9600;
-                    mySerialPort.PortName = "COM3";
-                    mySerialPort.NewLine = "\r\n";
-                    mySerialPort.ReadTimeout = 500;
-                    //mySerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
-                    mySerialPort.Open();
-
-                }
-
-                //ExperimentLocal.Model.runExperiment(mySerialPort);
-                if (btnstate == 0)
-                {
-                    mySerialPort.Write("1");
-                    btnstate = 1;
-                }
-                else
-                {
-                    mySerialPort.Write("2");
-                    btnstate = 0;
-                }
-                //Adjust value if your output is not showing received data
-                int value = 50;
-                Thread.Sleep(value);
-
-            }
-            catch
-            {
-                //TODO this becomes a message box
-                Trace.WriteLine("Error with serial");
-            }
-
+        private SerialPortWrapper _serialPortWrapper;
+        public SerialPortWrapper serialPortWrapper
+        {
+            get { return _serialPortWrapper; }
+            set { _serialPortWrapper = value; }
         }
 
         /// <summary>
@@ -122,19 +84,11 @@ namespace C490_App.Core
         {
             //List<string> comports = ComPortNames(vid, pid);
 
-            try
+
+            //If serial is not open, open it
+
+            if (serialPortWrapper.Open())
             {
-                //If serial is not open, open it
-                if (!mySerialPort.IsOpen)
-                {
-                    //mySerialPort = new SerialPort("COM3", 9600);
-                    //mySerialPort.BaudRate = 9600;
-                    //mySerialPort.PortName = "COM3";
-                    //mySerialPort.NewLine = "\r\n";
-                    //mySerialPort.ReadTimeout = 500;
-                    //mySerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
-                    mySerialPort.Open();
-                }
                 //load target parameters
                 //led's -- Could be made into its own function?
                 int count = 0;
@@ -165,6 +119,7 @@ namespace C490_App.Core
                     }
                     else count++;
                 }
+                //Checks how many unused LED's
                 if (count == 50)
                 {
                     //TODO change to messagebox
@@ -181,90 +136,10 @@ namespace C490_App.Core
                 }
 
                 //run experiment
-                Model.runExperiment(mySerialPort);
+                Model.runExperiment(this);
                 Trace.WriteLine("Out of sleep");
-                //mySerialPort.Close();
-
-
-            }
-            catch
-            {
-                Trace.WriteLine("Error with serial");
-            }
-
-        }
-        /// <summary>
-        /// This is for initializing the serial port
-        /// </summary>
-        public void initSerial()
-        {
-            if (!mySerialPort.IsOpen)
-            {
-                mySerialPort.BaudRate = 9600;
-                mySerialPort.PortName = "COM3";
-                mySerialPort.NewLine = "\r\n";
-                mySerialPort.ReadTimeout = 50;
-                //mySerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
             }
         }
-
-        public void assignEventHandler()
-        {
-
-        }
-        /// <summary>
-        /// This handles receiving data from the mCU
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e">SerialDataReceivedEventArgs</param>
-        private void OnDataRecieved(object sender, SerialDataReceivedEventArgs e)
-        {
-            var serialDevice = sender as SerialPort;
-            var indata = serialDevice.ReadExisting();
-
-            Trace.WriteLine(indata.ToString());
-            Thread.Sleep(50);
-        }
-        /// <summary>
-        /// Used for getting comports used by VID/PID
-        /// </summary>
-        /// <param name="VID"></param>
-        /// <param name="PID"></param>
-        /// <returns></returns>
-        static List<string> ComPortNames()
-        {
-            String VID = "";
-            String PID = "";
-            String pattern = String.Format("^VID_{0}.PID_{1}", VID, PID);
-            Regex _rx = new Regex(pattern, RegexOptions.IgnoreCase);
-            List<string> comports = new List<string>();
-
-            RegistryKey rk1 = Registry.LocalMachine;
-            RegistryKey rk2 = rk1.OpenSubKey("SYSTEM\\CurrentControlSet\\Enum");
-
-            foreach (String s3 in rk2.GetSubKeyNames())
-            {
-
-                RegistryKey rk3 = rk2.OpenSubKey(s3);
-                foreach (String s in rk3.GetSubKeyNames())
-                {
-                    if (_rx.Match(s).Success)
-                    {
-                        RegistryKey rk4 = rk3.OpenSubKey(s);
-                        foreach (String s2 in rk4.GetSubKeyNames())
-                        {
-                            RegistryKey rk5 = rk4.OpenSubKey(s2);
-                            RegistryKey rk6 = rk5.OpenSubKey("Device Parameters");
-                            comports.Add((string)rk6.GetValue("PortName"));
-                        }
-                    }
-                }
-            }
-            return comports;
-        }
-
-        String vid = "2341";
-        String pid = "0043";
 
     }
 }

@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
         <ScrollViewer Name="ServerScroll"
                       n:AutoScrollBehavior.AutoScroll="True">
-            <TextBlock Grid.Row="0" Text="{Binding UserEntryRead, Mode=OneWay}" TextAlignment="Justify" TextWrapping="Wrap"/>
+            <TextBlock Grid.Row="0" Text="{Binding UserEntryRead, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Justify" TextWrapping="Wrap"/>
         </ScrollViewer>
         <TextBox Grid.Row="1" Text="{Binding UserEntry, UpdateSourceTrigger=PropertyChanged}">
             <TextBox.InputBindings>

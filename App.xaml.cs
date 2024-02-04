@@ -30,8 +30,9 @@ namespace C490_App
 
             _serviceProvider = services.BuildServiceProvider();
             var ExperimentStore = _serviceProvider.GetService<ExperimentStore>();
-            ExperimentStore.mySerialPort = new System.IO.Ports.SerialPort();
-            ExperimentStore.initSerial();
+            //ExperimentStore.serialPortWrapper = new System.IO.Ports.SerialPort();
+            ExperimentStore.serialPortWrapper = new SerialPortWrapper(new System.IO.Ports.SerialPort());
+            ExperimentStore.serialPortWrapper.initSerial();
 
         }
         protected override void OnStartup(StartupEventArgs e)
