@@ -1,6 +1,6 @@
-﻿using C490_App.MVVM.View;
+﻿using C490_App.Core;
+using C490_App.MVVM.View;
 using C490_App.MVVM.ViewModel;
-using C490_App.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
@@ -18,8 +18,6 @@ namespace C490_App
         {
             IServiceCollection services = new ServiceCollection();
 
-            services.AddSingleton<INavigationService, NavigationService>();// not sure we using this
-
             services.AddSingleton<HomeFrameViewModel>(); //might be neccesary to delete
 
             services.AddSingleton<HomeFrame>(provider => new HomeFrame
@@ -29,8 +27,12 @@ namespace C490_App
 
             services.AddSingleton<ExperimentStore>();
 
-            _serviceProvider = services.BuildServiceProvider();
 
+            _serviceProvider = services.BuildServiceProvider();
+            var ExperimentStore = _serviceProvider.GetService<ExperimentStore>();
+            //ExperimentStore.serialPortWrapper = new System.IO.Ports.SerialPort();
+            ExperimentStore.serialPortWrapper = new SerialPortWrapper(new System.IO.Ports.SerialPort());
+            ExperimentStore.serialPortWrapper.initSerial();
 
         }
         protected override void OnStartup(StartupEventArgs e)

@@ -1,7 +1,10 @@
 ﻿using C490_App.Core;
 using C490_App.MVVM.Model;
 using C490_App.MVVM.View;
+using Microsoft.Win32;
 using System.Diagnostics;
+using System.IO.Ports;
+using System.Text.RegularExpressions;
 using System.Windows;
 
 namespace C490_App.MVVM.ViewModel
@@ -71,6 +74,7 @@ namespace C490_App.MVVM.ViewModel
         public RelayCommand openGraphResults { get; set; }
         public RelayCommand imexParams { get; set; }
         public RelayCommand serialCommunicate { get; set; }
+        public RelayCommand openDebug { get; set; }
 
         private ExperimentStore ExperimentLocal { get; set; }
 
@@ -97,24 +101,67 @@ namespace C490_App.MVVM.ViewModel
             openGraphResults = new RelayCommand(o => GraphOpen(), o => true);
             imexParams = new RelayCommand(o => IMEXParams(o), o => true);
             serialCommunicate = new RelayCommand(o => SimpleSerial(), o => true);
+            openDebug = new RelayCommand(o => OpenDebug(), o => true);
         }
+        private void OpenDebug()
+        {
 
             DebugView debug = new DebugView();
             debug.DataContext = new DebugViewModel(ExperimentLocal);
             debug.Show();
         }
 
+        //btn state is just for simple led turn on
+        private int btnstate { get; set; } = 0;
+
+        private SerialPort mySerialPort = new SerialPort();
         /// <summary>
-        /// This handles receiving data from the mCU
+        /// This is for getting a fixed VID, PID
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e">SerialDataReceivedEventArgs</param>
-        private void OnDataRecieved(object sender, SerialDataReceivedEventArgs e)
+        /// <param name="VID"></param>
+        /// <param name="PID"></param>
+        /// <returns></returns>
+        static List<string> ComPortNames(String VID, String PID)
         {
-            var serialDevice = sender as SerialPort;
-            var indata = serialDevice.ReadExisting();
-            Trace.WriteLine(indata.ToString());
-            Thread.Sleep(50);
+            String pattern = String.Format("^VID_{0}.PID_{1}", VID, PID);
+            Regex _rx = new Regex(pattern, RegexOptions.IgnoreCase);
+            List<string> comports = new List<string>();
+
+            RegistryKey rk1 = Registry.LocalMachine;
+            RegistryKey rk2 = rk1.OpenSubKey("SYSTEM\\CurrentControlSet\\Enum");
+
+            foreach (String s3 in rk2.GetSubKeyNames())
+            {
+
+                RegistryKey rk3 = rk2.OpenSubKey(s3);
+                foreach (String s in rk3.GetSubKeyNames())
+                {
+                    if (_rx.Match(s).Success)
+                    {
+                        RegistryKey rk4 = rk3.OpenSubKey(s);
+                        foreach (String s2 in rk4.GetSubKeyNames())
+                        {
+                            RegistryKey rk5 = rk4.OpenSubKey(s2);
+                            RegistryKey rk6 = rk5.OpenSubKey("Device Parameters");
+                            comports.Add((string)rk6.GetValue("PortName"));
+                        }
+                    }
+                }
+            }
+            return comports;
+        }
+
+        String vid = "2341";
+        String pid = "0043";
+
+        /// <summary>
+        /// SimpleSerial communication.
+        /// Check if port is open, and if not open it and send btn state to turn on LED.
+        /// Does not close port.
+        /// </summary>
+        private void SimpleSerial()
+        {
+            ExperimentLocal.RunExperiment12();
         }
 
         /// <summary>
@@ -128,7 +175,7 @@ namespace C490_App.MVVM.ViewModel
             if (bool.Parse(imexBool.ToString()))
             {
                 Trace.WriteLine("Import params in ViewModel");
-                bool returned = fileHandler.fileImport(ExperimentLocal, LedArrayViewModel);
+                bool returned = fileHandler.fileImport(ExperimentLocal, LedArrayViewModel, PotentiostatViewModel);
                 if (returned)
                 {
                     if (ExperimentLocal.Model.GetType().Name.ToString().ToLower().Contains("dpv"))
@@ -162,6 +209,7 @@ namespace C490_App.MVVM.ViewModel
             else
             {
                 Trace.WriteLine("Export in VM");
+                ExperimentLocal.checkLeds();
                 fileHandler.fileExport(ExperimentLocal);
             }
 
@@ -187,7 +235,6 @@ namespace C490_App.MVVM.ViewModel
             LEDParameterFrame ledFrameNavigation = new LEDParameterFrame();
 
             ExperimentLocal.UpdateLEDS(LedArrayViewModel.isSelected);
-
             ledFrameNavigation.DataContext = new LEDParameterViewModel(ExperimentLocal);
             ledFrameNavigation.Show();
         }

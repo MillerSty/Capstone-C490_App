@@ -2,7 +2,7 @@
 {
     public class LEDParameter : Parameter
     {
-        public string name { get; set; }
+        public string Name { get; set; }
         public uint GIntensity { get => gIntensity; set => gIntensity = value; }
         public uint Address { get => address; set => address = value; }
         public bool IsSelected { get => isSelected; set => isSelected = value; }
@@ -15,8 +15,13 @@
         public uint BOffTime { get => bOffTime; set => bOffTime = value; }
         public uint BIntensity { get => bIntensity; set => bIntensity = value; }
 
-        private UInt32 address;
+        public readonly UInt32 Gaddress = 0b01;
+        public readonly UInt32 Raddress = 0b10;
+        public readonly UInt32 Baddress = 0b11;
+
         private bool isSelected;
+
+        private UInt32 address;
 
         private UInt32 gOnTime;
         private UInt32 gOffTime;
@@ -37,7 +42,7 @@
         {
             Address = addr;
             IsSelected = set;
-            this.name = name;
+            this.Name = name;
 
             GIntensity = 0;
             GOnTime = 0;
