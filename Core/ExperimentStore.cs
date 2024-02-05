@@ -95,7 +95,7 @@ namespace C490_App.Core
                 String ExperimentLeds = "";
                 foreach (LEDParameter _leds in ledParameters)
                 {
-                    if (_leds.IsSelected)
+                    /*if (_leds.IsSelected)
                     {
                         string name = _leds.Address.ToString();
                         string gaddress = _leds.Gaddress.ToString();
@@ -116,7 +116,39 @@ namespace C490_App.Core
                         ExperimentLeds += " " + gaddress + " " + gintensity + " " + gon + " " + goff;
                         ExperimentLeds += " " + raddress + " " + rintensity + " " + ron + " " + roff;
                         ExperimentLeds += " " + baddress + " " + bintensity + " " + bon + " " + boff;
+                    }*/
+                    // for demo
+                    if (_leds.IsSelected)
+                    {
+                        List<char> serialSendChars = new List<char>();
+
+                        serialSendChars.Add('L');
+                        serialSendChars.Add(_leds.Address.ToString()[0]);
+                        if (_leds.Address.ToString().Length > 1)
+                        {
+                            serialSendChars.Add(_leds.Address.ToString()[1]);
+                        }
+
+                        if (_leds.GOnTime >= 1)
+                        {
+                            serialSendChars.Add('G');
+                        }
+                        else if (_leds.ROnTime >= 1)
+                        {
+                            serialSendChars.Add('R');
+                        }
+                        else if (_leds.BOnTime >= 1)
+                        {
+                            serialSendChars.Add('B');
+                        }
+                        serialSendChars.AddRange(serialPortWrapper.SerialPort.NewLine.ToCharArray());
+                        foreach (var bytes in serialSendChars)
+                        {                
+                            _serialPortWrapper.SerialPort.Write(bytes.ToString());
+                        }
                     }
+                    // for demo
+
                     else count++;
                 }
                 //Checks how many unused LED's
