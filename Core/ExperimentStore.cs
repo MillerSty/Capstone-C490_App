@@ -82,11 +82,7 @@ namespace C490_App.Core
         /// </summary>
         public void RunExperiment12()
         {
-            //List<string> comports = ComPortNames(vid, pid);
-
-
             //If serial is not open, open it
-
             if (serialPortWrapper.Open())
             {
                 //load target parameters

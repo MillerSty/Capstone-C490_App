@@ -46,16 +46,19 @@ namespace C490_App.Core
         /// </summary>
         public void initSerial()
         {
-            if (!SerialPort.IsOpen)
-            {
-                //will use ComPortNames[0] in future to set String comPort
-                String comPort = "COM3";
-                SerialPort.PortName = comPort;
-                SerialPort.BaudRate = 9600;
-                SerialPort.NewLine = "\r\n";
-                SerialPort.ReadTimeout = 50;
-                SerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
-            }
+            //if (!SerialPort.IsOpen)
+            //{
+            //will use ComPortNames[0] in future to set String comPort
+            List<String> gs = ComPortNames(); //try catch for no return?
+            String comPort = "COM3";
+            SerialPort.PortName = comPort;
+            SerialPort.BaudRate = 9600;
+            SerialPort.NewLine = "\r\n";
+            SerialPort.StopBits = StopBits.One;
+            SerialPort.Parity = Parity.None;
+            SerialPort.ReadTimeout = 50;
+            SerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
+            // }
         }
         public bool Open()
         {
@@ -111,7 +114,6 @@ namespace C490_App.Core
                     test.Add(debugData);
                 }
                 debugInfo = test;
-
             }
 
             Trace.WriteLine(indata.ToString());
@@ -127,12 +129,15 @@ namespace C490_App.Core
         /// <returns></returns>
         private String vid = "2341";
         private String pid = "0043";
-        private String SerialNumber = "";
+        private String SerialNumber = "950323034373518061D1";
+
         static List<string> ComPortNames()
         {
-            String VID = "";
-            String PID = "";
-            String pattern = String.Format("^VID_{0}.PID_{1}", VID, PID);
+            String vid = "2341";
+            String pid = "0043";
+            String SerialNumber = "950323034373518061D1";
+
+            String pattern = String.Format("^VID_{0}.PID_{1}", vid, pid);
             Regex _rx = new Regex(pattern, RegexOptions.IgnoreCase);
             List<string> comports = new List<string>();
 
@@ -145,6 +150,7 @@ namespace C490_App.Core
                 RegistryKey rk3 = rk2.OpenSubKey(s3);
                 foreach (String s in rk3.GetSubKeyNames())
                 {
+                    //if subkey names= serial then we good
                     if (_rx.Match(s).Success)
                     {
                         RegistryKey rk4 = rk3.OpenSubKey(s);

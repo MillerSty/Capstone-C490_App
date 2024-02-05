@@ -38,7 +38,7 @@ namespace C490_App.MVVM.Model
             //from start voltage(sV) increase by stepSize every scanRate...
             if (startVoltage <= voltageThresholdOne) runForward();
             else runBackward();
-            //if sV greater then voltageThresholdOne decrease by steo size every scanRate until... 0?
+            //if sV greater then voltageThresholdOne decrease by step size every scanRate until... 0?
 
         }
 
