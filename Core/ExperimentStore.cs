@@ -142,7 +142,9 @@ namespace C490_App.Core
                         serialSendChars.AddRange(serialPortWrapper.SerialPort.NewLine.ToCharArray());
                         foreach (var bytes in serialSendChars)
                         {
+                            char check = bytes;
                             _serialPortWrapper.SerialPort.Write(bytes.ToString());
+                            Thread.Sleep(50);
                         }
                     }
                     // for demo

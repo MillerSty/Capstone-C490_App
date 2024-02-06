@@ -16,8 +16,8 @@ namespace C490_App.Core
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(e));
         }
 
-        private List<String> _debugInfo;
-        public List<String> debugInfo
+        private String _debugInfo;
+        public String debugInfo
         {
             get { return _debugInfo; }
             set
@@ -56,7 +56,7 @@ namespace C490_App.Core
             SerialPort.NewLine = "\r\n";
             SerialPort.StopBits = StopBits.One;
             SerialPort.Parity = Parity.None;
-            SerialPort.ReadTimeout = 50;
+            //SerialPort.ReadTimeout = 50;
             SerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
             // }
         }
@@ -104,17 +104,18 @@ namespace C490_App.Core
             var serialDevice = sender as SerialPort;
             var indata = serialDevice.ReadLine(); //operation timed out due to too large?
 
-            List<String> data = indata.Split(',').ToList();
-            if (data[0].Equals("D"))
-            {
-                List<String> test = new List<string>();
-                foreach (string debugData in data.Skip(1))
-                {
-                    Trace.WriteLine(debugData);
-                    test.Add(debugData);
-                }
-                debugInfo = test;
-            }
+           // List<String> data = indata.Split(',').ToList();
+           // if (data[0].Equals("D"))
+           // {
+                //List<String> test = new List<string>();
+               // foreach (string debugData in data.Skip(1))
+               // {
+                   // Trace.WriteLine(debugData);
+                   // test.Add(debugData);
+               // }
+               
+                debugInfo = indata;
+           // }
 
             Trace.WriteLine(indata.ToString());
             Thread.Sleep(50);

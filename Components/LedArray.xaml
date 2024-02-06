@@ -38,6 +38,7 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0"
                    Grid.ColumnSpan="11"
+                     FontSize="15" 
                    Text="Individual LED Selection"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"

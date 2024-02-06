@@ -151,10 +151,12 @@ namespace C490_App.Core
                     //{
                     //    Trace.WriteLine(pot);
                     //}
-
-                    experimentRecords[0].setIsEnabled();
-                    ExperimentLocal.Model = experimentRecords[0];
-
+                    //system out of range for importing -> deselecting LED -> importing
+                    if (experimentRecords.Count() > 0)
+                    {
+                        experimentRecords[0].setIsEnabled();
+                        ExperimentLocal.Model = experimentRecords[0];
+                    }
                 }
                 return true;
 
