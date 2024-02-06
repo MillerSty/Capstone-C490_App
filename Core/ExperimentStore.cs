@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO.Ports;
+using System.Windows;
 
 namespace C490_App.Core
 {
@@ -23,6 +24,7 @@ namespace C490_App.Core
         public ObservableCollection<string> pots { get; set; } = new();
         public ObservableCollection<LEDParameter> initLedArray()
         {
+            ledParameters = new ObservableCollection<LEDParameter>();
 
             for (int i = 0; i < 50; i++)
             {
@@ -139,7 +141,7 @@ namespace C490_App.Core
                         }
                         serialSendChars.AddRange(serialPortWrapper.SerialPort.NewLine.ToCharArray());
                         foreach (var bytes in serialSendChars)
-                        {                
+                        {
                             _serialPortWrapper.SerialPort.Write(bytes.ToString());
                         }
                     }
@@ -151,6 +153,11 @@ namespace C490_App.Core
                 if (count == 50)
                 {
                     //TODO change to messagebox
+                    var thread = new Thread(() =>
+                    {
+                        MessageBox.Show("Running purely potentiostat experiment", "No LED's selected");
+                    });
+                    thread.Start();
                     Trace.WriteLine("No leds selected, running purely potentiostat experiment");
                 }
 

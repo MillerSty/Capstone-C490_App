@@ -17,14 +17,14 @@
     </viewmodel:HomeFrameViewModel>
     </Window.DataContext>-->
 
-    <Grid >
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions >
             <ColumnDefinition Width="*"  />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
@@ -84,19 +84,17 @@
         </Border>-->
         <!--End menu bar-->
 
-        <StackPanel Margin="5, 10, 0, 0" Grid.Column="0"
-                    Grid.Row="1" Grid.RowSpan="3">
-            <Button Grid.Column="0"
-                    Grid.Row="1"
-                    Content="Set LED Parameters"
-                    Style="{StaticResource HomeButton}"
-                    Command="{Binding openWindowLED}">
+        <StackPanel Margin="5, 10, 0, 0" Grid.Column="0" Height="Auto" Width="Auto"
+                    Grid.Row="1" Grid.RowSpan="3" >
+            <Button
+                Content="Set LED Parameters"
+                Style="{StaticResource HomeButton}"
+                Command="{Binding openWindowLED}" MinWidth="40" MinHeight="40" MaxWidth="260" MaxHeight="120">
             </Button>
-            <Button Grid.Column="0"
-                    Grid.Row="1"
-                    Content="Set Experiment Parameters"
-                    Style="{StaticResource HomeButton}"
-                    Command="{Binding openWindow}">
+            <Button
+                Content="Set Experiment Parameters"
+                Style="{StaticResource HomeButton}"
+                Command="{Binding openWindow}">
             </Button>
 
 
@@ -128,17 +126,15 @@
                 <TextBlock FlowDirection="LeftToRight" Text="Chronoamperometry" Padding="0 0 50 0"></TextBlock>
             </CheckBox>
 
-            <Button Grid.Column="0"
-                    Grid.Row="1"
-                    Content="Start / Stop Experiment"
-                    Style="{StaticResource HomeButton}"
-                    Command="{Binding serialCommunicate}">
+            <Button
+                Content="Start / Stop Experiment"
+                Style="{StaticResource HomeButton}"
+                Command="{Binding serialCommunicate}">
             </Button>
-            <Button Grid.Column="0"
-                    Grid.Row="1"
-                    Content="View Graph Output"
-                    Style="{StaticResource HomeButton}"
-                    Command="{Binding openGraphResults}">
+            <Button
+                Content="View Graph Output"
+                Style="{StaticResource HomeButton}"
+                Command="{Binding openGraphResults}">
             </Button>
 
         </StackPanel>

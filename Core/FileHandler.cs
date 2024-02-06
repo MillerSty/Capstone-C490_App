@@ -40,6 +40,11 @@ namespace C490_App.Core
                     csv.Context.RegisterClassMap<CAMap>();
                     csv.Context.RegisterClassMap<LEDParameterMap>();
 
+                    //Clear current selections
+                    ExperimentLocal.initLedArray();
+                    ExperimentLocal.pots = new();
+                    ExperimentLocal.Model = new();
+
 
                     var experimentRecords = new List<ExperimentModel>();
                     var LEDRecords = new List<LEDParameter>();
@@ -93,7 +98,7 @@ namespace C490_App.Core
 
                                 string s = csv.GetField(0);
                                 ExperimentLocal.pots.Add(csv.GetField(0));
-                                Trace.WriteLine($"{s}");
+                                Trace.WriteLine($"Pot {s} added to experiment");
                                 break;
                         }
                     }
@@ -105,17 +110,47 @@ namespace C490_App.Core
                         LedArrayViewModel.isSelected[int.Parse(LED.Name)] = true;
 
                     }
+
+                    //CRASH HERE FOR IM-CHANGE-IM-CRASH
+                    //PotentiostatViewModel.potsActive = new();
+                    bool check = ExperimentLocal.pots.Any(s => s.Equals(PotentiostatViewModel.potsActive));
+
                     foreach (var pot in ExperimentLocal.pots)
                     {
+                        bool checky = false;
                         //run designated RelayCommand from Pot...ViewModel following methodology used in Pot...ViewModel
-                        PotentiostatViewModel.SelectedPotName = "Potentiostat " + pot;
+                        foreach (var potty in PotentiostatViewModel.potsActive)
+                        {
 
-                        RelayCommand switchL = new RelayCommand(
-                        o => PotentiostatViewModel.SwitchList(o, PotentiostatViewModel.potsActive, PotentiostatViewModel.potsInactive),
-                        o => true
-                        );
-                        switchL.Execute(this);
+                            if (potty == pot) //wtf is this doing 
+                            {
+                                checky = true;
+                                int pause = 100;
+                                break;
+                            }
+                            if (check)
+                            {
+                                break;
+                            }
+
+
+
+                        }
+                        if (!checky)
+                        {
+                            PotentiostatViewModel.SelectedPotName = pot;
+
+                            RelayCommand switchL = new RelayCommand(
+                            o => PotentiostatViewModel.SwitchList(o, PotentiostatViewModel.potsActive, PotentiostatViewModel.potsInactive),
+                            o => true
+                            );
+                            switchL.Execute(this);
+                        }
                     }
+                    //foreach (var pot in PotentiostatViewModel.SelectedPotName)
+                    //{
+                    //    Trace.WriteLine(pot);
+                    //}
 
                     experimentRecords[0].setIsEnabled();
                     ExperimentLocal.Model = experimentRecords[0];
@@ -143,6 +178,7 @@ namespace C490_App.Core
             {
                 if (saveFileDialogClose.FileName != "")
                 {
+                    //wrap in try catch
                     using (var writer = new StreamWriter(saveFileDialogClose.FileName))
                     using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
                     {
@@ -153,8 +189,16 @@ namespace C490_App.Core
                         csv.Context.RegisterClassMap<LEDParameterMap>();
 
                         var random = ExperimentLocal.ledParameters;
+                        List<LEDParameter> ledCulled = new List<LEDParameter>();
+                        foreach (var param in random)
+                        {
+                            if (param.IsSelected == true)
+                            {
+                                ledCulled.Add(param);
+                            }
+                        }
                         var switchType = ExperimentLocal.Model.GetType().Name.ToString();
-                        csv.WriteRecords<LEDParameter>(random);
+                        csv.WriteRecords<LEDParameter>(ledCulled);
                         csv.WriteField(",");
                         //csv.Flush();
 

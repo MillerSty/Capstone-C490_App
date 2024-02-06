@@ -26,7 +26,7 @@ namespace C490_App.MVVM.ViewModel
             {
                 _selectedPot = value;
                 //potsActive.Add(SelectedPot);
-                //OnPropertyChanged();
+                OnPropertyChanged();
             }
         }
         ExperimentStore ExperimentLocal { get; set; }

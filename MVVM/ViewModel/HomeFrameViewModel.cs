@@ -147,6 +147,7 @@ namespace C490_App.MVVM.ViewModel
 
                     else
                     {
+
                         Trace.WriteLine("Not valid experiment file");
                     }
                 }
@@ -163,7 +164,8 @@ namespace C490_App.MVVM.ViewModel
             else
             {
                 Trace.WriteLine("Export in VM");
-                ExperimentLocal.checkLeds();
+                //ExperimentLocal.checkLeds();
+                ExperimentLocal.UpdateLEDS(LedArrayViewModel.isSelected);
                 fileHandler.fileExport(ExperimentLocal);
             }
 
