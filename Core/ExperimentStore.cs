@@ -139,7 +139,7 @@ namespace C490_App.Core
                         {
                             serialSendChars.Add('B');
                         }
-                        serialSendChars.AddRange(serialPortWrapper.SerialPort.NewLine.ToCharArray());
+
                         foreach (var bytes in serialSendChars)
                         {
                             char check = bytes;

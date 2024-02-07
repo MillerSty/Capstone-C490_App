@@ -17,7 +17,7 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 _GonTime = value;
-                ExperimentLocal.ledParameters[SelectedIndex].GOnTime = (UInt32)_GonTime;
+                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].GOnTime = (UInt32)_GonTime;
 
                 OnPropertyChanged();
             }
@@ -30,7 +30,7 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 _GoffTime = value;
-                ExperimentLocal.ledParameters[SelectedIndex].GOffTime = (UInt32)_GoffTime;
+                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].GOffTime = (UInt32)_GoffTime;
                 OnPropertyChanged();
             }
         }
@@ -41,7 +41,7 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 _gIntensity = double.Floor(double.Parse(value)).ToString();
-                ExperimentLocal.ledParameters[SelectedIndex].GIntensity = UInt32.Parse(_gIntensity);
+                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].GIntensity = UInt32.Parse(_gIntensity);
                 OnPropertyChanged();
 
             }
@@ -54,7 +54,7 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 _RonTime = value;
-                ExperimentLocal.ledParameters[SelectedIndex].ROnTime = (UInt32)_RonTime;
+                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].ROnTime = (UInt32)_RonTime;
                 OnPropertyChanged();
             }
         }
@@ -66,7 +66,7 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 _RoffTime = value;
-                ExperimentLocal.ledParameters[SelectedIndex].ROffTime = (UInt32)_RoffTime;
+                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].ROffTime = (UInt32)_RoffTime;
                 OnPropertyChanged();
             }
         }
@@ -77,7 +77,7 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 _rIntensity = double.Floor(double.Parse(value)).ToString();
-                ExperimentLocal.ledParameters[SelectedIndex].RIntensity = UInt32.Parse(_rIntensity);
+                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].RIntensity = UInt32.Parse(_rIntensity);
                 OnPropertyChanged();
             }
 
@@ -90,7 +90,7 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 _BonTime = value;
-                ExperimentLocal.ledParameters[SelectedIndex].BOnTime = (UInt32)_BonTime;
+                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].BOnTime = (UInt32)_BonTime;
                 OnPropertyChanged();
             }
         }
@@ -103,7 +103,7 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 _BoffTime = value;
-                ExperimentLocal.ledParameters[SelectedIndex].BOffTime = (UInt32)_BoffTime;
+                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].BOffTime = (UInt32)_BoffTime;
                 OnPropertyChanged();
             }
         }
@@ -115,31 +115,33 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 _bIntensity = double.Floor(double.Parse(value)).ToString();
-                ExperimentLocal.ledParameters[SelectedIndex].BIntensity = UInt32.Parse(_bIntensity);
+                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].BIntensity = UInt32.Parse(_bIntensity);
                 OnPropertyChanged();
             }
 
         }
-        private int selectedIndex { get; set; } = 0;
+        private int selectedIndex { get; set; }
         public int SelectedIndex
         {
             get => selectedIndex;
             set
             {
                 selectedIndex = value;
-                BlueIntensity = ExperimentLocal.ledParameters[SelectedIndex].BIntensity.ToString();
-                BOnTime = (int)ExperimentLocal.ledParameters[SelectedIndex].BOnTime;
-                BOffTime = (int)ExperimentLocal.ledParameters[SelectedIndex].BOffTime;
+                int checkIndex = int.Parse(LEDS[selectedIndex]);
+                BlueIntensity = ExperimentLocal.ledParameters[checkIndex].BIntensity.ToString();
+                BOnTime = (int)ExperimentLocal.ledParameters[checkIndex].BOnTime;
+                BOffTime = (int)ExperimentLocal.ledParameters[checkIndex].BOffTime;
 
-                GreenIntensity = ExperimentLocal.ledParameters[SelectedIndex].GIntensity.ToString();
-                GOnTime = (int)ExperimentLocal.ledParameters[SelectedIndex].GOnTime;
-                GOffTime = (int)ExperimentLocal.ledParameters[SelectedIndex].GOffTime;
+                GreenIntensity = ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].GIntensity.ToString();
+                GOnTime = (int)ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].GOnTime;
+                GOffTime = (int)ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].GOffTime;
 
 
-                RedIntensity = ExperimentLocal.ledParameters[SelectedIndex].RIntensity.ToString();
-                ROnTime = (int)ExperimentLocal.ledParameters[SelectedIndex].ROnTime;
-                ROffTime = (int)ExperimentLocal.ledParameters[SelectedIndex].ROffTime;
-
+                RedIntensity = ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].RIntensity.ToString();
+                ROnTime = (int)ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].ROnTime;
+                ROffTime = (int)ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].ROffTime;
+                Trace.WriteLine("Selected: " + checkIndex);
+                Trace.WriteLine(ExperimentLocal.ledParameters[checkIndex].BIntensity.ToString());
                 OnPropertyChanged();
             }
         }
@@ -148,7 +150,11 @@ namespace C490_App.MVVM.ViewModel
         public ObservableCollection<String> LEDS
         {
             get => _leds;
-            set { _leds = value; OnPropertyChanged(); }
+            set
+            {
+                _leds = value;
+                OnPropertyChanged();
+            }
         }
 
         public RelayCommand Save { get; set; }
