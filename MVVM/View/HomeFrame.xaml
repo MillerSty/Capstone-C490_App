@@ -41,54 +41,147 @@
                 </MenuItem>
                 <MenuItem Header="_Export Experiment Parameters" Command="{Binding imexParams}" CommandParameter="false"/>
             </MenuItem>
-            <MenuItem Header="_Save Results" >
+            <MenuItem Header="_Save Results" Command="{Binding serialCommunicate}" >
             </MenuItem>
 
             <MenuItem Header="_Debug" Command="{Binding openDebug}" >
             </MenuItem>
         </Menu>
-        <!--KCLook into this-->
-        <!--<Border Grid.ColumnSpan="2"
-        Background="White"
-        BorderBrush="Gray"
-        BorderThickness="1" VerticalAlignment="Top">
 
-        <Grid HorizontalAlignment="Stretch" Background="Gray" VerticalAlignment="Top">
-        <Label Content=""
-        Foreground="Gray"
-        FontWeight="SemiBold"/>
 
-        <StackPanel HorizontalAlignment="Right"
-        Orientation="Horizontal">
-        <Button Width="20" Height="20"
-        Content="____"
-        Background="Transparent"
-        BorderThickness="0"
-        Foreground="Gray"
-        FontWeight="Bold"
-        Margin="0,0,0,1"/>
-        <Button Width="20" Height="20"
-        Content="O"
-        Background="Transparent"
-        BorderThickness="0"
-        Foreground="Gray"
-        FontWeight="Bold"/>
-        <Button Width="20" Height="20"
-        Content="X"
-        Background="Transparent"
-        BorderThickness="0"
-        Foreground="Gray"
-        FontWeight="Bold"/>
-        </StackPanel>
+        <!--<components:ScrollMenu Grid.Column="0" Grid.Row="1" Grid.RowSpan="3" DataContext="HomeFrameViewModel"/>-->
+        <Grid Background="White" Grid.Column="0" Grid.Row="1" Grid.RowSpan="3">
+
+
+            <ListView Width="Auto" HorizontalAlignment="Stretch">
+                <Expander Header="LED Parameter"  >
+                    <ListView x:Name="led" ItemsSource="{Binding LEDS}" VerticalAlignment="Stretch">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <!--<StackPanel Orientation="Vertical" Height="Auto" >-->
+                                <Expander VerticalAlignment="Stretch">
+                                    <Expander.Header >
+                                        <Run Text="{Binding Path=.,StringFormat={} LED {0}}"/>
+                                    </Expander.Header>
+                                    <Grid  VerticalAlignment="Stretch">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox Text="Green " IsEnabled="False" Grid.Row="0" Width="Auto"/>
+                                        <TextBox Text="On (s): "  Grid.Row="1" Grid.Column="0" Width="Auto"/>
+                                        <TextBox Text="Off (s): " Grid.Row="1" Grid.Column="1" Width="Auto"/>
+                                        <TextBox Text="Intensity: "  Grid.Row="2" Grid.Column="0" Width="Auto"/>
+                                        <Slider   Grid.Row="2" Grid.Column="1"  Width="100"
+                                                Orientation="Horizontal"
+                                                SmallChange="1"  LargeChange="10"
+                                                Maximum="250"
+                                                TickFrequency="10" TickPlacement="BottomRight"
+                                                Foreground="#33008000"  Background="#33008000"/>
+
+                                        <TextBox Text="Red " IsEnabled="False" Grid.Row="3" Width="Auto"/>
+                                        <TextBox Text="On (s): "  Grid.Row="4" Grid.Column="0" Width="Auto"/>
+                                        <TextBox Text="Off (s): " Grid.Row="4" Grid.Column="1" Width="Auto"/>
+                                        <TextBox Text="Intensity: "  Grid.Row="5" Grid.Column="0" Width="Auto"/>
+                                        <Slider   Grid.Row="5" Grid.Column="1"  Width="100"
+                                                Orientation="Horizontal"
+                                                SmallChange="1"  LargeChange="10"
+                                                Maximum="250"
+                                                TickFrequency="10" TickPlacement="BottomRight"
+                                                Foreground="#33F15B5B"  Background="#33F15B5B"/>
+
+                                        <TextBox Text="Blue " IsEnabled="False" Grid.Row="6" Width="Auto"/>
+                                        <TextBox Text="On (s): "  Grid.Row="7" Grid.Column="0" Width="Auto"/>
+                                        <TextBox Text="Off (s): " Grid.Row="7" Grid.Column="1" Width="Auto"/>
+                                        <TextBox Text="Intensity: "  Grid.Row="8" Grid.Column="0" Width="Auto"/>
+                                        <Slider   Grid.Row="8" Grid.Column="1"  Width="100"
+                                                Orientation="Horizontal"
+                                                SmallChange="1"  LargeChange="10"
+                                                Maximum="250"
+                                                TickFrequency="10" TickPlacement="BottomRight"
+                                                Foreground="#335F93FB"  Background="#335F93FB"/>
+
+                                    </Grid>
+
+                                </Expander>
+
+                                <!--<Expander Header="{Binding Path=LEDS, UpdateSourceTrigger=PropertyChanged   }"
+                                HeaderStringFormat=" LED {0}+ FUCK" Content="{Binding LEDS}" ContentStringFormat="LED {0}"/>-->
+
+                                <!--</StackPanel>-->
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Expander>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <CheckBox Margin="10 10 00 0 " Grid.Row="0" Command="{Binding ExperimentCheck}" CommandParameter="cv" FlowDirection="RightToLeft" HorizontalAlignment="Left" IsChecked="{Binding cvEnabled, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" >
+                        <CheckBox.Resources>
+                            <Style TargetType="{x:Type Path}">
+                                <Setter Property="FlowDirection" Value="LeftToRight" />
+                            </Style>
+                        </CheckBox.Resources>
+                        <TextBlock FlowDirection="LeftToRight" Text="Cyclic Voltammetry" Padding="0 0 60 0"></TextBlock>
+                    </CheckBox>
+
+                    <CheckBox Command="{Binding ExperimentCheck}" Grid.Row="1"  CommandParameter="dpv" Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left" IsChecked="{Binding dpvEnabled, UpdateSourceTrigger=PropertyChanged}">
+                        <CheckBox.Resources>
+                            <Style TargetType="{x:Type Path}">
+                                <Setter Property="FlowDirection" Value="LeftToRight" />
+                            </Style>
+                        </CheckBox.Resources>
+                        <TextBlock FlowDirection="LeftToRight" Text="Differential Pulse Voltammetry" Padding="0 0 0 0"></TextBlock>
+                    </CheckBox>
+
+                    <CheckBox Command="{Binding ExperimentCheck}" Grid.Row="2"  CommandParameter="ca" Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left" IsChecked="{Binding caEnabled, Mode=TwoWay}">
+                        <CheckBox.Resources>
+                            <Style TargetType="{x:Type Path}">
+                                <Setter Property="FlowDirection" Value="LeftToRight" />
+                            </Style>
+                        </CheckBox.Resources>
+                        <TextBlock FlowDirection="LeftToRight" Text="Chronoamperometry" Padding="0 0 50 0"></TextBlock>
+                    </CheckBox>
+
+                </Grid>
+
+
+                <Expander Header="Set Experiment Parameters" Width="259">
+                    <ListBox >
+                        <ListBoxItem>Item 1</ListBoxItem>
+                        <ListBoxItem>Item 2</ListBoxItem>
+                        <ListBoxItem>Item 3</ListBoxItem>
+                        <ListBoxItem>Item 4</ListBoxItem>
+                        <ListBoxItem>Item 5</ListBoxItem>
+                        <ListBoxItem>Item 6</ListBoxItem>
+                        <ListBoxItem>Item 7</ListBoxItem>
+                        <ListBoxItem>Item 8</ListBoxItem>
+                        <ListBoxItem>Item 9</ListBoxItem>
+                        <ListBoxItem>Item 10</ListBoxItem>
+                    </ListBox>
+                </Expander>
+            </ListView>
+
         </Grid>
-        </Border>-->
-        <!--End menu bar-->
-
 
 
         <!--This is the LedArray, and pot grid
         It will bind itno HomeFrameViewModel, onto its own ViewModel object-->
-        <components:LedArray Grid.Column="1" Grid.Row="1" Padding="20" DataContext="{Binding LedArrayViewModel}" />
+        <components:LedArray Grid.Column="1" Grid.Row="1" Padding="20" DataContext="{Binding LedArrayViewModel}"  />
         <components:PotentioStatSelect Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Padding="20" DataContext="{Binding PotentiostatViewModel}" />
         <!--<ListBox Grid.Row="1" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.RowSpan="3"/>-->
     </Grid>

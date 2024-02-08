@@ -1,6 +1,7 @@
 ﻿using C490_App.Core;
 using C490_App.MVVM.Model;
 using C490_App.MVVM.View;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows;
 
@@ -74,7 +75,54 @@ namespace C490_App.MVVM.ViewModel
         public RelayCommand openDebug { get; set; }
 
         private ExperimentStore ExperimentLocal { get; set; }
+        private ObservableCollection<String> _leds { get; set; } = new();
+        public ObservableCollection<String> LEDS
+        {
+            get => _leds;
+            set
+            {
+                checky();
+                //check();
+                _leds = value;
+                OnPropertyChanged();
+            }
+        }
+        private ObservableCollection<String> name { get; set; } = new();
+        public ObservableCollection<String> Names
+        {
+            get => name;
+            set
+            {
+                name = value;
+                OnPropertyChanged();
+            }
+        }
+        public void check() // maybe do this with data trigger ?
+        {
 
+            _leds = new ObservableCollection<string>(new List<String>(50));
+            foreach (var led in ExperimentLocal.ledParameters)
+            {
+                if (led.IsSelected)
+                {
+                    _leds.Add(led.Name);
+                }
+            }
+
+        }
+        public void checky() // maybe do this with data trigger ?
+        {
+
+            //_leds = new ObservableCollection<string>(new List<String>(50));
+            foreach (var led in ExperimentLocal.ledParameters)
+            {
+                if (led.IsSelected)
+                {
+                    _leds.Add(led.Name);
+                }
+            }
+
+        }
 
         /// <summary>
         /// HomeFrameViewModel's constructor. Stores ExperimentSingleton locally.
@@ -84,6 +132,11 @@ namespace C490_App.MVVM.ViewModel
         public HomeFrameViewModel(ExperimentStore ExperimentSingleton)
         {
             ExperimentLocal = ExperimentSingleton;
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    name.Add("Hello " + i);
+            //}
+            //check();
 
             _caModel = new CAModel();
             _dpvModel = new DPVModel();
@@ -115,7 +168,9 @@ namespace C490_App.MVVM.ViewModel
         /// </summary>
         private void SimpleSerial()
         {
-            ExperimentLocal.RunExperiment12();
+            name.Add("Hello " + 101);
+            checky();
+            //ExperimentLocal.RunExperiment12();
         }
 
         /// <summary>
