@@ -128,6 +128,8 @@ namespace C490_App.MVVM.ViewModel
             {
                 selectedIndex = value;
                 int checkIndex = int.Parse(LEDS[selectedIndex]);
+
+
                 BlueIntensity = ExperimentLocal.ledParameters[checkIndex].BIntensity.ToString();
                 BOnTime = (int)ExperimentLocal.ledParameters[checkIndex].BOnTime;
                 BOffTime = (int)ExperimentLocal.ledParameters[checkIndex].BOffTime;
@@ -167,8 +169,9 @@ namespace C490_App.MVVM.ViewModel
         {
             ExperimentLocal = ExperimentSingleton;
             check();
-            Save = new RelayCommand(o => save(), o => true);
+            SelectedIndex = 0;
 
+            Save = new RelayCommand(o => save(), o => true);
             Cancel = new RelayCommand(o => this.cancel(o), o => true);
         }
         public void check() // maybe do this with data trigger ?
