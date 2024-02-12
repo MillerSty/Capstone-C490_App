@@ -16,14 +16,15 @@ using OxyPlot.Wpf;
 using System.Windows;
 using System.Reflection.Metadata;
 using System.Windows.Media;
+using Microsoft.Win32;
 
 namespace C490_App.MVVM.ViewModel
 {
     public class GraphFrameViewModel : ViewModelBase
     {
         public PlotModel plotModel;
-        private ObservableCollection<CsvFileInfo> csvFilesInfo;
-        private string selectedCsvFileName;
+        private ObservableCollection<PlotItem> csvListBox;
+        //private string selectedCsvListBox;
         private bool isSelectAllChecked;
         private MarkerType selectedMarkerType = MarkerType.Circle;
 
@@ -52,34 +53,35 @@ namespace C490_App.MVVM.ViewModel
             }
         }
 
-        public ObservableCollection<CsvFileInfo> CsvFilesInfo
+        public ObservableCollection<PlotItem> CsvListBox
         {
-            get { return csvFilesInfo; }
+            get { return csvListBox; }
             set
             {
-                if (csvFilesInfo != value)
+                if (csvListBox != value)
                 {
-                    csvFilesInfo = value;
-                    OnPropertyChanged(nameof(CsvFilesInfo));
+                    csvListBox = value;
+                    OnPropertyChanged(nameof(CsvListBox));
                 }
             }
         }
 
-        public string SelectedCsvFileName
+        /*// NEEDS TO BE CHANGED
+        public string SelectedCsvListBox
         {
-            get { return selectedCsvFileName; }
+            get { return selectedCsvListBox; }
             set
             {
-                if (selectedCsvFileName != value)
+                if (selectedCsvListBox != value)
                 {
-                    selectedCsvFileName = value;
-                    OnPropertyChanged(nameof(SelectedCsvFileName));
+                    selectedCsvListBox = value;
+                    OnPropertyChanged(nameof(SelectedCsvListBox));
 
                     // Load and plot the selected CSV file
-                    PlotCsvFile(SelectedCsvFileName);
+                    PlotCsvFile(SelectedCsvListBox);
                 }
             }
-        }
+        }*/
 
         public RelayCommand LoadSelectedCsv { get; set; }
         public RelayCommand ToggleCsvVisibility { get; set; }
@@ -87,22 +89,24 @@ namespace C490_App.MVVM.ViewModel
         public RelayCommand ResetSelectedCheckboxes { get; set; }
         public RelayCommand ResetPlotAxes { get; set; }
         public RelayCommand MarkerTypeClick { get; set; }
+        public RelayCommand ImportData { get; set; }
 
         public GraphFrameViewModel()
         {
-            LoadCsvFileNames();
             InitializePlotModel();
+            CsvListBox = new ObservableCollection<PlotItem>();
             LoadSelectedCsv = new RelayCommand(o => ExecuteLoadSelectedCsv(o), o => true);
             ToggleCsvVisibility = new RelayCommand(o => ExecuteToggleCsvVisibility(o), o => true);
             SelectAll = new RelayCommand(o => ExecuteSelectAll(o), o => true);
             ResetSelectedCheckboxes = new RelayCommand(o => ExecuteResetSelectedCheckboxes(o), o => true);
             ResetPlotAxes = new RelayCommand(o => ExecuteResetPlotAxes(o), o => true);
             MarkerTypeClick = new RelayCommand(o => ExecuteMarkerTypeClick(o), o => true);
+            ImportData = new RelayCommand(o => ExecuteImportData(o), o => true);
         }
 
         private void ExecuteMarkerTypeClick(object o)
         {
-            string menuItemName = o as string;
+            string menuItemName = (string)o;
 
             switch (menuItemName)
             {
@@ -124,7 +128,7 @@ namespace C490_App.MVVM.ViewModel
                 default:
                     break;
             }
-            ReloadVisibleCsvFiles();
+            ReloadVisiblePlotItems();
 
         }
 
@@ -145,16 +149,16 @@ namespace C490_App.MVVM.ViewModel
 
             if (IsSelectAllChecked)
             {
-                foreach (var fileInfo in CsvFilesInfo)
+                foreach (var plotItem in CsvListBox)
                 {
-                    fileInfo.IsVisible = true;
+                    plotItem.IsVisible = true;
                 }
             }
             else
             {
-                foreach (var fileInfo in CsvFilesInfo)
+                foreach (var plotItem in CsvListBox)
                 {
-                    fileInfo.IsVisible = false;
+                    plotItem.IsVisible = false;
                 }
             }
         }
@@ -172,16 +176,16 @@ namespace C490_App.MVVM.ViewModel
                     // Handle the "Select All" checkbox state change
                     if (value)
                     {
-                        foreach (var fileInfo in CsvFilesInfo)
+                        foreach (var plotItem in CsvListBox)
                         {
-                            fileInfo.IsVisible = true;
+                            plotItem.IsVisible = true;
                         }
                     }
                     else
                     {
-                        foreach (var fileInfo in CsvFilesInfo)
+                        foreach (var plotItem in CsvListBox)
                         {
-                            fileInfo.IsVisible = false;
+                            plotItem.IsVisible = false;
                         }
                     }
 
@@ -193,124 +197,119 @@ namespace C490_App.MVVM.ViewModel
         {
             isSelectAllChecked = false;
             OnPropertyChanged(nameof(IsSelectAllChecked));
-            foreach (var csvFileInfo in CsvFilesInfo)
+            foreach (var csvListBox in CsvListBox)
             {
-                csvFileInfo.IsVisible = false;
+                csvListBox.IsVisible = false;
             }
         }
 
+        private void ExecuteImportData(object o)
+        {
+            string initialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.Split(new[] { "\\bin\\" }, StringSplitOptions.None)[0], "Resources", "CSVDATA");
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "CSV Files (*.csv)|*.csv";
+
+            openFileDialog.InitialDirectory = initialDirectory;
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                // Use FileCSVImport class to read data from CSV
+                ReadDataStructureModel dataStructure = FileCSVImport.ReadDataToArr(openFileDialog.FileName);
+                
+                if (dataStructure != null && dataStructure.xData != null && dataStructure.yData != null && dataStructure.TableIdentifiers != null)
+                {
+                    // Create a new PlotItem for each pair of xData and yData
+                    for (int i = 0; i < dataStructure.xData.Count && i < dataStructure.yData.Count && i < dataStructure.TableIdentifiers.Count; i++)
+                    {
+                        // Check if xData and yData for the current index are not null
+                        if (dataStructure.xData[i] != null && dataStructure.yData[i] != null)
+                        {
+                            // Create a new PlotItem using the xData and yData for each table
+                            PlotItem plotItem = new PlotItem
+                            {
+                                XData = dataStructure.xData[i],
+                                YData = dataStructure.yData[i],
+                                PlotDisplayName = "Potentiostat" + dataStructure.TableIdentifiers[i].ToString()
+                            };
+
+                            CsvListBox.Add(plotItem);
+                            OnPropertyChanged(nameof(CsvListBox));
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Error: xData or yData is null for index {i}.");
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Error reading CSV file or data is null.");
+                }
+            }
+        }
 
         private void ExecuteLoadSelectedCsv(object o)
         {
             // Handle the execution of the LoadSelectedCsvCommand
-            PlotCsvFile(SelectedCsvFileName);
+            PlotListBoxItem();
         }
 
         private void ExecuteToggleCsvVisibility(object o)
         {
             // Handle the execution of the ToggleCsvVisibilityCommand
-            if (o is CsvFileInfo csvFileInfo)
+            if (o is PlotItem csvPlotItem)
             {
-                csvFileInfo.IsVisible = !csvFileInfo.IsVisible;
+                csvPlotItem.IsVisible = !csvPlotItem.IsVisible;
             }
         }
 
-        // Dictionnary for file string colours
-        private Dictionary<string, OxyColor> fileColors = new Dictionary<string, OxyColor>();
-        private Random rand = new Random();
 
         private void InitializePlotModel()
         {
             PlotModel = new PlotModel();
 
+            // NEEDS TO BE CHANGED set title using axis names from csv file
             PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-Axis" });
             PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-Axis" });
         }
 
-        private void LoadCsvFileNames()
+
+        private void CsvListBox_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            string appFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.Split(new[] { "\\bin\\" }, StringSplitOptions.None)[0], "Resources", "CSV Readings");
-
-            string[] csvFiles = Directory.GetFiles(appFolder, "*.csv");
-
-            CsvFilesInfo = new ObservableCollection<CsvFileInfo>(
-                csvFiles.Select(csvFile => new CsvFileInfo { FileName = Path.GetFileNameWithoutExtension(csvFile), IsVisible = false })
-            );
-
-            foreach (var fileInfo in CsvFilesInfo)
+            if (e.PropertyName == nameof(PlotItem.IsVisible))
             {
-                fileInfo.PropertyChanged += CsvFileInfo_PropertyChanged;
+                ReloadVisiblePlotItems();
             }
         }
 
-        private void CsvFileInfo_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(CsvFileInfo.IsVisible))
-            {
-                ReloadVisibleCsvFiles();
-            }
-        }
-
-        private void ReloadVisibleCsvFiles()
+        // NEEDS TO BE CHANGED
+        // function to reload the visible plot items
+        private void ReloadVisiblePlotItems()
         {
             // Clear existing series in the plot
             PlotModel.Series.Clear();
 
-            // Add visible CSV files to the plot
-            foreach (var csvFileInfo in CsvFilesInfo.Where(info => info.IsVisible))
-            {
-                PlotCsvFile(csvFileInfo.FileName);
-            }
+            // NEEDS TO BE CHANGED
+            // Reload data 
+
 
             // Refresh the plot
             PlotModel.InvalidatePlot(true);
         }
 
-        public void PlotCsvFile(string csvFileName)
+        // NEEDS TO BE CHANGED
+        // function to plot the selected listbox item
+        public void PlotListBoxItem()
         {
-            string appFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.Split(new[] { "\\bin\\" }, StringSplitOptions.None)[0], "Resources", "CSV Readings");
-            string csvFilePath = Path.Combine(appFolder, $"{csvFileName}.csv");
 
-            using (var reader = new StreamReader(csvFilePath))
-            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-            {
-                var records = csv.GetRecords<CsvReadingsModel>();
-
-                var lineSeries = new LineSeries
-                {
-                    Title = csvFileName,
-                    MarkerType = SelectedMarkerType,
-                };
-
-                // Use existing color or generate a new one and store it
-                if (!fileColors.TryGetValue(csvFileName, out OxyColor seriesColor))
-                {
-                    seriesColor = OxyColor.FromRgb((byte)rand.Next(0, 256), (byte)rand.Next(0, 256), (byte)rand.Next(0, 256));
-                    fileColors.Add(csvFileName, seriesColor);
-                }
-
-                lineSeries.Color = seriesColor;
-
-                var fileInfo = CsvFilesInfo.FirstOrDefault(info => info.FileName == csvFileName);
-                if (fileInfo != null)
-                {
-                    fileInfo.Color = seriesColor;
-                }
-
-
-                foreach (var record in records)
-                {
-                    lineSeries.Points.Add(new DataPoint(record.X, record.Y));
-                }
-
-                PlotModel.Series.Add(lineSeries);
-
-            }
         }
     }
 
-    public class CsvFileInfo : ViewModelBase
+    // NEEDS TO BE CHANGED
+    public class PlotItem : ViewModelBase
     {
+        private Dictionary<string, OxyColor> fileColors = new Dictionary<string, OxyColor>();
+
         private bool isVisible;
         private OxyColor color;
         private SolidColorBrush wpfColor;
@@ -342,7 +341,7 @@ namespace C490_App.MVVM.ViewModel
             }
         }
 
-        public string FileName { get; set; }
+        public string PlotDisplayName { get; set; }
 
         public bool IsVisible
         {
@@ -356,6 +355,37 @@ namespace C490_App.MVVM.ViewModel
                 }
             }
         }
-    }
 
+        // Properties to store X and Y data points
+        public List<double> XData { get; set; }
+        public List<double> YData { get; set; }
+
+        // Default constructor
+        public PlotItem()
+        {
+            Color = GetRandomOxyColor();
+            IsVisible = true;
+        }
+
+        // Constructor with parameters
+        public PlotItem(ReadDataStructureModel data, int tableIndex)
+            : this()
+        {
+            // Set the display name as "Potentiostat" + unique table ID
+            PlotDisplayName = "Potentiostat " + data.TableIdentifiers[tableIndex].ToString();
+
+            // Set X and Y data points
+            XData = data.xData[tableIndex];
+            YData = data.yData[tableIndex];
+        }
+
+        private static OxyColor GetRandomOxyColor()
+        {
+            Random rand = new Random();
+            byte[] rgb = new byte[3];
+            rand.NextBytes(rgb);
+            return OxyColor.FromRgb(rgb[0], rgb[1], rgb[2]);
+        }
+    }
 }
+
