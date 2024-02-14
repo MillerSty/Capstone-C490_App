@@ -23,6 +23,7 @@
             </MenuItem>
             <MenuItem Header="_Plot options">
                 <MenuItem Header="Reset Plot Axes" Command="{Binding ResetPlotAxes}"/>
+                <MenuItem Header="Randomize Colour" Command="{Binding RandomizeColours}" />
                 <MenuItem Header="None" Command="{Binding MarkerTypeClick}" CommandParameter="None"/>
                 <MenuItem Header="Circle" Command="{Binding MarkerTypeClick}" CommandParameter="Circle"/>
                 <MenuItem Header="Square" Command="{Binding MarkerTypeClick}" CommandParameter="Square"/>

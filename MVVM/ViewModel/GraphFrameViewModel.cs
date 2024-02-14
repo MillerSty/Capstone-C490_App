@@ -24,7 +24,6 @@ namespace C490_App.MVVM.ViewModel
     {
         public PlotModel plotModel;
         private ObservableCollection<PlotItem> csvListBox;
-        //private string selectedCsvListBox;
         private bool isSelectAllChecked;
         private MarkerType selectedMarkerType = MarkerType.Circle;
 
@@ -73,7 +72,7 @@ namespace C490_App.MVVM.ViewModel
         public RelayCommand ResetPlotAxes { get; set; }
         public RelayCommand MarkerTypeClick { get; set; }
         public RelayCommand ImportData { get; set; }
-
+        public RelayCommand RandomizeColours { get; set; }
         public GraphFrameViewModel()
         {
             InitializePlotModel();
@@ -85,8 +84,19 @@ namespace C490_App.MVVM.ViewModel
             ResetPlotAxes = new RelayCommand(o => ExecuteResetPlotAxes(o), o => true);
             MarkerTypeClick = new RelayCommand(o => ExecuteMarkerTypeClick(o), o => true);
             ImportData = new RelayCommand(o => ExecuteImportData(o), o => true);
+            RandomizeColours = new RelayCommand(o => ExecuteRandomizeColours(o), o => true);
         }
+        private void ExecuteRandomizeColours(object o)
+        {
+            // Iterate through CsvListBox and randomize colors
+            foreach (var csvListBoxItem in CsvListBox)
+            {
+                csvListBoxItem.Color = PlotItem.GetRandomOxyColor();
+            }
 
+            // Refresh the plot
+            ReloadVisiblePlotItems();
+        }
         private void ExecuteMarkerTypeClick(object o)
         {
             string menuItemName = (string)o;
@@ -353,9 +363,7 @@ namespace C490_App.MVVM.ViewModel
                 if (color != value)
                 {
                     color = value;
-                    WpfColor = new SolidColorBrush(OxyColor.FromRgb(color.R, color.G, color.B).ToColor());
-                    OnPropertyChanged(nameof(Color));
-                }
+                    WpfColor = new SolidColorBrush(OxyColor.FromRgb(color.R, color.G, color.B).ToColor());                }
             }
         }
 
@@ -370,8 +378,6 @@ namespace C490_App.MVVM.ViewModel
                 {
                     isVisible = value;
                     OnPropertyChanged(nameof(IsVisible));
-                    OnPropertyChanged(nameof(WpfColor));
-
                 }
             }
         }
@@ -396,12 +402,35 @@ namespace C490_App.MVVM.ViewModel
             YData = data.yData[tableIndex];
         }
 
-        private static OxyColor GetRandomOxyColor()
+        public static OxyColor GetRandomOxyColor()
         {
             Random rand = new Random();
             byte[] rgb = new byte[3];
-            rand.NextBytes(rgb);
+
+            // Generate colors until a suitable one is found
+            do
+            {
+                rand.NextBytes(rgb);
+            } while (IsColorTooLight(rgb));
+
             return OxyColor.FromRgb(rgb[0], rgb[1], rgb[2]);
+        }
+
+        // Check if the color is too light (close to white)
+        private static bool IsColorTooLight(byte[] rgb)
+        {
+            const double LightnessThreshold = 0.7; // Adjust as needed
+
+            // Convert to HSL (Hue, Saturation, Lightness) color space
+            double r = rgb[0] / 255.0;
+            double g = rgb[1] / 255.0;
+            double b = rgb[2] / 255.0;
+
+            double min = Math.Min(Math.Min(r, g), b);
+            double max = Math.Max(Math.Max(r, g), b);
+            double lightness = (min + max) / 2;
+
+            return lightness > LightnessThreshold;
         }
     }
 }
