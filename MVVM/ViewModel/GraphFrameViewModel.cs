@@ -201,6 +201,7 @@ namespace C490_App.MVVM.ViewModel
                 
                 if (dataStructure != null && dataStructure.xData != null && dataStructure.yData != null && dataStructure.TableIdentifiers != null)
                 {
+                    CsvListBox.Clear();
                     // Create a new PlotItem for each pair of xData and yData
                     for (int i = 0; i < dataStructure.xData.Count && i < dataStructure.yData.Count && i < dataStructure.TableIdentifiers.Count; i++)
                     {
