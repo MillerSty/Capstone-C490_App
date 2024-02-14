@@ -73,6 +73,7 @@ namespace C490_App.MVVM.ViewModel
         public RelayCommand MarkerTypeClick { get; set; }
         public RelayCommand ImportData { get; set; }
         public RelayCommand RandomizeColours { get; set; }
+        public RelayCommand OpenRecent { get; set; }
         public GraphFrameViewModel()
         {
             InitializePlotModel();
@@ -85,6 +86,48 @@ namespace C490_App.MVVM.ViewModel
             MarkerTypeClick = new RelayCommand(o => ExecuteMarkerTypeClick(o), o => true);
             ImportData = new RelayCommand(o => ExecuteImportData(o), o => true);
             RandomizeColours = new RelayCommand(o => ExecuteRandomizeColours(o), o => true);
+            OpenRecent = new RelayCommand(o => ExecuteOpenRecent(o), o => true);
+        }
+        private void ExecuteOpenRecent(object o)
+        {
+            string directoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.Split(new[] { "\\bin\\" }, StringSplitOptions.None)[0], "Resources", "CSVDATA");
+
+            // Get all CSV files in the directory
+            string[] csvFiles = Directory.GetFiles(directoryPath, "*.csv");
+
+            if (csvFiles.Length == 0)
+            {
+                MessageBox.Show("No CSV files found in the directory.");
+                return;
+            }
+
+            // Extract dates from filenames and find the most recent one
+            DateTime mostRecentDate = DateTime.MinValue;
+            string mostRecentFilename = "";
+
+            foreach (string filePath in csvFiles)
+            {
+                string fileName = Path.GetFileNameWithoutExtension(filePath);
+
+                if (DateTime.TryParseExact(fileName, "yyyyMMddHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime currentDate))
+                {
+                    if (currentDate > mostRecentDate)
+                    {
+                        mostRecentDate = currentDate;
+                        mostRecentFilename = filePath;
+                    }
+                }
+            }
+
+            if (!string.IsNullOrEmpty(mostRecentFilename))
+            {
+                // Call ExecuteImportData with the most recent filename
+                ExecuteImportData(o, mostRecentFilename);
+            }
+            else
+            {
+                MessageBox.Show("Error finding the most recent CSV file.");
+            }
         }
         private void ExecuteRandomizeColours(object o)
         {
@@ -196,50 +239,61 @@ namespace C490_App.MVVM.ViewModel
             }
         }
 
-        private void ExecuteImportData(object o)
+        private void ExecuteImportData(object o, string filename = null)
         {
-            string initialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.Split(new[] { "\\bin\\" }, StringSplitOptions.None)[0], "Resources", "CSVDATA");
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "CSV Files (*.csv)|*.csv";
-
-            openFileDialog.InitialDirectory = initialDirectory;
-
-            if (openFileDialog.ShowDialog() == true)
+            if (filename == null)
             {
-                // Use FileCSVImport class to read data from CSV
-                ReadDataStructureModel dataStructure = FileCSVImport.ReadDataToArr(openFileDialog.FileName);
-                
-                if (dataStructure != null && dataStructure.xData != null && dataStructure.yData != null && dataStructure.TableIdentifiers != null)
+                string initialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.Split(new[] { "\\bin\\" }, StringSplitOptions.None)[0], "Resources", "CSVDATA");
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "CSV Files (*.csv)|*.csv";
+                if (openFileDialog.ShowDialog() == true)
                 {
-                    CsvListBox.Clear();
-                    // Create a new PlotItem for each pair of xData and yData
-                    for (int i = 0; i < dataStructure.xData.Count && i < dataStructure.yData.Count && i < dataStructure.TableIdentifiers.Count; i++)
-                    {
-                        // Check if xData and yData for the current index are not null
-                        if (dataStructure.xData[i] != null && dataStructure.yData[i] != null)
-                        {
-                            // Create a new PlotItem using the xData and yData for each table
-                            PlotItem plotItem = new PlotItem
-                            {
-                                XData = dataStructure.xData[i],
-                                YData = dataStructure.yData[i],
-                                PlotDisplayName = "Potentiostat " + dataStructure.TableIdentifiers[i].ToString()
-                            };
-                            plotItem.PropertyChanged += CsvListBox_PropertyChanged;
-                            CsvListBox.Add(plotItem);
-                            OnPropertyChanged(nameof(CsvListBox));
-
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Error: xData or yData is null for index {i}.");
-                        }
-                    }
+                    filename = openFileDialog.FileName;
                 }
                 else
                 {
-                    MessageBox.Show("Error reading CSV file or data is null.");
+                    return;
                 }
+            }
+
+            // Use FileCSVImport class to read data from CSV
+            ReadDataStructureModel dataStructure = FileCSVImport.ReadDataToArr(filename);
+
+            if (dataStructure != null && dataStructure.xData != null && dataStructure.yData != null && dataStructure.TableIdentifiers != null)
+            {
+                // clear old listbox data
+                CsvListBox.Clear();
+                // clear plot of old data
+                PlotModel.Series.Clear();
+                PlotModel.InvalidatePlot(true);
+
+                // Create a new PlotItem for each pair of xData and yData
+                for (int i = 0; i < dataStructure.xData.Count && i < dataStructure.yData.Count && i < dataStructure.TableIdentifiers.Count; i++)
+                {
+                    // Check if xData and yData for the current index are not null
+                    if (dataStructure.xData[i] != null && dataStructure.yData[i] != null)
+                    {
+                        // Create a new PlotItem using the xData and yData for each table
+                        PlotItem plotItem = new PlotItem
+                        {
+                            XData = dataStructure.xData[i],
+                            YData = dataStructure.yData[i],
+                            PlotDisplayName = "Potentiostat " + dataStructure.TableIdentifiers[i].ToString()
+                        };
+                        plotItem.PropertyChanged += CsvListBox_PropertyChanged;
+                        CsvListBox.Add(plotItem);
+                        OnPropertyChanged(nameof(CsvListBox));
+
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error: xData or yData is null for index {i}.");
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Error reading CSV file or data is null.");
             }
         }
 
@@ -333,7 +387,6 @@ namespace C490_App.MVVM.ViewModel
         }
     }
 
-    // NEEDS TO BE CHANGED
     public class PlotItem : ViewModelBase
     {
         private Dictionary<string, OxyColor> fileColors = new Dictionary<string, OxyColor>();
