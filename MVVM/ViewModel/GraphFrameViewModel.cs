@@ -66,23 +66,6 @@ namespace C490_App.MVVM.ViewModel
             }
         }
 
-        /*// NEEDS TO BE CHANGED
-        public string SelectedCsvListBox
-        {
-            get { return selectedCsvListBox; }
-            set
-            {
-                if (selectedCsvListBox != value)
-                {
-                    selectedCsvListBox = value;
-                    OnPropertyChanged(nameof(SelectedCsvListBox));
-
-                    // Load and plot the selected CSV file
-                    PlotCsvFile(SelectedCsvListBox);
-                }
-            }
-        }*/
-
         public RelayCommand LoadSelectedCsv { get; set; }
         public RelayCommand ToggleCsvVisibility { get; set; }
         public RelayCommand SelectAll { get; private set; }
@@ -229,11 +212,12 @@ namespace C490_App.MVVM.ViewModel
                             {
                                 XData = dataStructure.xData[i],
                                 YData = dataStructure.yData[i],
-                                PlotDisplayName = "Potentiostat" + dataStructure.TableIdentifiers[i].ToString()
+                                PlotDisplayName = "Potentiostat " + dataStructure.TableIdentifiers[i].ToString()
                             };
-
+                            plotItem.PropertyChanged += CsvListBox_PropertyChanged;
                             CsvListBox.Add(plotItem);
                             OnPropertyChanged(nameof(CsvListBox));
+
                         }
                         else
                         {
@@ -269,6 +253,7 @@ namespace C490_App.MVVM.ViewModel
             PlotModel = new PlotModel();
 
             // NEEDS TO BE CHANGED set title using axis names from csv file
+            PlotModel.Title = "";
             PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X-Axis" });
             PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Y-Axis" });
         }
@@ -279,18 +264,19 @@ namespace C490_App.MVVM.ViewModel
             if (e.PropertyName == nameof(PlotItem.IsVisible))
             {
                 ReloadVisiblePlotItems();
+                plotModel.ResetAllAxes();
+                PlotModel.InvalidatePlot(true);
             }
         }
 
-        // NEEDS TO BE CHANGED
         // function to reload the visible plot items
         private void ReloadVisiblePlotItems()
         {
             // Clear existing series in the plot
             PlotModel.Series.Clear();
 
-            // NEEDS TO BE CHANGED
             // Reload data 
+            PlotListBoxItem();
 
 
             // Refresh the plot
@@ -301,7 +287,38 @@ namespace C490_App.MVVM.ViewModel
         // function to plot the selected listbox item
         public void PlotListBoxItem()
         {
+            // Clear existing series in the plot
+            PlotModel.Series.Clear();
 
+            foreach (var csvListBoxItem in CsvListBox)
+            {
+                if (csvListBoxItem.IsVisible)
+                {
+                    // Create a new LineSeries
+                    LineSeries lineSeries = new LineSeries
+                    {
+                        Title = csvListBoxItem.PlotDisplayName,
+                        Color = csvListBoxItem.Color,
+                        MarkerType = SelectedMarkerType,
+                        //MarkerSize = 3,
+                        //MarkerStroke = OxyColors.Black,
+                        MarkerFill = csvListBoxItem.Color,
+                        //MarkerStrokeThickness = 1
+                    };
+
+                    // Add data points to the LineSeries
+                    for (int j = 0; j < csvListBoxItem.XData.Count; j++)
+                    {
+                        lineSeries.Points.Add(new DataPoint(csvListBoxItem.XData[j], csvListBoxItem.YData[j]));
+                    }
+
+                    // Add the LineSeries to the plot
+                    PlotModel.Series.Add(lineSeries);
+                }
+            }
+
+            // Refresh the plot
+            PlotModel.InvalidatePlot(true);
         }
     }
 
@@ -352,6 +369,8 @@ namespace C490_App.MVVM.ViewModel
                 {
                     isVisible = value;
                     OnPropertyChanged(nameof(IsVisible));
+                    OnPropertyChanged(nameof(WpfColor));
+
                 }
             }
         }
@@ -364,16 +383,13 @@ namespace C490_App.MVVM.ViewModel
         public PlotItem()
         {
             Color = GetRandomOxyColor();
-            IsVisible = true;
+            IsVisible = false;
         }
 
         // Constructor with parameters
         public PlotItem(ReadDataStructureModel data, int tableIndex)
             : this()
         {
-            // Set the display name as "Potentiostat" + unique table ID
-            PlotDisplayName = "Potentiostat " + data.TableIdentifiers[tableIndex].ToString();
-
             // Set X and Y data points
             XData = data.xData[tableIndex];
             YData = data.yData[tableIndex];
