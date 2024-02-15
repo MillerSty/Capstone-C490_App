@@ -17,10 +17,13 @@
 
         <!-- Menu Bar -->
         <Menu Grid.Row="0">
-            <MenuItem Header="_Options">
-                <MenuItem Header="Reset Plot Axes" Command="{Binding ResetPlotAxes}"/>
+            <MenuItem Header="_File">
+                <MenuItem Header="Import Data" Command="{Binding ImportData}"/>
+                <MenuItem Header="Open most recent" Command="{Binding OpenRecent}"/>
             </MenuItem>
-            <MenuItem Header="_Marker Type">
+            <MenuItem Header="_Plot options">
+                <MenuItem Header="Reset Plot Axes" Command="{Binding ResetPlotAxes}"/>
+                <MenuItem Header="Randomize Colour" Command="{Binding RandomizeColours}" />
                 <MenuItem Header="None" Command="{Binding MarkerTypeClick}" CommandParameter="None"/>
                 <MenuItem Header="Circle" Command="{Binding MarkerTypeClick}" CommandParameter="Circle"/>
                 <MenuItem Header="Square" Command="{Binding MarkerTypeClick}" CommandParameter="Square"/>
@@ -43,7 +46,7 @@
                 <StackPanel Background="LightGray">
                     <!-- Select All CheckBox -->
                     <CheckBox Content="Select All" IsChecked="{Binding IsSelectAllChecked}" />
-                    <ListBox x:Name="csvListBox" ItemsSource="{Binding CsvFilesInfo}">
+                    <ListBox x:Name="csvListBox" ItemsSource="{Binding CsvListBox}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -51,7 +54,7 @@
                                     <Border Width="16" Height="16" CornerRadius="8" Background="{Binding WpfColor}" Margin="0,0,5,0">
                                         <Ellipse />
                                     </Border>
-                                    <CheckBox Content="{Binding FileName}" IsChecked="{Binding IsVisible, Mode=TwoWay}" />
+                                    <CheckBox Content="{Binding PlotDisplayName}" IsChecked="{Binding IsVisible, Mode=TwoWay}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
