@@ -1,6 +1,6 @@
 ﻿using C490_App.Core;
 using C490_App.MVVM.Model;
-using CsvHelper;
+using Microsoft.Win32;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -11,7 +11,6 @@ using System.Globalization;
 using System.IO;
 using System.Windows;
 using System.Windows.Media;
-using Microsoft.Win32;
 
 namespace C490_App.MVVM.ViewModel
 {
@@ -321,26 +320,15 @@ namespace C490_App.MVVM.ViewModel
 
 
         private void CsvListBox_PropertyChanged(object sender, PropertyChangedEventArgs e)
-
-        private void LoadCsvFileNames()
         {
-            string appFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.Split(new[] { "\\bin\\" }, StringSplitOptions.None)[0], "Resources", "CSV Readings");
-
-            try
+            if (e.PropertyName == nameof(PlotItem.IsVisible))
             {
-                string[] csvFiles = Directory.GetFiles(appFolder, "*.csv");
-
-                CsvFilesInfo = new ObservableCollection<CsvFileInfo>(
-                    csvFiles.Select(csvFile => new CsvFileInfo { FileName = Path.GetFileNameWithoutExtension(csvFile), IsVisible = false })
-                );
-
-                foreach (var fileInfo in CsvFilesInfo)
-                {
-                    fileInfo.PropertyChanged += CsvFileInfo_PropertyChanged;
-                }
+                ReloadVisiblePlotItems();
+                plotModel.ResetAllAxes();
+                PlotModel.InvalidatePlot(true);
             }
-            catch (Exception ex) { MessageBox.Show("No files available"); }
         }
+
 
         private void CsvFileInfo_PropertyChanged(object sender, PropertyChangedEventArgs e)
 
@@ -435,7 +423,8 @@ namespace C490_App.MVVM.ViewModel
                 if (color != value)
                 {
                     color = value;
-                    WpfColor = new SolidColorBrush(OxyColor.FromRgb(color.R, color.G, color.B).ToColor());                }
+                    WpfColor = new SolidColorBrush(OxyColor.FromRgb(color.R, color.G, color.B).ToColor());
+                }
             }
         }
 
