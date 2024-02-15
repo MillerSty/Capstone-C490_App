@@ -29,8 +29,8 @@ namespace C490_App.MVVM.Model
             Trace.WriteLine("CV Experiment running");
 
             //little turn of turn off LED 
-            _serialPort.serialPortWrapper.SerialPort.Write(check.ToString());
-            check = ~check;
+            //_serialPort.serialPortWrapper.SerialPort.Write(check.ToString());
+            //check = ~check;
             //end little led turn on/off
 
             float temp_volt = 0;

@@ -17,7 +17,7 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 _GonTime = value;
-                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].GOnTime = (UInt32)_GonTime;
+                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].GOnTime = (ushort)_GonTime;
 
                 OnPropertyChanged();
             }
@@ -30,7 +30,7 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 _GoffTime = value;
-                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].GOffTime = (UInt32)_GoffTime;
+                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].GOffTime = (ushort)_GoffTime;
                 OnPropertyChanged();
             }
         }
@@ -41,7 +41,7 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 _gIntensity = double.Floor(double.Parse(value)).ToString();
-                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].GIntensity = UInt32.Parse(_gIntensity);
+                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].GIntensity = ushort.Parse(_gIntensity);
                 OnPropertyChanged();
 
             }
@@ -54,7 +54,7 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 _RonTime = value;
-                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].ROnTime = (UInt32)_RonTime;
+                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].ROnTime = (ushort)_RonTime;
                 OnPropertyChanged();
             }
         }
@@ -66,7 +66,7 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 _RoffTime = value;
-                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].ROffTime = (UInt32)_RoffTime;
+                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].ROffTime = (ushort)_RoffTime;
                 OnPropertyChanged();
             }
         }
@@ -77,7 +77,7 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 _rIntensity = double.Floor(double.Parse(value)).ToString();
-                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].RIntensity = UInt32.Parse(_rIntensity);
+                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].RIntensity = ushort.Parse(_rIntensity);
                 OnPropertyChanged();
             }
 
@@ -90,7 +90,7 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 _BonTime = value;
-                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].BOnTime = (UInt32)_BonTime;
+                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].BOnTime = (ushort)_BonTime;
                 OnPropertyChanged();
             }
         }
@@ -103,7 +103,7 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 _BoffTime = value;
-                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].BOffTime = (UInt32)_BoffTime;
+                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].BOffTime = (ushort)_BoffTime;
                 OnPropertyChanged();
             }
         }
@@ -115,7 +115,7 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 _bIntensity = double.Floor(double.Parse(value)).ToString();
-                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].BIntensity = UInt32.Parse(_bIntensity);
+                ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].BIntensity = ushort.Parse(_bIntensity);
                 OnPropertyChanged();
             }
 

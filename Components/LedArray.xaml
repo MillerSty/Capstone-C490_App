@@ -38,7 +38,7 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0"
                    Grid.ColumnSpan="11"
-                     FontSize="15" 
+                   FontSize="15"
                    Text="Individual LED Selection"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
@@ -357,63 +357,63 @@
 
         <CheckBox HorizontalAlignment="Right" Grid.Column="1" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20"  IsChecked="{Binding Path=isSelected[0], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  ></CheckBox>
 
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="1" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[1], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="1" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[2], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="1" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[3], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="1" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[4], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="1" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[10], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="1" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[20], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="1" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[30], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="1" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[40], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }" />
 
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="2" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[5], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="2" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[6], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="2" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[7], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="2" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[8], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="2" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[9], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="2" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[1], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="2" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[11], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="2" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[21], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="2" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[31], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="2" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[41], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="3" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[10], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="3" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[11], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="3" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[12], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="3" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[13], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="3" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[14], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="3" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[2], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="3" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[12], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="3" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[22], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="3" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[32], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="3" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[42], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="4" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[15], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="4" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[16], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="4" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[17], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="4" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[18], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="4" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[19], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="4" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[3], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="4" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[13], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="4" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[23], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="4" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[33], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="4" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[43], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="5" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[20], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="5" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[21], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="5" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[22], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="5" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[23], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="5" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[24], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="5" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[4], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="5" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[14], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="5" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[24], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="5" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[34], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="5" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[44], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="6" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[25], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="6" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[26], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="6" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[27], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="6" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[28], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="6" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[29], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="6" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[5], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="6" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[15], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="6" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[25], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="6" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[35], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="6" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[45], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="7" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[30], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="7" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[31], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="7" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[32], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="7" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[33], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="7" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[34], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="7" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[6], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="7" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[16], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="7" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[26], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="7" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[36], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="7" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[46], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="8" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[35], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="8" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[36], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="8" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[37], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="8" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[38], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="8" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[39], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="8" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[7], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="8" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[17], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="8" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[27], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="8" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[37], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="8" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[47], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="9" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[40], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="9" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[41], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="9" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[42], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="9" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[43], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="9" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[44], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="9" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[8], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="9" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[18], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="9" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[28], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="9" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[38], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="9" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[48], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="10" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[45], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="10" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[46], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="10" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[47], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <CheckBox HorizontalAlignment="Right"  Grid.Column="10" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[48], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="10" Grid.Row="2" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[9], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="10" Grid.Row="3" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[19], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="10" Grid.Row="4" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[29], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+        <CheckBox HorizontalAlignment="Right"  Grid.Column="10" Grid.Row="5" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[39], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
         <CheckBox HorizontalAlignment="Right"  Grid.Column="10" Grid.Row="6" Background="White" BorderBrush="Gray" Height="20" Width="20" IsChecked="{Binding Path=isSelected[49], UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
     </Grid>
 </UserControl>
