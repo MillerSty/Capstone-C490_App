@@ -1,9 +1,7 @@
 ﻿using C490_App.Core;
 using C490_App.MVVM.Model;
 using C490_App.MVVM.View;
-using C490_App.Services;
 using System.Diagnostics;
-using System.IO.Ports;
 using System.Windows;
 
 namespace C490_App.MVVM.ViewModel
@@ -73,6 +71,7 @@ namespace C490_App.MVVM.ViewModel
         public RelayCommand openGraphResults { get; set; }
         public RelayCommand imexParams { get; set; }
         public RelayCommand serialCommunicate { get; set; }
+        public RelayCommand openDebug { get; set; }
 
         private ExperimentStore ExperimentLocal { get; set; }
 
@@ -99,13 +98,15 @@ namespace C490_App.MVVM.ViewModel
             openGraphResults = new RelayCommand(o => GraphOpen(), o => true);
             imexParams = new RelayCommand(o => IMEXParams(o), o => true);
             serialCommunicate = new RelayCommand(o => SimpleSerial(), o => true);
+            openDebug = new RelayCommand(o => OpenDebug(), o => true);
         }
+        private void OpenDebug()
+        {
 
-
-        //btn state is just for simple led turn on
-        private int btnstate { get; set; } = 0;
-
-        private SerialPort mySerialPort = new SerialPort();
+            DebugView debug = new DebugView();
+            debug.DataContext = new DebugViewModel(ExperimentLocal);
+            debug.Show();
+        }
 
         /// <summary>
         /// SimpleSerial communication.
@@ -114,57 +115,7 @@ namespace C490_App.MVVM.ViewModel
         /// </summary>
         private void SimpleSerial()
         {
-            try
-            {
-                if (!mySerialPort.IsOpen)
-                {
-                    //mySerialPort = new SerialPort("COM3", 9600);
-                    mySerialPort.BaudRate = 9600;
-                    mySerialPort.PortName = "COM3";
-                    mySerialPort.NewLine = "\r\n";
-                    mySerialPort.ReadTimeout = 500;
-                    mySerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
-
-                    mySerialPort.Open();
-
-                }
-
-                ExperimentLocal.Model.runExperiment(mySerialPort);
-                if (btnstate == 0)
-                {
-                    mySerialPort.Write("1");
-                    btnstate = 1;
-                }
-                else
-                {
-                    mySerialPort.Write("2");
-                    btnstate = 0;
-                }
-                //Adjust value if your output is not showing received data
-                int value = 50;
-                Thread.Sleep(value);
-
-            }
-            catch
-            {
-                Trace.WriteLine("Error with serial");
-            }
-            //mySerialPort.Close();
-
-
-        }
-
-        /// <summary>
-        /// This handles receiving data from the mCU
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e">SerialDataReceivedEventArgs</param>
-        private void OnDataRecieved(object sender, SerialDataReceivedEventArgs e)
-        {
-            var serialDevice = sender as SerialPort;
-            var indata = serialDevice.ReadExisting();
-            Trace.WriteLine(indata.ToString());
-            Thread.Sleep(50);
+            ExperimentLocal.RunExperiment12();
         }
 
         /// <summary>
@@ -178,7 +129,7 @@ namespace C490_App.MVVM.ViewModel
             if (bool.Parse(imexBool.ToString()))
             {
                 Trace.WriteLine("Import params in ViewModel");
-                bool returned = fileHandler.fileImport(ExperimentLocal, LedArrayViewModel);
+                bool returned = fileHandler.fileImport(ExperimentLocal, LedArrayViewModel, PotentiostatViewModel);
                 if (returned)
                 {
                     if (ExperimentLocal.Model.GetType().Name.ToString().ToLower().Contains("dpv"))
@@ -196,6 +147,7 @@ namespace C490_App.MVVM.ViewModel
 
                     else
                     {
+
                         Trace.WriteLine("Not valid experiment file");
                     }
                 }
@@ -212,6 +164,8 @@ namespace C490_App.MVVM.ViewModel
             else
             {
                 Trace.WriteLine("Export in VM");
+                //ExperimentLocal.checkLeds();
+                ExperimentLocal.UpdateLEDS(LedArrayViewModel.isSelected);
                 fileHandler.fileExport(ExperimentLocal);
             }
 
@@ -237,7 +191,6 @@ namespace C490_App.MVVM.ViewModel
             LEDParameterFrame ledFrameNavigation = new LEDParameterFrame();
 
             ExperimentLocal.UpdateLEDS(LedArrayViewModel.isSelected);
-
             ledFrameNavigation.DataContext = new LEDParameterViewModel(ExperimentLocal);
             ledFrameNavigation.Show();
         }

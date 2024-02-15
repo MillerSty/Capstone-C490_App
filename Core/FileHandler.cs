@@ -1,6 +1,5 @@
 ﻿using C490_App.MVVM.Model;
 using C490_App.MVVM.ViewModel;
-using C490_App.Services;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.Win32;
@@ -20,7 +19,7 @@ namespace C490_App.Core
         /// <param name="ExperimentLocal"> Is the ExperimentStore</param>
         /// <param name="LedArrayViewModel"> Is used for updating LED values, should be done somewhere else</param>
         /// <returns>true for no errors, false for error</returns>
-        public bool fileImport(ExperimentStore ExperimentLocal, LedArrayViewModel LedArrayViewModel)
+        public bool fileImport(ExperimentStore ExperimentLocal, LedArrayViewModel LedArrayViewModel, PotentiostatViewModel PotentiostatViewModel)
         {
 
 
@@ -41,6 +40,11 @@ namespace C490_App.Core
                     csv.Context.RegisterClassMap<CAMap>();
                     csv.Context.RegisterClassMap<LEDParameterMap>();
 
+                    //Clear current selections
+                    ExperimentLocal.initLedArray();
+                    ExperimentLocal.pots = new();
+                    ExperimentLocal.Model = new();
+
 
                     var experimentRecords = new List<ExperimentModel>();
                     var LEDRecords = new List<LEDParameter>();
@@ -55,7 +59,7 @@ namespace C490_App.Core
                             continue;
                         }
 
-                        if (string.IsNullOrEmpty(csv.GetField(0)))
+                        if (string.IsNullOrEmpty(csv.GetField(0)) || csv.GetField(0).Equals(","))
                         {
                             isHeader = true;
                             continue;
@@ -65,6 +69,7 @@ namespace C490_App.Core
                         {
                             case "name":
                                 LEDRecords.Add(csv.GetRecord<LEDParameter>());
+
                                 break;
 
                             case "type":
@@ -88,7 +93,12 @@ namespace C490_App.Core
                                 }
                                 break;
 
-                            case "pot"://TODO add pots to the import param set-up
+                            case "Pot":
+                                int puase = 1000;
+
+                                string s = csv.GetField(0);
+                                ExperimentLocal.pots.Add(csv.GetField(0));
+                                Trace.WriteLine($"Pot {s} added to experiment");
                                 break;
                         }
                     }
@@ -96,13 +106,57 @@ namespace C490_App.Core
                     foreach (var LED in LEDRecords)
                     {
                         //LED.IsSelected = true;
-                        ExperimentLocal.ledParameters[int.Parse(LED.name)].setParamsFromFile(LED);
-                        LedArrayViewModel.isSelected[int.Parse(LED.name)] = true;
+                        ExperimentLocal.ledParameters[int.Parse(LED.Name)].setParamsFromFile(LED);
+                        LedArrayViewModel.isSelected[int.Parse(LED.Name)] = true;
+
                     }
 
-                    experimentRecords[0].setIsEnabled();
-                    ExperimentLocal.Model = experimentRecords[0];
+                    //CRASH HERE FOR IM-CHANGE-IM-CRASH
+                    //PotentiostatViewModel.potsActive = new();
+                    bool check = ExperimentLocal.pots.Any(s => s.Equals(PotentiostatViewModel.potsActive));
 
+                    foreach (var pot in ExperimentLocal.pots)
+                    {
+                        bool checky = false;
+                        //run designated RelayCommand from Pot...ViewModel following methodology used in Pot...ViewModel
+                        foreach (var potty in PotentiostatViewModel.potsActive)
+                        {
+
+                            if (potty == pot) //wtf is this doing 
+                            {
+                                checky = true;
+                                int pause = 100;
+                                break;
+                            }
+                            if (check)
+                            {
+                                break;
+                            }
+
+
+
+                        }
+                        if (!checky)
+                        {
+                            PotentiostatViewModel.SelectedPotName = pot;
+
+                            RelayCommand switchL = new RelayCommand(
+                            o => PotentiostatViewModel.SwitchList(o, PotentiostatViewModel.potsActive, PotentiostatViewModel.potsInactive),
+                            o => true
+                            );
+                            switchL.Execute(this);
+                        }
+                    }
+                    //foreach (var pot in PotentiostatViewModel.SelectedPotName)
+                    //{
+                    //    Trace.WriteLine(pot);
+                    //}
+                    //system out of range for importing -> deselecting LED -> importing
+                    if (experimentRecords.Count() > 0)
+                    {
+                        experimentRecords[0].setIsEnabled();
+                        ExperimentLocal.Model = experimentRecords[0];
+                    }
                 }
                 return true;
 
@@ -126,18 +180,29 @@ namespace C490_App.Core
             {
                 if (saveFileDialogClose.FileName != "")
                 {
+                    //wrap in try catch
                     using (var writer = new StreamWriter(saveFileDialogClose.FileName))
                     using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
                     {
+
                         csv.Context.RegisterClassMap<CVMap>();
                         csv.Context.RegisterClassMap<DPVMap>();
                         csv.Context.RegisterClassMap<CAMap>();
                         csv.Context.RegisterClassMap<LEDParameterMap>();
 
                         var random = ExperimentLocal.ledParameters;
+                        List<LEDParameter> ledCulled = new List<LEDParameter>();
+                        foreach (var param in random)
+                        {
+                            if (param.IsSelected == true)
+                            {
+                                ledCulled.Add(param);
+                            }
+                        }
                         var switchType = ExperimentLocal.Model.GetType().Name.ToString();
-                        csv.WriteRecords<LEDParameter>(random);
-                        csv.Flush();
+                        csv.WriteRecords<LEDParameter>(ledCulled);
+                        csv.WriteField(",");
+                        //csv.Flush();
 
                         switch (switchType)
                         {
@@ -145,15 +210,20 @@ namespace C490_App.Core
 
                                 List<DPVModel> enumerableModelDPV = [(DPVModel)ExperimentLocal.Model];
                                 csv.NextRecord();
+                                //writer.Flush();
                                 csv.WriteField("type");
 
                                 csv.WriteHeader<DPVModel>();
                                 csv.NextRecord();
+                                // writer.Flush();
 
                                 //TODO this could be split to just write DPV not DPVModel
                                 csv.WriteField(enumerableModelDPV[0].GetType().Name.ToString());
 
                                 csv.WriteRecords<DPVModel>(enumerableModelDPV);
+                                csv.WriteField(",");
+
+                                //writer.Flush();
                                 enumerableModelDPV.Clear();
                                 break;
                             case "CAModel":
@@ -169,6 +239,7 @@ namespace C490_App.Core
                                 csv.WriteField(enumerableModelCA[0].GetType().Name.ToString());
 
                                 csv.WriteRecords<CAModel>(enumerableModelCA);
+                                csv.WriteField(",");
                                 enumerableModelCA.Clear();
                                 break;
                             case "CVModel":
@@ -184,11 +255,24 @@ namespace C490_App.Core
                                 csv.WriteField(enumerableModelCV[0].GetType().Name.ToString());
 
                                 csv.WriteRecords<CVModel>(enumerableModelCV);
+                                csv.WriteField(",");
                                 enumerableModelCV.Clear();
                                 break;
                             default: break;
                         }
+                        //Write Pots by hand 
+                        csv.NextRecord();
+                        csv.WriteField("Pot");
+                        csv.NextRecord();
 
+                        foreach (var pot in ExperimentLocal.pots)
+                        {
+                            csv.WriteField(pot);
+                            csv.NextRecord();
+
+                        }
+
+                        csv.WriteField(",");
 
                     }
 
@@ -204,7 +288,7 @@ namespace C490_App.Core
         {
             public LEDParameterMap()
             {
-                Map(m => m.name).Name("name");
+                Map(m => m.Name).Name("name");
                 Map(m => m.GOnTime);
                 Map(m => m.GOffTime);
                 Map(m => m.GIntensity);

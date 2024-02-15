@@ -17,16 +17,16 @@
     </viewmodel:HomeFrameViewModel>
     </Window.DataContext>-->
 
-    <Grid >
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"  />
-            <ColumnDefinition Width="*" />
+        <Grid.ColumnDefinitions >
+            <ColumnDefinition Width="1*"  />
+            <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
 
         <!--Menu Bar-->
@@ -42,6 +42,9 @@
                 <MenuItem Header="_Export Experiment Parameters" Command="{Binding imexParams}" CommandParameter="false"/>
             </MenuItem>
             <MenuItem Header="_Save Results" >
+            </MenuItem>
+
+            <MenuItem Header="_Debug" Command="{Binding openDebug}" >
             </MenuItem>
         </Menu>
         <!--KCLook into this-->
@@ -81,30 +84,31 @@
         </Border>-->
         <!--End menu bar-->
 
-        <StackPanel Margin="5, 10, 0, 0" Grid.Column="0"
-                    Grid.Row="1" Grid.RowSpan="3">
-            <Button Grid.Column="0"
-                    Grid.Row="1"
-                    Content="Set LED Parameters"
-                    Style="{StaticResource HomeButton}"
-                    Command="{Binding openWindowLED}">
+        <StackPanel Margin="5, 10, 0, 0" Grid.Column="0" Height="Auto" Width="Auto"
+                    Grid.Row="1" Grid.RowSpan="3" >
+            <Button
+                Content="Set LED Parameters"
+                FontSize="15"
+                
+                Style="{StaticResource HomeButton}"
+                Command="{Binding openWindowLED}" Width="200">
             </Button>
-            <Button Grid.Column="0"
-                    Grid.Row="1"
-                    Content="Set Experiment Parameters"
-                    Style="{StaticResource HomeButton}"
-                    Command="{Binding openWindow}">
+            <Button
+                Content="Set Experiment Parameters"
+                FontSize="15"
+                Style="{StaticResource HomeButton}"
+                Command="{Binding openWindow}" Width="200">
             </Button>
 
 
             <!--Do a new stack panel for check boxes-->
-            <CheckBox Margin="10 10 00 0 " Command="{Binding ExperimentCheck}" CommandParameter="cv" FlowDirection="RightToLeft" HorizontalAlignment="Left" IsChecked="{Binding cvEnabled, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" >
+            <CheckBox Margin="10 10 0 0 " Command="{Binding ExperimentCheck}" CommandParameter="cv" FlowDirection="RightToLeft" HorizontalAlignment="Left" IsChecked="{Binding cvEnabled, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" >
                 <CheckBox.Resources>
                     <Style TargetType="{x:Type Path}">
                         <Setter Property="FlowDirection" Value="LeftToRight" />
                     </Style>
                 </CheckBox.Resources>
-                <TextBlock FlowDirection="LeftToRight" Text="Cyclic Voltammetry" Padding="0 0 60 0"></TextBlock>
+                <TextBlock FlowDirection="LeftToRight" FontSize="15" Text="Cyclic Voltammetry" Padding="0 0 75 0"></TextBlock>
             </CheckBox>
 
             <CheckBox Command="{Binding ExperimentCheck}" CommandParameter="dpv" Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left" IsChecked="{Binding dpvEnabled, UpdateSourceTrigger=PropertyChanged}">
@@ -113,7 +117,7 @@
                         <Setter Property="FlowDirection" Value="LeftToRight" />
                     </Style>
                 </CheckBox.Resources>
-                <TextBlock FlowDirection="LeftToRight" Text="Differential Pulse Voltammetry" Padding="0 0 0 0"></TextBlock>
+                <TextBlock FlowDirection="LeftToRight" FontSize="15"  Text="Differential Pulse Voltammetry" Padding="0 0 0 0"></TextBlock>
             </CheckBox>
 
             <CheckBox Command="{Binding ExperimentCheck}" CommandParameter="ca" Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left" IsChecked="{Binding caEnabled, Mode=TwoWay}">
@@ -122,20 +126,18 @@
                         <Setter Property="FlowDirection" Value="LeftToRight" />
                     </Style>
                 </CheckBox.Resources>
-                <TextBlock FlowDirection="LeftToRight" Text="Chronoamperometry" Padding="0 0 50 0"></TextBlock>
+                <TextBlock FlowDirection="LeftToRight" FontSize="15"  Text="Chronoamperometry" Padding="0 0 62 0"></TextBlock>
             </CheckBox>
 
-            <Button Grid.Column="0"
-                    Grid.Row="1"
-                    Content="Start / Stop Experiment"
-                    Style="{StaticResource HomeButton}"
-                    Command="{Binding serialCommunicate}">
+            <Button
+                Content="Start / Stop Experiment"  FontSize="15" 
+                Style="{StaticResource HomeButton}"
+                Command="{Binding serialCommunicate}" Width="200">
             </Button>
-            <Button Grid.Column="0"
-                    Grid.Row="1"
-                    Content="View Graph Output"
-                    Style="{StaticResource HomeButton}"
-                    Command="{Binding openGraphResults}">
+            <Button
+                Content="View Graph Output" FontSize="15" 
+                Style="{StaticResource HomeButton}"
+                Command="{Binding openGraphResults}" Width="200">
             </Button>
 
         </StackPanel>

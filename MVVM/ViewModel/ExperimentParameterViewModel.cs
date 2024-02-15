@@ -1,6 +1,5 @@
 ﻿using C490_App.Core;
 using C490_App.MVVM.Model;
-using C490_App.Services;
 using System.Diagnostics;
 
 namespace C490_App.MVVM.ViewModel
@@ -79,7 +78,7 @@ namespace C490_App.MVVM.ViewModel
 
         public void save()
         {
-            ExperimentLocal.Model = experiment;
+            //ExperimentLocal.Model = experiment;
             Trace.WriteLine("Saving");
         }
         public void cancel() { Trace.WriteLine("Canceling"); }

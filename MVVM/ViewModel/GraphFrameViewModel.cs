@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Windows.Input;
-using C490_App.Core;
+﻿using C490_App.Core;
 using C490_App.MVVM.Model;
 using CsvHelper;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using System.ComponentModel;
 using OxyPlot.Wpf;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Globalization;
+using System.IO;
 using System.Windows;
-using System.Reflection.Metadata;
 using System.Windows.Media;
 
 namespace C490_App.MVVM.ViewModel
@@ -231,16 +226,20 @@ namespace C490_App.MVVM.ViewModel
         {
             string appFolder = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.Split(new[] { "\\bin\\" }, StringSplitOptions.None)[0], "Resources", "CSV Readings");
 
-            string[] csvFiles = Directory.GetFiles(appFolder, "*.csv");
-
-            CsvFilesInfo = new ObservableCollection<CsvFileInfo>(
-                csvFiles.Select(csvFile => new CsvFileInfo { FileName = Path.GetFileNameWithoutExtension(csvFile), IsVisible = false })
-            );
-
-            foreach (var fileInfo in CsvFilesInfo)
+            try
             {
-                fileInfo.PropertyChanged += CsvFileInfo_PropertyChanged;
+                string[] csvFiles = Directory.GetFiles(appFolder, "*.csv");
+
+                CsvFilesInfo = new ObservableCollection<CsvFileInfo>(
+                    csvFiles.Select(csvFile => new CsvFileInfo { FileName = Path.GetFileNameWithoutExtension(csvFile), IsVisible = false })
+                );
+
+                foreach (var fileInfo in CsvFilesInfo)
+                {
+                    fileInfo.PropertyChanged += CsvFileInfo_PropertyChanged;
+                }
             }
+            catch (Exception ex) { MessageBox.Show("No files available"); }
         }
 
         private void CsvFileInfo_PropertyChanged(object sender, PropertyChangedEventArgs e)

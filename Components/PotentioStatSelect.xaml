@@ -30,6 +30,7 @@
 
         <TextBlock Text="Individual Potentiostat Selection"
                    FontWeight="Bold"
+                   FontSize="15" 
                    Grid.Row="0"
                    Grid.ColumnSpan="3"
                    VerticalAlignment="Center"
@@ -38,6 +39,7 @@
 
         <TextBlock Text="Inactive"
                    Grid.Column="0"
+                     FontSize="15" 
                    Grid.Row="1"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Bottom"/>
@@ -47,6 +49,7 @@
                   Height="auto"
                   Background="LightGray"
                   ItemsSource="{Binding Path = potsInactive}"
+                  ItemStringFormat="Potenstiostat {0}"
                   SelectedItem="{Binding SelectedPotName}"
                   BorderThickness="2"
                   BorderBrush="Gray">
@@ -83,6 +86,7 @@
                   Height="auto"
                   Background="LightGray"
                   ItemsSource="{Binding Path = potsActive}"
+                  ItemStringFormat="Potenstiostat {0}"
                   SelectedItem="{Binding SelectedPotName}"
                   BorderThickness="2"
                   BorderBrush="Gray"
