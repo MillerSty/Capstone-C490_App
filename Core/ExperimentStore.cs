@@ -173,7 +173,7 @@ namespace C490_App.Core
                 }
 
                 //run experiment
-                Model.runExperiment(this);
+                //Model.runExperiment(this);
                 Trace.WriteLine("Out of sleep");
             }
         }
