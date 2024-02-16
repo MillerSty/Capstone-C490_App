@@ -155,6 +155,7 @@ namespace C490_App.Core
                     ExperimentPots += " " + pots;
                 }
 
+
                 //run experiment check if its not base experiment
                 if (!Model.GetType().ToString().Equals("C490_App.MVVM.Model.ExperimentModel"))
                 {
@@ -170,6 +171,7 @@ namespace C490_App.Core
                 {
                     showMessageBox("Running purely LED experiment", "No Experiment selected");
                 }
+
 
             }
         }
