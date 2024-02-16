@@ -5,9 +5,9 @@ namespace C490_App.MVVM.View
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class HomeFrame : Window
+    public partial class HomeView : Window
     {
-        public HomeFrame()
+        public HomeView()
         {
 
             InitializeComponent();

@@ -1,6 +1,5 @@
 ﻿using C490_App.Core;
 using System.ComponentModel;
-using System.Diagnostics;
 
 
 namespace C490_App.MVVM.ViewModel
@@ -33,16 +32,7 @@ namespace C490_App.MVVM.ViewModel
         }
         private void A_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Trace.WriteLine("Property biatch");
-            //if (_ExperimentStore.debugInfo.Count > 0)
-           // {
-                //serEntryRead = "Reply: ";
-                //foreach (string data in _ExperimentStore.debugInfo)
-               // {
-                    UserEntryRead = _ExperimentStore.debugInfo+"\n";
-               // }
-           // }
-
+            UserEntryRead = _ExperimentStore.debugInfo + "\n";
         }
         private SerialPortWrapper _experimentStore;
         public SerialPortWrapper _ExperimentStore

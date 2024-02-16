@@ -18,11 +18,11 @@ namespace C490_App
         {
             IServiceCollection services = new ServiceCollection();
 
-            services.AddSingleton<HomeFrameViewModel>(); //might be neccesary to delete
+            services.AddSingleton<HomeViewModel>(); //might be neccesary to delete
 
-            services.AddSingleton<HomeFrame>(provider => new HomeFrame
+            services.AddSingleton<HomeView>(provider => new HomeView
             {
-                DataContext = provider.GetRequiredService<HomeFrameViewModel>()
+                DataContext = provider.GetRequiredService<HomeViewModel>()
             });
 
             services.AddSingleton<ExperimentStore>();
@@ -38,8 +38,8 @@ namespace C490_App
         protected override void OnStartup(StartupEventArgs e)
         {
             var k = _serviceProvider.GetRequiredService<ExperimentStore>();
-            var viewmodel = new HomeFrameViewModel(k);
-            var mainWindow = _serviceProvider.GetRequiredService<HomeFrame>();
+            var viewmodel = new HomeViewModel(k);
+            var mainWindow = _serviceProvider.GetRequiredService<HomeView>();
             mainWindow.DataContext = viewmodel;
             mainWindow.Show();
 

@@ -1,6 +1,5 @@
 ﻿using C490_App.Core;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 
@@ -8,14 +7,13 @@ namespace C490_App.MVVM.ViewModel
 {
     public class PotentiostatViewModel : ViewModelBase
     {
-        //public List<int> intsy = (List<int>)Enumerable.Range(0, 49);
+        public ObservableCollection<String> potsInactive { get; set; } = new ObservableCollection<String>();
 
-        public ObservableCollection<String> potsInactive { get; set; }
-
-        public ObservableCollection<String> _potsActive { get; set; }
-        public ObservableCollection<String> potsActive { get; set; }
+        //public ObservableCollection<String> _potsActive { get; set; }
+        public ObservableCollection<String> potsActive { get; set; } = new ObservableCollection<String>();
         public RelayCommand switchL { get; set; }
-        public String _selectedPot;
+
+        private String _selectedPot;
         public String SelectedPotName
         {
             get
@@ -25,7 +23,6 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 _selectedPot = value;
-                //potsActive.Add(SelectedPot);
                 OnPropertyChanged();
             }
         }
@@ -33,8 +30,8 @@ namespace C490_App.MVVM.ViewModel
         public PotentiostatViewModel(ExperimentStore ExperimentSingleton)
         {
             ExperimentLocal = ExperimentSingleton;
-            potsInactive = new ObservableCollection<String>();
-            potsActive = new ObservableCollection<String>();
+            //potsInactive = new ObservableCollection<String>();
+            //potsActive = new ObservableCollection<String>();
             switchL = new RelayCommand(
                 o => SwitchList(o, potsActive, potsInactive),
                 o => true
@@ -43,19 +40,27 @@ namespace C490_App.MVVM.ViewModel
 
         }
 
-        public void populateInactiveList(ObservableCollection<string> o)
+        /// <summary>
+        /// Initializes our List Selection UI with 50 pots
+        /// </summary>
+        /// <param name="o"></param>
+        public void populateInactiveList(ObservableCollection<string> uiList)
         {
             for (int i = 0; i < 50; i++)
             {
-                o.Add($"{i}");
+                uiList.Add($"{i}");
             }
 
         }
 
+        /// <summary>
+        /// Switches a potentiostat from inactive/active to other list
+        /// </summary>
+        /// <param name="o">unused</param>
+        /// <param name="potsActive">Active Potentiostats List</param>
+        /// <param name="potsInactive">Inactive Potentiostats List</param>
         public void SwitchList(Object o, ObservableCollection<String> potsActive, ObservableCollection<String> potsInactive)
         {
-            Trace.WriteLine("[x0]");
-            Trace.WriteLine("SelectedPot : " + SelectedPotName);
 
             if (potsActive.Contains(SelectedPotName))
             {
@@ -73,7 +78,10 @@ namespace C490_App.MVVM.ViewModel
             ExperimentLocal.UpdatePots(potsActive);
         }
 
-
+        /// <summary>
+        /// Sorts Active/Inactive Lists
+        /// </summary>
+        /// <param name="collection"> Active/Inactive List</param>
         private void SortObservableCollection(ObservableCollection<string> collection)
         {
             List<string> sortedList = new List<string>(collection);

@@ -14,7 +14,7 @@ using System.Windows.Media;
 
 namespace C490_App.MVVM.ViewModel
 {
-    public class GraphFrameViewModel : ViewModelBase
+    public class GraphViewModel : ViewModelBase
     {
         public PlotModel plotModel;
         private ObservableCollection<PlotItem> csvListBox;
@@ -68,7 +68,7 @@ namespace C490_App.MVVM.ViewModel
         public RelayCommand ImportData { get; set; }
         public RelayCommand RandomizeColours { get; set; }
         public RelayCommand OpenRecent { get; set; }
-        public GraphFrameViewModel()
+        public GraphViewModel()
         {
             InitializePlotModel();
             CsvListBox = new ObservableCollection<PlotItem>();
@@ -251,7 +251,7 @@ namespace C490_App.MVVM.ViewModel
             }
 
             // Use FileCSVImport class to read data from CSV
-            ReadDataStructureModel dataStructure = FileCSVImport.ReadDataToArr(filename);
+            ReadDataStructureModel dataStructure = FileHandler.ReadDataToArr(filename);
 
             if (dataStructure != null && dataStructure.xData != null && dataStructure.yData != null && dataStructure.TableIdentifiers != null)
             {

@@ -1,6 +1,5 @@
 ﻿using C490_App.MVVM.Model;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO.Ports;
 using System.Windows;
 
@@ -12,11 +11,11 @@ namespace C490_App.Core
         public ExperimentStore()
         {
             ledParameters = new ObservableCollection<LEDParameter>(initLedArray());
-            Model = new ExperimentModel();
+            Model = new ExperimentModelBase();
         }
-        public ExperimentModel Model { get => model; set => model = value; }
+        public ExperimentModelBase Model { get => model; set => model = value; }
 
-        private ExperimentModel model;
+        private ExperimentModelBase model;
         public ObservableCollection<LEDParameter> ledParameters { get; set; } = new();
 
         public ObservableCollection<string> ledNames { get; set; } = new();
@@ -28,8 +27,9 @@ namespace C490_App.Core
 
             for (int i = 0; i < 50; i++)
             {
-                ledParameters.Add(new LEDParameter(false, Convert.ToUInt32(i), $"{i}"));
-                ledNames.Add($"{i}");
+                ledParameters.Add(new LEDParameter(false, $"{i}"));
+                ledParameters[i][0] = ((ushort)(ushort.Parse(ledParameters[i].Name) % 10));
+                ledParameters[i][1] = ((ushort)(ushort.Parse(ledParameters[i].Name) / 10));
             }
             return ledParameters;
         }
@@ -60,7 +60,6 @@ namespace C490_App.Core
                 {
                     temp.Add(ledParameters[i]);
                 }
-
             }
             ledParameters = temp;
         }
@@ -78,7 +77,15 @@ namespace C490_App.Core
             get { return _serialPortWrapper; }
             set { _serialPortWrapper = value; }
         }
+        public void showMessageBox(string message, string title)
+        {
+            var thread = new Thread(() =>
+            {
+                MessageBox.Show(message, title);
+            });
+            thread.Start();
 
+        }
         /// <summary>
         /// SimpleSerial communication. Second function for sending more detailed experiment to hardware
         /// </summary>
@@ -93,38 +100,17 @@ namespace C490_App.Core
                 String ExperimentLeds = "";
                 foreach (LEDParameter _leds in ledParameters)
                 {
-                    /*if (_leds.IsSelected)
-                    {
-                        string name = _leds.Address.ToString();
-                        string gaddress = _leds.Gaddress.ToString();
-                        string gintensity = _leds.GIntensity.ToString();
-                        string gon = _leds.GOnTime.ToString();
-                        string goff = _leds.GOffTime.ToString();
-
-                        string baddress = _leds.Baddress.ToString();
-                        string bintensity = _leds.BIntensity.ToString();
-                        string bon = _leds.BOnTime.ToString();
-                        string boff = _leds.BOffTime.ToString();
-
-                        string raddress = _leds.Raddress.ToString();
-                        string rintensity = _leds.RIntensity.ToString();
-                        string ron = _leds.ROnTime.ToString();
-                        string roff = _leds.ROffTime.ToString();
-                        ExperimentLeds += name;
-                        ExperimentLeds += " " + gaddress + " " + gintensity + " " + gon + " " + goff;
-                        ExperimentLeds += " " + raddress + " " + rintensity + " " + ron + " " + roff;
-                        ExperimentLeds += " " + baddress + " " + bintensity + " " + bon + " " + boff;
-                    }*/
-                    // for demo
+                    //write LED's 
+                    //TODO add On times, and intensities
                     if (_leds.IsSelected)
                     {
                         List<char> serialSendChars = new List<char>();
 
                         serialSendChars.Add('L');
-                        serialSendChars.Add(_leds.Address.ToString()[0]);
-                        if (_leds.Address.ToString().Length > 1)
+                        serialSendChars.Add(_leds.Name.ToString()[0]);
+                        if (_leds.Name.ToString().Length > 1)
                         {
-                            serialSendChars.Add(_leds.Address.ToString()[1]);
+                            serialSendChars.Add(_leds.Name.ToString()[1]);
                         }
 
                         if (_leds.GOnTime >= 1)
@@ -140,27 +126,24 @@ namespace C490_App.Core
                             serialSendChars.Add('B');
                         }
 
+
                         foreach (var bytes in serialSendChars)
                         {
-                            char check = bytes;
-                            _serialPortWrapper.SerialPort.Write(bytes.ToString());
-                            Thread.Sleep(50);
+                            if (serialSendChars.Count == 3) // if not ==3 then we know it didnt have led times >=1
+                            {
+                                char check = bytes;
+                                _serialPortWrapper.SerialPort.Write(bytes.ToString());
+                                Thread.Sleep(50);
+                            }
                         }
                     }
-                    // for demo
 
                     else count++;
                 }
                 //Checks how many unused LED's
                 if (count == 50)
                 {
-                    //TODO change to messagebox
-                    var thread = new Thread(() =>
-                    {
-                        MessageBox.Show("Running purely potentiostat experiment", "No LED's selected");
-                    });
-                    thread.Start();
-                    Trace.WriteLine("No leds selected, running purely potentiostat experiment");
+                    showMessageBox("Running purely potentiostat experiment", "No LED's selected");
                 }
 
                 //TODO when led params sent to target, add a DateTime stamp to something to track on/off times
@@ -172,9 +155,24 @@ namespace C490_App.Core
                     ExperimentPots += " " + pots;
                 }
 
-                //run experiment
-                //Model.runExperiment(this);
-                Trace.WriteLine("Out of sleep");
+
+                //run experiment check if its not base experiment
+                if (!Model.GetType().ToString().Equals("C490_App.MVVM.Model.ExperimentModel"))
+                {
+                    //run Experiment
+                    var thread = new Thread(() =>
+                    {
+                        Model.runExperiment(this);
+                    });
+                    thread.Start();
+                    //Model.runExperiment(this);
+                }
+                else
+                {
+                    showMessageBox("Running purely LED experiment", "No Experiment selected");
+                }
+
+
             }
         }
 

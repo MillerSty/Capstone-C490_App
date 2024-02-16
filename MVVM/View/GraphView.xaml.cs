@@ -3,14 +3,14 @@ using System.Windows;
 
 namespace C490_App.MVVM.View
 {
-    public partial class GraphFrame : Window
+    public partial class GraphView : Window
     {
-        private GraphFrameViewModel viewModel;
+        private GraphViewModel viewModel;
 
-        public GraphFrame()
+        public GraphView()
         {
             InitializeComponent();
-            viewModel = new GraphFrameViewModel();
+            viewModel = new GraphViewModel();
             DataContext = viewModel;
         }
     }

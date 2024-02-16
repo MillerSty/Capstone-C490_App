@@ -3,17 +3,17 @@
     public class LEDParameter : Parameter
     {
         public string Name { get; set; }
-        public uint GIntensity { get => gIntensity; set => gIntensity = value; }
-        public uint Address { get => address; set => address = value; }
+        public ushort GIntensity { get => gIntensity; set => gIntensity = value; }
+        public ushort this[int Index] { get { return address[Index]; } set { address[Index] = value; } }
         public bool IsSelected { get => isSelected; set => isSelected = value; }
-        public uint GOnTime { get => gOnTime; set => gOnTime = value; }
-        public uint GOffTime { get => gOffTime; set => gOffTime = value; }
-        public uint ROnTime { get => rOnTime; set => rOnTime = value; }
-        public uint ROffTime { get => rOffTime; set => rOffTime = value; }
-        public uint RIntensity { get => rIntensity; set => rIntensity = value; }
-        public uint BOnTime { get => bOnTime; set => bOnTime = value; }
-        public uint BOffTime { get => bOffTime; set => bOffTime = value; }
-        public uint BIntensity { get => bIntensity; set => bIntensity = value; }
+        public ushort GOnTime { get => gOnTime; set => gOnTime = value; }
+        public ushort GOffTime { get => gOffTime; set => gOffTime = value; }
+        public ushort ROnTime { get => rOnTime; set => rOnTime = value; }
+        public ushort ROffTime { get => rOffTime; set => rOffTime = value; }
+        public ushort RIntensity { get => rIntensity; set => rIntensity = value; }
+        public ushort BOnTime { get => bOnTime; set => bOnTime = value; }
+        public ushort BOffTime { get => bOffTime; set => bOffTime = value; }
+        public ushort BIntensity { get => bIntensity; set => bIntensity = value; }
 
         public readonly UInt32 Gaddress = 0b01;
         public readonly UInt32 Raddress = 0b10;
@@ -21,28 +21,28 @@
 
         private bool isSelected;
 
-        private UInt32 address;
+        private ushort[] address = new UInt16[2]; //Index 1: is row | Index 0: column
 
-        private UInt32 gOnTime;
-        private UInt32 gOffTime;
-        private UInt32 gIntensity;
+        private ushort gOnTime;
+        private ushort gOffTime;
+        private ushort gIntensity;
 
-        private UInt32 rOnTime;
-        private UInt32 rOffTime;
-        private UInt32 rIntensity;
+        private ushort rOnTime;
+        private ushort rOffTime;
+        private ushort rIntensity;
 
-        private UInt32 bOnTime;
-        private UInt32 bOffTime;
-        private UInt32 bIntensity;
+        private ushort bOnTime;
+        private ushort bOffTime;
+        private ushort bIntensity;
 
         public LEDParameter()
         {
         }
-        public LEDParameter(bool set, UInt32 addr, string name)
+        public LEDParameter(bool set, string name)
         {
-            Address = addr;
             IsSelected = set;
             this.Name = name;
+
 
             GIntensity = 0;
             GOnTime = 0;

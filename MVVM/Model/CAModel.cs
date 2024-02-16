@@ -3,10 +3,11 @@ using System.Diagnostics;
 
 namespace C490_App.MVVM.Model
 {
-    public class CAModel : ExperimentModel
+    public class CAModel : ExperimentModelBase
     {
         static string type = "CAModel";
-        public bool? isEnabled { get; set; }
+        private bool? _isEnabled = false;
+        public bool? isEnabled { get { return _isEnabled; } set { _isEnabled = value; OnPropertyChanged(); } }
         public double voltageRangeStart { get; set; }
         public double voltageRangeEnd { get; set; }
         public double runTimeStart { get; set; }

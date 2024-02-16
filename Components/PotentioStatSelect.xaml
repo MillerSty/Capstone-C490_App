@@ -7,12 +7,7 @@
              xmlns:viewmodel="clr-namespace:C490_App.MVVM.ViewModel"
              mc:Ignorable="d"
              d:DesignHeight="200" d:DesignWidth="350">
-    <!--<UserControl.DataContext>
 
-    <viewmodel:PotentiostatViewModel>
-
-    </viewmodel:PotentiostatViewModel>
-    </UserControl.DataContext>-->
     <Grid Background="White" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -30,7 +25,7 @@
 
         <TextBlock Text="Individual Potentiostat Selection"
                    FontWeight="Bold"
-                   FontSize="15" 
+                   FontSize="15"
                    Grid.Row="0"
                    Grid.ColumnSpan="3"
                    VerticalAlignment="Center"
@@ -39,7 +34,7 @@
 
         <TextBlock Text="Inactive"
                    Grid.Column="0"
-                     FontSize="15" 
+                   FontSize="15"
                    Grid.Row="1"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Bottom"/>

@@ -48,7 +48,7 @@ namespace C490_App.MVVM.ViewModel
             }
 
         }
-        public ExperimentModel experiment { get; set; }
+        public ExperimentModelBase experiment { get; set; }
         public RelayCommand Save { get; set; }
 
         public RelayCommand Cancel { get; set; }

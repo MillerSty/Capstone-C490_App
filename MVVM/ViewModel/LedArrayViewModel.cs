@@ -35,57 +35,13 @@ namespace C490_App.MVVM.ViewModel
         {
             ExperimentLocal = ExperimentSingleton;
             isSelected = new ObservableCollection<bool>(initIsSelected()); //this could probably be handled more eloquently
-            ledSelect = new RelayCommand(o => SelectLed2(o), o => true);
+            ledSelect = new RelayCommand(o => SelectLed(), o => true);
         }
 
-        //SelectLed Should be deprecated now
-        /*SelectLed 
-         * @binding control checkboxes
-         * @param is a tuple i,k,j
-         * if j != null we are doing row wise selection where we start at i and increment with k
-         * if j==null we can do column wise selection where i is start of for loop and k is ending  
-         * we use var set so we can update var bool isSelected , and the bool in LEDParamter collection
-         */
-        public void SelectLed(object commandParameter)
-        {
-            String[] parameterSubString = commandParameter.ToString().Split(",");
-            if (parameterSubString.Length == 3)
-            {
-                int k = int.Parse(parameterSubString[0]);
-                int controlIndex = k;
-
-                for (int i = 0; i < 10; i++)
-                {
-                    bool set = controlCheckRow[controlIndex];
-                    //bool set = !ExperimentLocal.ledParameters[k].IsSelected;
-                    this.isSelected[k] = set;
-                    k += int.Parse(parameterSubString[1]);
-                }
-            }
-            else
-            {
-                if (controlCheckAll)
-                {
-                    for (int i = int.Parse(parameterSubString[0]); i < int.Parse(parameterSubString[1]); i++)
-                    {
-                        bool set = controlCheckAll;
-                        this.isSelected[i] = set;
-                    }
-                }
-                else
-                    for (int i = int.Parse(parameterSubString[0]); i < int.Parse(parameterSubString[1]); i++)
-                    {
-                        bool set;
-                        set = controlCheckCol[i / 5];
-                        this.isSelected[i] = set;
-                    }
-            }
-            ExperimentLocal.UpdateLEDS(isSelected);
-        }
-
-        //Replaces deprecated selectLed
-        //TODO add parameter list to this
-        public void SelectLed2(object commandParameter)
+        /// <summary>
+        /// This is in charge of selecting LEDs based off row/col/SelALL checkboxes
+        /// </summary>
+        public void SelectLed()
         {
             SelectAllLED(0, 50);
 
@@ -100,45 +56,61 @@ namespace C490_App.MVVM.ViewModel
             {
                 if (selected.truth)
                 {
-                    SelectColLED(selected.index * 5, selected.index * 5 + 5);
+                    SelectColLED(selected.index, selected.index + 40);
                 }
             }
 
 
             ExperimentLocal.UpdateLEDS(isSelected);
         }
+        /// <summary>
+        /// Selects LEDs based off ROW Select
+        /// </summary>
+        /// <param name="startIndex">Row index</param>
         private void SelectRowLED(int startIndex)
         {
             int counter = startIndex;
-
-            for (int i = 0; i < 10; i++)
+            bool set = controlCheckRow[startIndex];
+            for (int i = (counter * 10); i < (10 * counter + 10); i++)
             {
-                bool set = controlCheckRow[startIndex];
-                this.isSelected[counter] = set;
-                counter += 5;
+                this.isSelected[i] = set;
             }
 
         }
+        /// <summary>
+        /// Selects LEDs based off COL Select
+        /// </summary>
+        /// <param name="startIndex">Col start index</param>
+        /// <param name="endIndex">End index given by Selected index + 40</param>
         private void SelectColLED(int startIndex, int endIndex)
         {
-            for (int i = startIndex; i < endIndex; i++)
+            bool set = controlCheckCol[startIndex];
+            for (int i = startIndex; i <= endIndex; i += 10)
             {
-                bool set = controlCheckCol[i / 5];
                 this.isSelected[i] = set;
             }
 
         }
+        /// <summary>
+        /// Selects all LEDs, 0 - 50
+        /// start and end Index are just for futureu scaling
+        /// </summary>
+        /// <param name="startIndex"></param>
+        /// <param name="endIndex"></param>
         private void SelectAllLED(int startIndex, int endIndex)
         {
+            bool set = controlCheckAll;
             for (int i = startIndex; i < endIndex; i++)
             {
-                bool set = controlCheckAll;
                 this.isSelected[i] = set;
             }
 
         }
 
-
+        /// <summary>
+        /// Returns a list of false to be init LED.isSelected
+        /// </summary>
+        /// <returns></returns>
         internal List<bool> initIsSelected()
         {
             List<bool> result = new List<bool>();
