@@ -20,7 +20,7 @@ namespace C490_App
 
             services.AddSingleton<HomeViewModel>(); //might be neccesary to delete
 
-            services.AddSingleton<HomeFrame>(provider => new HomeFrame
+            services.AddSingleton<HomeView>(provider => new HomeView
             {
                 DataContext = provider.GetRequiredService<HomeViewModel>()
             });
@@ -39,7 +39,7 @@ namespace C490_App
         {
             var k = _serviceProvider.GetRequiredService<ExperimentStore>();
             var viewmodel = new HomeViewModel(k);
-            var mainWindow = _serviceProvider.GetRequiredService<HomeFrame>();
+            var mainWindow = _serviceProvider.GetRequiredService<HomeView>();
             mainWindow.DataContext = viewmodel;
             mainWindow.Show();
 

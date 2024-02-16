@@ -18,7 +18,6 @@ namespace C490_App.MVVM.ViewModel
             {
                 _GonTime = value;
                 ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].GOnTime = (ushort)_GonTime;
-
                 OnPropertyChanged();
             }
         }

@@ -85,6 +85,9 @@ namespace C490_App.MVVM.ViewModel
             serialCommunicate = new RelayCommand(o => SimpleSerial(), o => true);
             openDebug = new RelayCommand(o => OpenDebug(), o => true);
         }
+        /// <summary>
+        /// Opens the Debug View 
+        /// </summary>
         private void OpenDebug()
         {
 
@@ -106,7 +109,7 @@ namespace C490_App.MVVM.ViewModel
         /// <summary>
         /// Utilises the file handler class to import and export parameters
         /// </summary>
-        /// <param name="sender"></param>
+        /// <param name="imexBool">True = Import. False = Export</param>
         private void IMEXParams(object imexBool)
         {
             FileHandler fileHandler = new FileHandler();
@@ -143,13 +146,13 @@ namespace C490_App.MVVM.ViewModel
         /// </summary>
         private void GraphOpen()
         {
-            GraphFrame graphFrame = new GraphFrame();
-            graphFrame.Show();
+            GraphView graphView = new GraphView();
+            graphView.Show();
         }
 
         /// <summary>
         /// Navigates to the LED parameter frame
-        /// Updates the Global ExperimentStore with the Selected LED's from homeframeViewModel
+        /// Updates the Global ExperimentStore with the Selected LED's from homeViewModel
         /// </summary>
         private void LEDOpen()
         {
@@ -201,7 +204,7 @@ namespace C490_App.MVVM.ViewModel
             }
             else
             {
-                MessageBox.Show("No Experiment Selected");
+                MessageBox.Show("No Experiment Selected", "Experiment Parameter Error");
             }
         }
 

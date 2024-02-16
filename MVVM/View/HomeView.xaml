@@ -1,4 +1,4 @@
-﻿<Window x:Class="C490_App.MVVM.View.HomeFrame"
+﻿<Window x:Class="C490_App.MVVM.View.HomeView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,13 +9,9 @@
         ResizeMode="CanResize"
         mc:Ignorable="d"
         Height="500" Width="900"
-        Title="HomeFrame">
+        Title="HomeView">
     <!--Remove WindowStyle and title For made menu-->
 
-    <!--<Window.DataContext>
-    <viewmodel:HomeFrameViewModel>
-    </viewmodel:HomeFrameViewModel>
-    </Window.DataContext>-->
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>

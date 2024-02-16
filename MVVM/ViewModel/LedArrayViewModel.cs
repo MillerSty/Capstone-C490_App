@@ -35,11 +35,13 @@ namespace C490_App.MVVM.ViewModel
         {
             ExperimentLocal = ExperimentSingleton;
             isSelected = new ObservableCollection<bool>(initIsSelected()); //this could probably be handled more eloquently
-            ledSelect = new RelayCommand(o => SelectLed(o), o => true);
+            ledSelect = new RelayCommand(o => SelectLed(), o => true);
         }
 
-        //TODO add parameter list to this
-        public void SelectLed(object commandParameter)
+        /// <summary>
+        /// This is in charge of selecting LEDs based off row/col/SelALL checkboxes
+        /// </summary>
+        public void SelectLed()
         {
             SelectAllLED(0, 50);
 
@@ -61,6 +63,10 @@ namespace C490_App.MVVM.ViewModel
 
             ExperimentLocal.UpdateLEDS(isSelected);
         }
+        /// <summary>
+        /// Selects LEDs based off ROW Select
+        /// </summary>
+        /// <param name="startIndex">Row index</param>
         private void SelectRowLED(int startIndex)
         {
             int counter = startIndex;
@@ -71,6 +77,11 @@ namespace C490_App.MVVM.ViewModel
             }
 
         }
+        /// <summary>
+        /// Selects LEDs based off COL Select
+        /// </summary>
+        /// <param name="startIndex">Col start index</param>
+        /// <param name="endIndex">End index given by Selected index + 40</param>
         private void SelectColLED(int startIndex, int endIndex)
         {
             bool set = controlCheckCol[startIndex];
@@ -80,6 +91,12 @@ namespace C490_App.MVVM.ViewModel
             }
 
         }
+        /// <summary>
+        /// Selects all LEDs, 0 - 50
+        /// start and end Index are just for futureu scaling
+        /// </summary>
+        /// <param name="startIndex"></param>
+        /// <param name="endIndex"></param>
         private void SelectAllLED(int startIndex, int endIndex)
         {
             bool set = controlCheckAll;
@@ -90,7 +107,10 @@ namespace C490_App.MVVM.ViewModel
 
         }
 
-
+        /// <summary>
+        /// Returns a list of false to be init LED.isSelected
+        /// </summary>
+        /// <returns></returns>
         internal List<bool> initIsSelected()
         {
             List<bool> result = new List<bool>();

@@ -51,6 +51,7 @@ namespace C490_App.Core
                     var LEDRecords = new List<LEDParameter>();
                     var isHeader = true;
 
+
                     while (csv.Read())
                     {
                         if (isHeader)
@@ -70,7 +71,6 @@ namespace C490_App.Core
                         {
                             case "name":
                                 LEDRecords.Add(csv.GetRecord<LEDParameter>());
-
                                 break;
 
                             case "type":
