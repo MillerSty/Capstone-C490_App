@@ -3,10 +3,11 @@ using System.Diagnostics;
 
 namespace C490_App.MVVM.Model
 {
-    public class DPVModel : ExperimentModel
+    public class DPVModel : ExperimentModelBase
     {
         static string type = "DPVModel";
-        public bool? isEnabled { get; set; }
+        private bool? _isEnabled = false;
+        public bool? isEnabled { get { return _isEnabled; } set { _isEnabled = value; OnPropertyChanged(); } }
         public double startVoltage { get; set; }
         public double endVoltage { get; set; }
         public double stepSize { get; set; }

@@ -89,7 +89,7 @@
             <Button
                 Content="Set LED Parameters"
                 FontSize="15"
-                
+
                 Style="{StaticResource HomeButton}"
                 Command="{Binding openWindowLED}" Width="200">
             </Button>
@@ -102,7 +102,7 @@
 
 
             <!--Do a new stack panel for check boxes-->
-            <CheckBox Margin="10 10 0 0 " Command="{Binding ExperimentCheck}" CommandParameter="cv" FlowDirection="RightToLeft" HorizontalAlignment="Left" IsChecked="{Binding cvEnabled, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" >
+            <CheckBox Margin="10 10 0 0 " Command="{Binding ExperimentCheck}" CommandParameter="cv" FlowDirection="RightToLeft" HorizontalAlignment="Left" IsChecked="{Binding CVModel.isEnabled, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, TargetNullValue=False,NotifyOnSourceUpdated=True}" IsThreeState="False">
                 <CheckBox.Resources>
                     <Style TargetType="{x:Type Path}">
                         <Setter Property="FlowDirection" Value="LeftToRight" />
@@ -111,7 +111,7 @@
                 <TextBlock FlowDirection="LeftToRight" FontSize="15" Text="Cyclic Voltammetry" Padding="0 0 75 0"></TextBlock>
             </CheckBox>
 
-            <CheckBox Command="{Binding ExperimentCheck}" CommandParameter="dpv" Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left" IsChecked="{Binding dpvEnabled, UpdateSourceTrigger=PropertyChanged}">
+            <CheckBox Command="{Binding ExperimentCheck}" CommandParameter="dpv" Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left" IsChecked="{Binding DPVModel.isEnabled,  Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, TargetNullValue=False}">
                 <CheckBox.Resources>
                     <Style TargetType="{x:Type Path}">
                         <Setter Property="FlowDirection" Value="LeftToRight" />
@@ -120,7 +120,7 @@
                 <TextBlock FlowDirection="LeftToRight" FontSize="15"  Text="Differential Pulse Voltammetry" Padding="0 0 0 0"></TextBlock>
             </CheckBox>
 
-            <CheckBox Command="{Binding ExperimentCheck}" CommandParameter="ca" Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left" IsChecked="{Binding caEnabled, Mode=TwoWay}">
+            <CheckBox Command="{Binding ExperimentCheck}" CommandParameter="ca" Margin="10 10 00 0 " FlowDirection="RightToLeft" HorizontalAlignment="Left" IsChecked="{Binding CAModel.isEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, TargetNullValue=False,NotifyOnSourceUpdated=True}" IsThreeState="False">
                 <CheckBox.Resources>
                     <Style TargetType="{x:Type Path}">
                         <Setter Property="FlowDirection" Value="LeftToRight" />
@@ -130,12 +130,12 @@
             </CheckBox>
 
             <Button
-                Content="Start / Stop Experiment"  FontSize="15" 
+                Content="Start / Stop Experiment"  FontSize="15"
                 Style="{StaticResource HomeButton}"
                 Command="{Binding serialCommunicate}" Width="200">
             </Button>
             <Button
-                Content="View Graph Output" FontSize="15" 
+                Content="View Graph Output" FontSize="15"
                 Style="{StaticResource HomeButton}"
                 Command="{Binding openGraphResults}" Width="200">
             </Button>

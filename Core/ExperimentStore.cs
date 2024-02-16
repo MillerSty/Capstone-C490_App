@@ -11,11 +11,11 @@ namespace C490_App.Core
         public ExperimentStore()
         {
             ledParameters = new ObservableCollection<LEDParameter>(initLedArray());
-            Model = new ExperimentModel();
+            Model = new ExperimentModelBase();
         }
-        public ExperimentModel Model { get => model; set => model = value; }
+        public ExperimentModelBase Model { get => model; set => model = value; }
 
-        private ExperimentModel model;
+        private ExperimentModelBase model;
         public ObservableCollection<LEDParameter> ledParameters { get; set; } = new();
 
         public ObservableCollection<string> ledNames { get; set; } = new();
@@ -60,7 +60,6 @@ namespace C490_App.Core
                 {
                     temp.Add(ledParameters[i]);
                 }
-
             }
             ledParameters = temp;
         }
@@ -127,11 +126,15 @@ namespace C490_App.Core
                             serialSendChars.Add('B');
                         }
 
+
                         foreach (var bytes in serialSendChars)
                         {
-                            char check = bytes;
-                            _serialPortWrapper.SerialPort.Write(bytes.ToString());
-                            Thread.Sleep(50);
+                            if (serialSendChars.Count == 3) // if not ==3 then we know it didnt have led times >=1
+                            {
+                                char check = bytes;
+                                _serialPortWrapper.SerialPort.Write(bytes.ToString());
+                                Thread.Sleep(50);
+                            }
                         }
                     }
 
@@ -156,7 +159,12 @@ namespace C490_App.Core
                 if (!Model.GetType().ToString().Equals("C490_App.MVVM.Model.ExperimentModel"))
                 {
                     //run Experiment
-                    Model.runExperiment(this);
+                    var thread = new Thread(() =>
+                    {
+                        Model.runExperiment(this);
+                    });
+                    thread.Start();
+                    //Model.runExperiment(this);
                 }
                 else
                 {

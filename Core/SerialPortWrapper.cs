@@ -56,7 +56,6 @@ namespace C490_App.Core
             SerialPort.NewLine = "\r\n";
             SerialPort.StopBits = StopBits.One;
             SerialPort.Parity = Parity.None;
-            //SerialPort.ReadTimeout = 50;
             SerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
             // }
         }
@@ -102,22 +101,11 @@ namespace C490_App.Core
         private void OnDataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
             var serialDevice = sender as SerialPort;
-            var indata = serialDevice.ReadLine(); //operation timed out due to too large?
+            var indata = serialDevice.ReadLine();
 
-           // List<String> data = indata.Split(',').ToList();
-           // if (data[0].Equals("D"))
-           // {
-                //List<String> test = new List<string>();
-               // foreach (string debugData in data.Skip(1))
-               // {
-                   // Trace.WriteLine(debugData);
-                   // test.Add(debugData);
-               // }
-               
-                debugInfo = indata;
-           // }
+            debugInfo = indata;
 
-            Trace.WriteLine(indata.ToString());
+            serialDevice.DiscardInBuffer();
             Thread.Sleep(50);
         }
 

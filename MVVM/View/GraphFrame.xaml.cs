@@ -5,12 +5,12 @@ namespace C490_App.MVVM.View
 {
     public partial class GraphFrame : Window
     {
-        private GraphFrameViewModel viewModel;
+        private GraphViewModel viewModel;
 
         public GraphFrame()
         {
             InitializeComponent();
-            viewModel = new GraphFrameViewModel();
+            viewModel = new GraphViewModel();
             DataContext = viewModel;
         }
     }

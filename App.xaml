@@ -12,7 +12,7 @@
 
     <Application.Resources>
         <ResourceDictionary>
-            <DataTemplate DataType="{x:Type TypeName=viewModels:HomeFrameViewModel}">
+            <DataTemplate DataType="{x:Type TypeName=viewModels:HomeViewModel}">
 
                 <views:HomeFrame/>
             </DataTemplate>
