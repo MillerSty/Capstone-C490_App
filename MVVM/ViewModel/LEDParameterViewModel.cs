@@ -127,7 +127,7 @@ namespace C490_App.MVVM.ViewModel
             set
             {
                 selectedIndex = value;
-                int checkIndex = int.Parse(LEDS[selectedIndex]);
+                int checkIndex = int.Parse(LEDS[selectedIndex]); //TODO error index out of range, no led selected
 
 
                 BlueIntensity = ExperimentLocal.ledParameters[checkIndex].BIntensity.ToString();
