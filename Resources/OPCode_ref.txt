@@ -1,6 +1,8 @@
-﻿L - LED
-V - Vref (DAC)
-R - Potentiometer
-P - Potentiostats 
-D - Debug (not that I know how that's gonna work tbh)
-C - calibrate? Depending on how the biological component is gonna go
+﻿L - LED (Send: L # colour) 
+V - Vref (DAC) ( V value)
+R - Potentiometer (Send: R # colour value )
+P - Potentiostats (SW_send: P # signed_experimentVoltage | SW_request: P # O | HW_return: P # value  ) (O for open)
+G - Potentiostat Gain(R) (G # value)
+C - calibrate? Left unused for now
+*note: all col/# entries will be changed to col row for larger model
+** spaces are to be removed for serial communication

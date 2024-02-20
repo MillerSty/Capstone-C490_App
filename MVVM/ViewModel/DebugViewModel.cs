@@ -7,7 +7,7 @@ namespace C490_App.MVVM.ViewModel
     internal class DebugViewModel : ViewModelBase
     {
 
-        private string _userEntry;
+        private string _userEntry = "";
         public string UserEntry
         {
             get { return _userEntry; }
@@ -32,10 +32,10 @@ namespace C490_App.MVVM.ViewModel
         }
         private void A_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            UserEntryRead = _ExperimentStore.debugInfo + "\n";
+            UserEntryRead = _ExperimentStoreSerialWrapper.debugInfo + "\n";
         }
         private SerialPortWrapper _experimentStore;
-        public SerialPortWrapper _ExperimentStore
+        public SerialPortWrapper _ExperimentStoreSerialWrapper
         {
             get
             {
@@ -52,22 +52,36 @@ namespace C490_App.MVVM.ViewModel
         public RelayCommand enter { get; set; }
         public DebugViewModel(ExperimentStore store)
         {
-            _ExperimentStore = store.serialPortWrapper;
-            _ExperimentStore.PropertyChanged += A_PropertyChanged;
+            _ExperimentStoreSerialWrapper = store.serialPortWrapper;
+            _ExperimentStoreSerialWrapper.PropertyChanged += A_PropertyChanged;
 
             enter = new RelayCommand(o => Enter(), o => true);
         }
         public void Enter()
         {
-            if (!UserEntry.Equals(null))
+            bool check = UserEntry.Equals("");
+            if (!UserEntry.Equals(""))
             {
-                if (_ExperimentStore.Open())
+                if (_ExperimentStoreSerialWrapper.Open())
                 {
-                    _ExperimentStore.SerialPort.Write(UserEntry);
+                    char[] c = UserEntry.ToCharArray();
+                    if (c.Length == 1)
+                    {
+
+                        _ExperimentStoreSerialWrapper.writeChar(UserEntry[0]);
+
+                    }
+                    else
+                    {
+
+                        _ExperimentStoreSerialWrapper.writeString(UserEntry);
+                        Thread.Sleep(59);
+
+                    }
                     UserEntryRead = "User: " + UserEntry + "\n";
 
                     Thread.Sleep(50);
-                    UserEntry = null;
+                    UserEntry = "";
                 }
 
             }

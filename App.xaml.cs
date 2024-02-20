@@ -33,6 +33,7 @@ namespace C490_App
 
             ExperimentStore.serialPortWrapper = new SerialPortWrapper(new System.IO.Ports.SerialPort());
             ExperimentStore.serialPortWrapper.initSerial();
+            ExperimentStore.setPropertyChange();
 
         }
         protected override void OnStartup(StartupEventArgs e)

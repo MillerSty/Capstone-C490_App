@@ -13,9 +13,13 @@ namespace C490_App.Core
 
         private void OnPropertyChanged(String e)
         {
+            Trace.WriteLine("Changed property!! " + e);
+            if (e.Equals("sendChar"))
+            {
+                Trace.WriteLine("We got it baby?");
+            }
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(e));
         }
-
         private String _debugInfo;
         public String debugInfo
         {
@@ -26,7 +30,52 @@ namespace C490_App.Core
                 OnPropertyChanged("Text");
             }
         }
+        private String _experimentData;
+        public String ExperimentData
+        {
+            get { return _experimentData; }
+            set
+            {
+                _experimentData = value;
+                OnPropertyChanged("Text2");
+            }
+        }
+        private String _ssendData;
+        public String SSendData
+        {
+            get { return _ssendData; }
+            set
+            {
+                _ssendData = value;
+                OnPropertyChanged("sendChar");
+            }
+        }
+        private List<char> _sendData = new List<char>();
+        public List<char> SendData
+        {
+            get { Trace.WriteLine("getting lc"); return _sendData; }
+            set
+            {
+                Trace.WriteLine("setting lc");
+                _sendData = value;
+                OnPropertyChanged("");
+            }
+        }
+        public void send()
+        {
+            while (true)
+            {
+                foreach (char c in SendData)
+                {
+                    this.writeChar(c);
+                }
+                SendData.Clear();
 
+
+            }
+
+
+        }
 
         private SerialPort _port;
         public SerialPort SerialPort
@@ -38,6 +87,7 @@ namespace C490_App.Core
         public SerialPortWrapper(SerialPort serialPort)
         {
             SerialPort = serialPort;
+
         }
 
 
@@ -49,7 +99,7 @@ namespace C490_App.Core
             //if (!SerialPort.IsOpen)
             //{
             //will use ComPortNames[0] in future to set String comPort
-            List<String> gs = ComPortNames(); //try catch for no return?
+            List<String> comPortEnum = ComPortNames(); //try catch for no return?
             String comPort = "COM3";
             SerialPort.PortName = comPort;
             SerialPort.BaudRate = 9600;
@@ -67,6 +117,8 @@ namespace C490_App.Core
                 try
                 {
                     SerialPort.Open();
+                    SerialPort.DiscardInBuffer();
+                    SerialPort.DiscardOutBuffer();
                 }
                 catch (Exception ex)
                 {
@@ -84,6 +136,14 @@ namespace C490_App.Core
 
         }
 
+        public void writeChar(char data)
+        {
+            SerialPort.Write(data.ToString());
+        }
+        public void writeString(string data)
+        {
+            SerialPort.Write(data);
+        }
         public bool isOpen()
         {
             return SerialPort.IsOpen;
@@ -102,11 +162,16 @@ namespace C490_App.Core
         {
             var serialDevice = sender as SerialPort;
             var indata = serialDevice.ReadLine();
-
+            //if (indata[0] == 'P')
+            //{
+            //    ExperimentData = indata[2..indata.Length].ToString();
+            //}
+            //else
+            //{
             debugInfo = indata;
-
+            //}
             serialDevice.DiscardInBuffer();
-            Thread.Sleep(50);
+            //Thread.Sleep(50);
         }
 
 
