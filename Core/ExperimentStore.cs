@@ -193,6 +193,10 @@ namespace C490_App.Core
                         if (g && !r && !b)
                         {
                             serialSendChars.Add('G');
+                            if (_leds.GIntensity < 100)
+                            {
+                                serialSendChars.Add('0');
+                            }
                             foreach (char c in _leds.GIntensity.ToString())
                             {
                                 serialSendChars.Add(c);
@@ -201,6 +205,10 @@ namespace C490_App.Core
                         else if (r && !g && !b)
                         {
                             serialSendChars.Add('R');
+                            if (_leds.RIntensity < 100)
+                            {
+                                serialSendChars.Add('0');
+                            }
                             foreach (char c in _leds.RIntensity.ToString())
                             {
                                 serialSendChars.Add(c);
@@ -210,6 +218,10 @@ namespace C490_App.Core
                         else if (b && !g && !r)
                         {
                             serialSendChars.Add('B');
+                            if (_leds.BIntensity < 100)
+                            {
+                                serialSendChars.Add('0');
+                            }
                             foreach (char c in _leds.BIntensity.ToString())
                             {
                                 serialSendChars.Add(c);
@@ -229,11 +241,11 @@ namespace C490_App.Core
 
                     ledTimerIndex++;
                 }
-                foreach (var index in ledTimer)
-                {
-                    index.Enabled = true;
+                //foreach (var index in ledTimer)
+                //{
+                //    index.Enabled = true;
 
-                }
+                //}
 
                 //Checks how many unused LED's
                 if (count == 50)
@@ -241,13 +253,16 @@ namespace C490_App.Core
                     showMessageBox("Running purely potentiostat experiment", "No LED's selected");
                 }
                 //this threaded send could work
-                //var thread = new Thread(() =>
+                //var threadSend = new Thread(() =>
                 //{
                 //    _serialPortWrapper.send();
                 //});
                 //thread.Start();
                 //TODO when led params sent to target, add a DateTime stamp to something to track on/off times
-
+                Stopwatch sw = Stopwatch.StartNew();
+                _serialPortWrapper.send();
+                sw.Stop();
+                Trace.WriteLine(sw.ToString());
                 //pots -- load pots in use to MCU
                 String ExperimentPots = "Potentiostats ";
                 foreach (var pots in this.pots)
@@ -265,7 +280,7 @@ namespace C490_App.Core
                     //run Experiment
                     var thread = new Thread(() =>
                     {
-                        Model.runExperiment(this);
+                        // Model.runExperiment(this);
                     });
                     thread.Start();
                 }

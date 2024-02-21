@@ -69,6 +69,7 @@ namespace C490_App.MVVM.ViewModel
                     {
 
                         _ExperimentStoreSerialWrapper.writeChar(UserEntry[0]);
+                        Thread.Sleep(50);
 
                     }
                     else

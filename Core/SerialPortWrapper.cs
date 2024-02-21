@@ -53,26 +53,31 @@ namespace C490_App.Core
         private List<char> _sendData = new List<char>();
         public List<char> SendData
         {
-            get { Trace.WriteLine("getting lc"); return _sendData; }
+            get
+            {
+                // Trace.WriteLine("getting lc"); 
+                return _sendData;
+            }
             set
             {
-                Trace.WriteLine("setting lc");
+                //Trace.WriteLine("setting lc");
                 _sendData = value;
                 OnPropertyChanged("");
             }
         }
         public void send()
         {
-            while (true)
+            //while (true)
+            //{
+            foreach (char c in SendData)
             {
-                foreach (char c in SendData)
-                {
-                    this.writeChar(c);
-                }
-                SendData.Clear();
-
-
+                Trace.WriteLine("Writing " + c);
+                this.writeChar(c);
             }
+            SendData.Clear();
+
+
+            //}
 
 
         }
@@ -100,7 +105,7 @@ namespace C490_App.Core
             //{
             //will use ComPortNames[0] in future to set String comPort
             List<String> comPortEnum = ComPortNames(); //try catch for no return?
-            String comPort = "COM3";
+            String comPort = comPortEnum[0];
             SerialPort.PortName = comPort;
             SerialPort.BaudRate = 9600;
             SerialPort.NewLine = "\r\n";
