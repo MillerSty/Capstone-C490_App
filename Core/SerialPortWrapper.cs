@@ -73,6 +73,7 @@ namespace C490_App.Core
             {
                 Trace.WriteLine("Writing " + c);
                 this.writeChar(c);
+                Thread.Sleep(15);
             }
             SendData.Clear();
 
@@ -105,12 +106,14 @@ namespace C490_App.Core
             //{
             //will use ComPortNames[0] in future to set String comPort
             List<String> comPortEnum = ComPortNames(); //try catch for no return?
-            String comPort = comPortEnum[0];
+            String comPort = "COM3";
             SerialPort.PortName = comPort;
             SerialPort.BaudRate = 9600;
             SerialPort.NewLine = "\r\n";
             SerialPort.StopBits = StopBits.One;
             SerialPort.Parity = Parity.None;
+            SerialPort.ReceivedBytesThreshold = 50;
+            //SerialPort.ReadTimeout = 10;
             SerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
             // }
         }
@@ -144,6 +147,7 @@ namespace C490_App.Core
         public void writeChar(char data)
         {
             SerialPort.Write(data.ToString());
+            
         }
         public void writeString(string data)
         {
@@ -166,16 +170,26 @@ namespace C490_App.Core
         private void OnDataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
             var serialDevice = sender as SerialPort;
+            try { 
+            //{ char[] indata=new char[64];
+            //     serialDevice.Read(indata,0,serialDevice.BytesToRead);
             var indata = serialDevice.ReadLine();
+                Trace.WriteLine("DEBUG FROM HW************************");
+                Trace.WriteLine(serialDevice.BytesToRead.ToString());
+               // Trace.WriteLine(indata.ToString());
+            }
+            catch (Exception err) {
+                Trace.WriteLine(err.ToString());
+            }
             //if (indata[0] == 'P')
             //{
             //    ExperimentData = indata[2..indata.Length].ToString();
             //}
             //else
             //{
-            debugInfo = indata;
+            // debugInfo = indata;
             //}
-            serialDevice.DiscardInBuffer();
+            //serialDevice.DiscardInBuffer();
             //Thread.Sleep(50);
         }
 
@@ -186,8 +200,10 @@ namespace C490_App.Core
         /// <param name="VID"></param>
         /// <param name="PID"></param>
         /// <returns></returns>
-        private String vid = "2341";
-        private String pid = "0043";
+        //private String vid = "2341";
+        //private String pid = "0043";
+        private String vid = "04D8";
+        private String pid = "00DD";
         private String SerialNumber = "950323034373518061D1";
 
         static List<string> ComPortNames()

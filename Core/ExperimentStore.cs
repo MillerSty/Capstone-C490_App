@@ -190,61 +190,65 @@ namespace C490_App.Core
                             }
                         }
                         //can send here if we want. Might help issue
+
+                        //Stopwatch sw = Stopwatch.StartNew();
                         //_serialPortWrapper.send();
-                        serialSendChars.Clear();
-                        //this moves on to appending intensity to SendData
-                        serialSendChars.Add('R');
-                        serialSendChars.Add(_leds.Name.ToString()[0]);
-                        if (_leds.Name.ToString().Length > 1) //if >1 we have a two digit name
-                        {
-                            serialSendChars.Add(_leds.Name.ToString()[1]);
-                        }
-                        if (g && !r && !b)
-                        {
-                            serialSendChars.Add('G');
-                            if (_leds.GIntensity < 100)
-                            {
-                                serialSendChars.Add('0');
-                            }
-                            foreach (char c in _leds.GIntensity.ToString())
-                            {
-                                serialSendChars.Add(c);
-                            }
-                        }
-                        else if (r && !g && !b)
-                        {
-                            serialSendChars.Add('R');
-                            if (_leds.RIntensity < 100)
-                            {
-                                serialSendChars.Add('0');
-                            }
-                            foreach (char c in _leds.RIntensity.ToString())
-                            {
-                                serialSendChars.Add(c);
-                            }
+                        //sw.Stop();
+                        //Trace.WriteLine(sw.ToString());//00.14 on my home pc
+                        //serialSendChars.Clear();
+                        ////this moves on to appending intensity to SendData
+                        //serialSendChars.Add('R');
+                        //serialSendChars.Add(_leds.Name.ToString()[0]);
+                        //if (_leds.Name.ToString().Length > 1) //if >1 we have a two digit name
+                        //{
+                        //    serialSendChars.Add(_leds.Name.ToString()[1]);
+                        //}
+                        //if (g && !r && !b)
+                        //{
+                        //    serialSendChars.Add('G');
+                        //    if (_leds.GIntensity < 100)
+                        //    {
+                        //        serialSendChars.Add('0');
+                        //    }
+                        //    foreach (char c in _leds.GIntensity.ToString())
+                        //    {
+                        //        serialSendChars.Add(c);
+                        //    }
+                        //}
+                        //else if (r && !g && !b)
+                        //{
+                        //    serialSendChars.Add('R');
+                        //    if (_leds.RIntensity < 100)
+                        //    {
+                        //        serialSendChars.Add('0');
+                        //    }
+                        //    foreach (char c in _leds.RIntensity.ToString())
+                        //    {
+                        //        serialSendChars.Add(c);
+                        //    }
 
-                        }
-                        else if (b && !g && !r)
-                        {
-                            serialSendChars.Add('B');
-                            if (_leds.BIntensity < 100)
-                            {
-                                serialSendChars.Add('0');
-                            }
-                            foreach (char c in _leds.BIntensity.ToString())
-                            {
-                                serialSendChars.Add(c);
-                            }
+                        //}
+                        //else if (b && !g && !r)
+                        //{
+                        //    serialSendChars.Add('B');
+                        //    if (_leds.BIntensity < 100)
+                        //    {
+                        //        serialSendChars.Add('0');
+                        //    }
+                        //    foreach (char c in _leds.BIntensity.ToString())
+                        //    {
+                        //        serialSendChars.Add(c);
+                        //    }
 
-                        }
-                        //Adds intensity to send queue
-                        foreach (var bytes in serialSendChars)
-                        {
-                            if (serialSendChars.Count > 0) // if not ==3 then we know it didnt have led times >=1
-                            {
-                                // _serialPortWrapper.SendData.Add(bytes);
-                            }
-                        }
+                        //}
+                        ////Adds intensity to send queue
+                        //foreach (var bytes in serialSendChars)
+                        //{
+                        //    if (serialSendChars.Count > 0) // if not ==3 then we know it didnt have led times >=1
+                        //    {
+                        //        // _serialPortWrapper.SendData.Add(bytes);
+                        //    }
+                        //}
 
                     }
                     else count++;

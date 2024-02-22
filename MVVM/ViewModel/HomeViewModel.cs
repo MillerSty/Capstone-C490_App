@@ -103,7 +103,12 @@ namespace C490_App.MVVM.ViewModel
         /// </summary>
         private void SimpleSerial()
         {
-            ExperimentLocal.RunExperiment12();
+            //var threadSend = new Thread(() =>
+            //{
+                ExperimentLocal.RunExperiment12();
+            //});
+           // threadSend.Start();
+            //ExperimentLocal.RunExperiment12();
         }
 
         /// <summary>
