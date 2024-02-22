@@ -169,8 +169,7 @@ namespace C490_App.MVVM.ViewModel
         /// </summary>
         public void experimentOpen()
         {
-            //we  should be able to dynamically set which  experiment to open here... and  itll be clunky butwe  can make it better
-            //This might be able to be replaced with switch statement too using get type
+
             if ((bool)DPVModel.isEnabled)
             {
                 if (!ExperimentLocal.Model.GetType().Name.Equals("DPVModel"))

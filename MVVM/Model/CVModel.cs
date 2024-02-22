@@ -51,10 +51,10 @@ namespace C490_App.MVVM.Model
             _serialPort.serialPortWrapper.SerialPort.DiscardOutBuffer();
             //var s = time.ToString();
             double interval = stepSize / scanRate;
-            List<double> shit = new();
+            List<double> potsActive = new();
             foreach (var pot in _serialPort.pots)
             {
-                shit.Add(double.Parse(pot));
+                potsActive.Add(double.Parse(pot));
             }
 
 
@@ -82,17 +82,17 @@ namespace C490_App.MVVM.Model
                     timeCount += ((double)time.ElapsedMilliseconds / 1000);
                     float kj = (float)j;
                     Trace.WriteLine(kj.ToString());
-                    _serialPort.serialPortWrapper.writeString(kj.ToString());
+                    //_serialPort.serialPortWrapper.writeString(kj.ToString());
                     Thread.Sleep(50);
 
                     foreach (var x in _serialPort.readDataStructure.xData)
                     {
                         x.Add((float)timeCount);
                     }
-                    //foreach (var y in _serialPort.readDataStructure.yData)
-                    //{
-                    //    y.Add((float)j);
-                    //}
+                    foreach (var y in _serialPort.readDataStructure.yData)
+                    {
+                        y.Add((float)j);
+                    }
                     tempvolt = j;
                     time.Restart();
                 }
@@ -112,16 +112,9 @@ namespace C490_App.MVVM.Model
                     time.Restart();
                 }
 
-
-
-                Trace.WriteLine("Out of forever loop");
-
                 time.Restart();
 
             }
-            //var timey = Stopwatch.GetElapsedTime((long)time);
-            decimal milliseconds = DateTime.Now.Ticks / (decimal)TimeSpan.TicksPerMillisecond;
-            //send start voltage
 
 
 

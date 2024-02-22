@@ -65,20 +65,12 @@ namespace C490_App.MVVM.ViewModel
                 if (_ExperimentStoreSerialWrapper.Open())
                 {
                     char[] c = UserEntry.ToCharArray();
-                    if (c.Length == 1)
+                    foreach (char c2 in c)
                     {
-
-                        _ExperimentStoreSerialWrapper.writeChar(UserEntry[0]);
-                        Thread.Sleep(50);
+                        _ExperimentStoreSerialWrapper.SendData.Add(c2);
 
                     }
-                    else
-                    {
-
-                        _ExperimentStoreSerialWrapper.writeString(UserEntry);
-                        Thread.Sleep(59);
-
-                    }
+                    _ExperimentStoreSerialWrapper.send();
                     UserEntryRead = "User: " + UserEntry + "\n";
 
                     Thread.Sleep(50);

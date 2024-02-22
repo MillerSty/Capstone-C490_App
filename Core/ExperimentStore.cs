@@ -106,8 +106,18 @@ namespace C490_App.Core
                 MessageBox.Show(message, title);
             });
             thread.Start();
-
         }
+
+        public void formatSendData(ref List<char> sendData, ref TimerHelper th, char colour, int ledIndex, int timerIndex)
+        {
+
+            sendData.Add(colour);
+            th.OnOrOff = "On";
+            th.colour = colour;
+            th.ledIndex = ledIndex;
+            th.timerIndex = timerIndex;
+        }
+
         public List<System.Timers.Timer> ledTimer = new List<System.Timers.Timer>();
         /// <summary>
         /// SimpleSerial communication. Second function for sending more detailed experiment to hardware
@@ -149,40 +159,36 @@ namespace C490_App.Core
                         if (_leds.GOnTime >= 1)
                         {
                             g = true;
-                            serialSendChars.Add('G');
-                            var i = ledParameters.IndexOf(_leds);
+                            formatSendData(ref serialSendChars, ref th, 'G', ledParameters.IndexOf(_leds), ledTimerIndex);
                             ledTimer[ledTimerIndex].Interval = _leds.GOnTime * 1000;
-                            th.OnOrOff = "On";
-                            th.colour = 'G';
-                            th.ledIndex = ledParameters.IndexOf(_leds);
-                            th.timerIndex = ledTimerIndex;
-                            String s = ledTimerIndex.ToString();
-                            ledTimer[ledTimerIndex].Elapsed += (sender, e) => OnTimedEvent(sender, e, ledParameters.IndexOf(_leds).ToString() + " G ON " + s, ref th);
+                            ledTimer[ledTimerIndex].Elapsed += (sender, e) => OnTimedEvent(sender, e, ref th);
                         }
                         else if (_leds.ROnTime >= 1)
                         {
                             r = true;
-                            serialSendChars.Add('R');
-                            var i = ledParameters.IndexOf(_leds);
+                            formatSendData(ref serialSendChars, ref th, 'R', ledParameters.IndexOf(_leds), ledTimerIndex);
                             ledTimer[ledTimerIndex].Interval = _leds.ROnTime * 1000;
-                            //ledTimer[ledTimerIndex].Elapsed += (sender, e) => OnTimedEvent(sender, e, ledParameters.IndexOf(_leds).ToString() + " R ON");
+                            ledTimer[ledTimerIndex].Elapsed += (sender, e) => OnTimedEvent(sender, e, ref th);
                         }
                         else if (_leds.BOnTime >= 1)
                         {
                             b = true;
-                            serialSendChars.Add('B');
-                            var i = ledParameters.IndexOf(_leds);
+                            formatSendData(ref serialSendChars, ref th, 'B', ledParameters.IndexOf(_leds), ledTimerIndex);
                             ledTimer[ledTimerIndex].Interval = _leds.BOnTime * 1000;
-                            //ledTimer[ledTimerIndex].Elapsed += (sender, e) => OnTimedEvent(sender, e, ledParameters.IndexOf(_leds).ToString() + " B ON");
+                            ledTimer[ledTimerIndex].Elapsed += (sender, e) => OnTimedEvent(sender, e, ref th);
                         }
                         foreach (var bytes in serialSendChars)
                         {
-                            if (serialSendChars.Count == 3) // if not ==3 then we know it didnt have led times >=1
+                            // if not ==3 then we know it didnt have led times >=1
+                            //in other words if not ==3 it is an unused LED
+                            //this should be reworked such that, if selected its turned on and if it has times, it gets a timer?
+                            if (serialSendChars.Count == 3)
                             {
                                 _serialPortWrapper.SendData.Add(bytes);
                             }
                         }
-
+                        //can send here if we want. Might help issue
+                        //_serialPortWrapper.send();
                         serialSendChars.Clear();
                         serialSendChars.Add('R');
                         serialSendChars.Add(_leds.Name.ToString()[0]);
@@ -228,6 +234,7 @@ namespace C490_App.Core
                             }
 
                         }
+                        //Adds intensity to send queue
                         foreach (var bytes in serialSendChars)
                         {
                             if (serialSendChars.Count > 0) // if not ==3 then we know it didnt have led times >=1
@@ -241,6 +248,21 @@ namespace C490_App.Core
 
                     ledTimerIndex++;
                 }
+
+                //Send the data
+                //this threaded send could work
+                //var threadSend = new Thread(() =>
+                //{
+                //    _serialPortWrapper.send();
+                //});
+                //thread.Start();
+
+                Stopwatch sw = Stopwatch.StartNew();
+                _serialPortWrapper.send();
+                sw.Stop();
+                Trace.WriteLine(sw.ToString());//00.14 on my home pc
+
+                //enables LED timers
                 //foreach (var index in ledTimer)
                 //{
                 //    index.Enabled = true;
@@ -252,17 +274,7 @@ namespace C490_App.Core
                 {
                     showMessageBox("Running purely potentiostat experiment", "No LED's selected");
                 }
-                //this threaded send could work
-                //var threadSend = new Thread(() =>
-                //{
-                //    _serialPortWrapper.send();
-                //});
-                //thread.Start();
-                //TODO when led params sent to target, add a DateTime stamp to something to track on/off times
-                Stopwatch sw = Stopwatch.StartNew();
-                _serialPortWrapper.send();
-                sw.Stop();
-                Trace.WriteLine(sw.ToString());
+
                 //pots -- load pots in use to MCU
                 String ExperimentPots = "Potentiostats ";
                 foreach (var pots in this.pots)
@@ -302,34 +314,41 @@ namespace C490_App.Core
             public int ledIndex { get; set; }
 
         }
-        private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e, String s, ref TimerHelper th)
+        private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e, ref TimerHelper th)
         {
             System.Timers.Timer newJ = source as System.Timers.Timer;
             newJ.Enabled = false;
             newJ.AutoReset = false;
-            String[] parse = s.Split(" ");
-            ledParameters[0].Name = "";
-            switch (parse[1])
+
+            switch (th.colour)
             {
-                case ("G"):
+                case ('G'):
                     if (th.OnOrOff.Equals("On"))
                     {
                         //if any other colour has an on time switch to it
-                        if (ledParameters[int.Parse(parse[0])].BOnTime > 0 || ledParameters[int.Parse(parse[0])].ROnTime > 0)
+                        if (ledParameters[th.ledIndex].BOnTime > 0 || ledParameters[th.ledIndex].ROnTime > 0)
                         {
 
                         }
                         else
                         {
-                            Trace.WriteLine("Switching to GOFF for:" + th.ledIndex + " G OFF");
-                            ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].GOffTime * 1000;
-                            th.OnOrOff = "Off";
+                            //Trace.WriteLine("Switching to GOFF for:" + th.ledIndex + " G OFF");
+                            if (!(ledParameters[th.ledIndex].GOffTime == 0))
+                            {
+                                ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].GOffTime * 1000;
+                                th.OnOrOff = "Off";
+                            }
+                            else
+                            {
+                                th.OnOrOff = "On";
+                                ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].GOnTime * 1000;
+                            }
                             //ledTimer[int.Parse(parse[3])].Elapsed += (sender, e) => OnTimedEvent(sender, e, parse[0] + " G OFF " + parse[3]);
                         }
                     }
                     else
                     {
-                        Trace.WriteLine("Switching to GON for:" + parse[0] + " G ON");
+                        //Trace.WriteLine("Switching to GON for:" + parse[0] + " G ON");
                         th.OnOrOff = "On";
                         ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].GOnTime * 1000;
 
@@ -338,8 +357,8 @@ namespace C490_App.Core
 
 
                     break;
-                case ("R"): Trace.WriteLine("R timer goes off"); break;
-                case ("B"): Trace.WriteLine("B timer goes off"); break;
+                case ('R'): Trace.WriteLine("R timer goes off"); break;
+                case ('B'): Trace.WriteLine("B timer goes off"); break;
 
 
             }
