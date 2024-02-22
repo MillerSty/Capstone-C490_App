@@ -108,6 +108,7 @@ namespace C490_App.Core
             thread.Start();
         }
 
+        //really id break this up into two functions. One for sendData/colour. One for setting timerHelper properties
         public void formatSendData(ref List<char> sendData, ref TimerHelper th, char colour, int ledIndex, int timerIndex)
         {
 
@@ -145,17 +146,18 @@ namespace C490_App.Core
                         ledTimer[ledTimerIndex].AutoReset = false;
                         TimerHelper th = new TimerHelper();
 
-                        bool r = false, g = false, b = false;
+                        bool r = false, g = false, b = false; //bools for intensity
 
                         List<char> serialSendChars = new List<char>();
 
                         serialSendChars.Add('L');
                         serialSendChars.Add(_leds.Name.ToString()[0]);
-
                         if (_leds.Name.ToString().Length > 1) //if >1 we have a two digit name
+                        //actually this should be unnecessary since we send it as char anyways, if we send 22 as a char[] it will be fine
                         {
                             serialSendChars.Add(_leds.Name.ToString()[1]);
                         }
+
                         if (_leds.GOnTime >= 1)
                         {
                             g = true;
@@ -190,6 +192,7 @@ namespace C490_App.Core
                         //can send here if we want. Might help issue
                         //_serialPortWrapper.send();
                         serialSendChars.Clear();
+                        //this moves on to appending intensity to SendData
                         serialSendChars.Add('R');
                         serialSendChars.Add(_leds.Name.ToString()[0]);
                         if (_leds.Name.ToString().Length > 1) //if >1 we have a two digit name
@@ -239,7 +242,7 @@ namespace C490_App.Core
                         {
                             if (serialSendChars.Count > 0) // if not ==3 then we know it didnt have led times >=1
                             {
-                                _serialPortWrapper.SendData.Add(bytes);
+                                // _serialPortWrapper.SendData.Add(bytes);
                             }
                         }
 
