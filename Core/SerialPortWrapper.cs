@@ -112,7 +112,16 @@ namespace C490_App.Core
                 if (com != null)
                 {
                     comPort = com;
-                    //break;
+                    break;
+                }
+            }
+            String[] s = SerialPort.GetPortNames();
+            foreach (var ss in s) {
+                foreach (var cpe in comPortEnum) {
+                    if (cpe!=null && cpe.Equals(ss)) {
+                        comPort = cpe;
+                        break;
+                    }
                 }
             }
             //"COM3";
