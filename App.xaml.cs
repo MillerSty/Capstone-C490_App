@@ -18,11 +18,12 @@ namespace C490_App
         {
             IServiceCollection services = new ServiceCollection();
 
+            services.AddSingleton<ExperimentStore>();
             services.AddSingleton<HomeViewModel>(); //might be neccesary to delete
 
             services.AddSingleton<HomeView>(provider => new HomeView
             {
-                DataContext = provider.GetRequiredService<HomeViewModel>()
+                DataContext = new HomeViewModel(_serviceProvider.GetRequiredService<ExperimentStore>())
             });
             //services.AddSingleton<DebugView>(provider => new DebugView
             //{
@@ -37,8 +38,7 @@ namespace C490_App
             ExperimentStore.serialPortWrapper = new SerialPortWrapper(new System.IO.Ports.SerialPort());
             ExperimentStore.serialPortWrapper.initSerial();
             ExperimentStore.setPropertyChange();
-            ExperimentStore.serialPortWrapper.Open();
-            for (int i = 0; i < 100; i++) ;
+            //ExperimentStore.serialPortWrapper.Open();
             //ExperimentStore.serialPortWrapper.Close();
 
 
@@ -50,11 +50,6 @@ namespace C490_App
             var mainWindow = _serviceProvider.GetRequiredService<HomeView>();
             mainWindow.DataContext = viewmodel;
             mainWindow.Show();
-            //var debugWindow = _serviceProvider.GetRequiredService<DebugView>();
-            //debugWindow.DataContext = new DebugViewModel(k);
-            //debugWindow.Show();
-
-
             base.OnStartup(e);
         }
 

@@ -12,7 +12,6 @@
         Title="HomeView">
     <!--Remove WindowStyle and title For made menu-->
 
-
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />

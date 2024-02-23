@@ -112,7 +112,7 @@ namespace C490_App.Core
                 if (com != null)
                 {
                     comPort = com;
-                    break;
+                    //break;
                 }
             }
             //"COM3";
