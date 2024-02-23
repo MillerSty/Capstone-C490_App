@@ -53,7 +53,7 @@ namespace C490_App.MVVM.ViewModel
         public DebugViewModel(ExperimentStore store)
         {
             _ExperimentStoreSerialWrapper = store.serialPortWrapper;
-            //_ExperimentStoreSerialWrapper.PropertyChanged += A_PropertyChanged;
+            _ExperimentStoreSerialWrapper.PropertyChanged += A_PropertyChanged;
 
             enter = new RelayCommand(o => Enter(), o => true);
         }

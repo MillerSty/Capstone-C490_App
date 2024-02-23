@@ -121,8 +121,10 @@ namespace C490_App.Core
             SerialPort.StopBits = StopBits.One;
             SerialPort.Parity = Parity.None;
             SerialPort.ReceivedBytesThreshold = 50;
+            SerialPort.DataBits = 8;
             //SerialPort.ReadTimeout = 10;
             SerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
+            SerialPort.ErrorReceived += new SerialErrorReceivedEventHandler(OnErrorRecieved);
             // }
         }
         public bool Open()
@@ -149,6 +151,21 @@ namespace C490_App.Core
                 }
             }
             return isOpen();
+
+        }
+        public void Close()
+        {
+            try
+            {
+                SerialPort.DiscardInBuffer();
+                SerialPort.DiscardOutBuffer();
+                SerialPort.Close();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, ex.Source);
+            }
 
         }
 
@@ -183,26 +200,34 @@ namespace C490_App.Core
                 //{ char[] indata=new char[64];
                 //     serialDevice.Read(indata,0,serialDevice.BytesToRead);
                 var indata = serialDevice.ReadLine();
-                Trace.WriteLine("DEBUG FROM HW************************");
+                Trace.Write("*Hw debug. Bytes to Read: ");
                 Trace.WriteLine(serialDevice.BytesToRead.ToString());
                 debugInfo = indata;
-                Trace.WriteLine(indata.ToString());
+                //Trace.WriteLine(indata.ToString());
             }
             catch (Exception err)
             {
                 Trace.WriteLine(err.ToString());
             }
-            //if (indata[0] == 'P')
-            //{
-            //    ExperimentData = indata[2..indata.Length].ToString();
-            //}
-            //else
-            //{
-            //}
-            //serialDevice.DiscardInBuffer();
-            //Thread.Sleep(50);
         }
-
+        private void OnErrorRecieved(object sender, SerialErrorReceivedEventArgs e)
+        {
+            //var serialDevice = sender as SerialPort;
+            try
+            {
+                //{ char[] indata=new char[64];
+                //     serialDevice.Read(indata,0,serialDevice.BytesToRead);
+                // var indata = serialDevice.ReadLine();
+                Trace.Write("*Hw debug. Error received " + e.ToString());
+                //Trace.WriteLine(serialDevice.BytesToRead.ToString());
+                //debugInfo = indata;
+                //Trace.WriteLine(indata.ToString());
+            }
+            catch (Exception err)
+            {
+                Trace.WriteLine(err.ToString());
+            }
+        }
 
         /// <summary>
         /// Used for getting comports used by VID/PID

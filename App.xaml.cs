@@ -24,7 +24,10 @@ namespace C490_App
             {
                 DataContext = provider.GetRequiredService<HomeViewModel>()
             });
-
+            //services.AddSingleton<DebugView>(provider => new DebugView
+            //{
+            //    DataContext = provider.GetRequiredService<DebugViewModel>()
+            //});
             services.AddSingleton<ExperimentStore>();
 
 
@@ -34,6 +37,10 @@ namespace C490_App
             ExperimentStore.serialPortWrapper = new SerialPortWrapper(new System.IO.Ports.SerialPort());
             ExperimentStore.serialPortWrapper.initSerial();
             ExperimentStore.setPropertyChange();
+            ExperimentStore.serialPortWrapper.Open();
+            for (int i = 0; i < 100; i++) ;
+            //ExperimentStore.serialPortWrapper.Close();
+
 
         }
         protected override void OnStartup(StartupEventArgs e)
@@ -43,6 +50,10 @@ namespace C490_App
             var mainWindow = _serviceProvider.GetRequiredService<HomeView>();
             mainWindow.DataContext = viewmodel;
             mainWindow.Show();
+            //var debugWindow = _serviceProvider.GetRequiredService<DebugView>();
+            //debugWindow.DataContext = new DebugViewModel(k);
+            //debugWindow.Show();
+
 
             base.OnStartup(e);
         }

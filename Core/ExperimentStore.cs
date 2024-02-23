@@ -128,6 +128,7 @@ namespace C490_App.Core
             //If serial is not open, open it
             if (serialPortWrapper.Open())
             {
+                _serialPortWrapper.SerialPort.DiscardInBuffer();
                 //load target parameters
                 //led's -- Could be made into its own function?
                 int count = 0;

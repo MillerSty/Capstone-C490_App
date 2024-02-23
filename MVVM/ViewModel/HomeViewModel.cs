@@ -84,6 +84,10 @@ namespace C490_App.MVVM.ViewModel
             imexParams = new RelayCommand(o => IMEXParams(o), o => true);
             serialCommunicate = new RelayCommand(o => SimpleSerial(), o => true);
             openDebug = new RelayCommand(o => OpenDebug(), o => true);
+            Application.Current.Dispatcher.Invoke((Action)delegate
+            {
+                OpenDebug();
+            });
         }
         /// <summary>
         /// Opens the Debug View 
@@ -105,9 +109,9 @@ namespace C490_App.MVVM.ViewModel
         {
             //var threadSend = new Thread(() =>
             //{
-                ExperimentLocal.RunExperiment12();
+            ExperimentLocal.RunExperiment12();
             //});
-           // threadSend.Start();
+            // threadSend.Start();
             //ExperimentLocal.RunExperiment12();
         }
 
