@@ -40,16 +40,7 @@ namespace C490_App.Core
                 OnPropertyChanged("Text2");
             }
         }
-        private String _ssendData;
-        public String SSendData
-        {
-            get { return _ssendData; }
-            set
-            {
-                _ssendData = value;
-                OnPropertyChanged("sendChar");
-            }
-        }
+
         private List<char> _sendData = new List<char>();
         public List<char> SendData
         {
@@ -67,20 +58,14 @@ namespace C490_App.Core
         }
         public void send()
         {
-            //while (true)
-            //{
+
             foreach (char c in SendData)
             {
                 Trace.WriteLine("Writing " + c);
                 this.writeChar(c);
-                Thread.Sleep(20);
+                Thread.Sleep(35); // NOTE THIS TIME CHANGES???
             }
             SendData.Clear();
-
-
-            //}
-
-
         }
 
         private SerialPort _port;
@@ -116,9 +101,12 @@ namespace C490_App.Core
                 }
             }
             String[] s = SerialPort.GetPortNames();
-            foreach (var ss in s) {
-                foreach (var cpe in comPortEnum) {
-                    if (cpe!=null && cpe.Equals(ss)) {
+            foreach (var ss in s)
+            {
+                foreach (var cpe in comPortEnum)
+                {
+                    if (cpe != null && cpe.Equals(ss))
+                    {
                         comPort = cpe;
                         break;
                     }
@@ -209,7 +197,8 @@ namespace C490_App.Core
             {
                 //{ char[] indata=new char[64];
                 //     serialDevice.Read(indata,0,serialDevice.BytesToRead);
-                var indata = serialDevice.ReadLine();
+                //var indata = serialDevice.ReadLine();
+                var indata = serialDevice.ReadExisting();
                 Trace.Write("*Hw debug. Bytes to Read: ");
                 Trace.WriteLine(serialDevice.BytesToRead.ToString());
                 debugInfo = indata;
