@@ -161,6 +161,8 @@ namespace C490_App.MVVM.ViewModel
         public RelayCommand Save { get; set; }
 
         public RelayCommand Cancel { get; set; }
+        public RelayCommand StartLed { get; set; }
+        public RelayCommand StopLed { get; set; }
 
         public ExperimentStore ExperimentLocal { get; set; }
 
@@ -172,6 +174,8 @@ namespace C490_App.MVVM.ViewModel
 
             Save = new RelayCommand(o => save(), o => true);
             Cancel = new RelayCommand(o => this.cancel(o), o => true);
+            StartLed = new RelayCommand(o => start(), o => true);
+            StopLed = new RelayCommand(o => stop(), o => true);
         }
         public void check() // maybe do this with data trigger ?
         {
@@ -188,6 +192,21 @@ namespace C490_App.MVVM.ViewModel
         public void save()
         {
             Trace.WriteLine("Saving");
+        }
+        public void start()
+        {
+            ExperimentLocal.serialPortWrapper.SendData.Add('L');
+            ExperimentLocal.serialPortWrapper.SendData.Add(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name[0]);
+            ExperimentLocal.serialPortWrapper.SendData.Add('G');
+            ExperimentLocal.serialPortWrapper.send();
+
+        }
+        public void stop()
+        {
+            ExperimentLocal.serialPortWrapper.SendData.Add('L');
+            ExperimentLocal.serialPortWrapper.SendData.Add(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name[0]);
+            ExperimentLocal.serialPortWrapper.SendData.Add('G');
+            ExperimentLocal.serialPortWrapper.send();
         }
         public void cancel(Object o)
         {

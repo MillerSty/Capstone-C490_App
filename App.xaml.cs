@@ -38,7 +38,7 @@ namespace C490_App
             ExperimentStore.serialPortWrapper = new SerialPortWrapper(new System.IO.Ports.SerialPort());
             ExperimentStore.serialPortWrapper.initSerial();
             ExperimentStore.setPropertyChange();
-            //ExperimentStore.serialPortWrapper.Open();
+            ExperimentStore.serialPortWrapper.Open();
             //ExperimentStore.serialPortWrapper.Close();
 
 

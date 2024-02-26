@@ -20,6 +20,7 @@ namespace C490_App.Core
             }
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(e));
         }
+
         private String _debugInfo;
         public String debugInfo
         {
@@ -46,14 +47,12 @@ namespace C490_App.Core
         {
             get
             {
-                // Trace.WriteLine("getting lc"); 
                 return _sendData;
             }
             set
             {
-                //Trace.WriteLine("setting lc");
                 _sendData = value;
-                OnPropertyChanged("");
+                OnPropertyChanged(""); //probably not needed
             }
         }
         public void send()
@@ -63,7 +62,7 @@ namespace C490_App.Core
             {
                 Trace.WriteLine("Writing " + c);
                 this.writeChar(c);
-                Thread.Sleep(35); // NOTE THIS TIME CHANGES???
+                Thread.Sleep(20); // NOTE THIS TIME CHANGES (due to pc hardware?)???
             }
             SendData.Clear();
         }
@@ -118,7 +117,7 @@ namespace C490_App.Core
             SerialPort.NewLine = "\r\n";
             SerialPort.StopBits = StopBits.One;
             SerialPort.Parity = Parity.None;
-            SerialPort.ReceivedBytesThreshold = 50;
+            SerialPort.ReceivedBytesThreshold = 10;
             SerialPort.DataBits = 8;
             //SerialPort.ReadTimeout = 10;
             SerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
@@ -195,14 +194,8 @@ namespace C490_App.Core
             var serialDevice = sender as SerialPort;
             try
             {
-                //{ char[] indata=new char[64];
-                //     serialDevice.Read(indata,0,serialDevice.BytesToRead);
-                //var indata = serialDevice.ReadLine();
                 var indata = serialDevice.ReadExisting();
-                Trace.Write("*Hw debug. Bytes to Read: ");
-                Trace.WriteLine(serialDevice.BytesToRead.ToString());
                 debugInfo = indata;
-                //Trace.WriteLine(indata.ToString());
             }
             catch (Exception err)
             {
@@ -211,16 +204,9 @@ namespace C490_App.Core
         }
         private void OnErrorRecieved(object sender, SerialErrorReceivedEventArgs e)
         {
-            //var serialDevice = sender as SerialPort;
             try
             {
-                //{ char[] indata=new char[64];
-                //     serialDevice.Read(indata,0,serialDevice.BytesToRead);
-                // var indata = serialDevice.ReadLine();
                 Trace.Write("*Hw debug. Error received " + e.ToString());
-                //Trace.WriteLine(serialDevice.BytesToRead.ToString());
-                //debugInfo = indata;
-                //Trace.WriteLine(indata.ToString());
             }
             catch (Exception err)
             {
@@ -234,19 +220,18 @@ namespace C490_App.Core
         /// <param name="VID"></param>
         /// <param name="PID"></param>
         /// <returns></returns>
-        //private String vid = "2341";
-        //private String pid = "0043";
-        private String vid = "04D8";
-        private String pid = "00DD";
-        private String SerialNumber = "950323034373518061D1";
+        static String vidMicahUno = "2341";
+        static String pidMicahUno = "0043";
+        static String vidHW = "04D8";
+        static String pidHW = "00DD";
+        static String SerialNumberArduino = "950323034373518061D1";
 
         static List<string> ComPortNames()
         {
             //String vid = "2341";
             //String pid = "0043";
-            String vid = "04D8";
-            String pid = "00DD";
-            String SerialNumber = "950323034373518061D1";
+            String vid = vidHW;
+            String pid = pidHW;
 
             String pattern = String.Format("^VID_{0}.PID_{1}", vid, pid);
             Regex _rx = new Regex(pattern, RegexOptions.IgnoreCase);

@@ -15,10 +15,6 @@
         public ushort BOffTime { get => bOffTime; set => bOffTime = value; }
         public ushort BIntensity { get => bIntensity; set => bIntensity = value; }
 
-        public readonly UInt32 Gaddress = 0b01;
-        public readonly UInt32 Raddress = 0b10;
-        public readonly UInt32 Baddress = 0b11;
-
         private bool isSelected;
 
         private ushort[] address = new UInt16[2]; //Index 1: is row | Index 0: column

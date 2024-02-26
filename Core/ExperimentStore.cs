@@ -132,7 +132,7 @@ namespace C490_App.Core
                 //load target parameters
                 //led's -- Could be made into its own function?
                 int count = 0;
-                String ExperimentLeds = "";
+
                 readDataStructure.Date = DateTime.Now;
                 readDataStructure.Title = this.Model.GetType().Name; //this could be more dynamic/improved
 
@@ -140,7 +140,6 @@ namespace C490_App.Core
 
                 foreach (LEDParameter _leds in ledParameters)//write LED's 
                 {
-                    //TODO add On times, and intensities
                     if (_leds.IsSelected)
                     {
                         ledTimer.Add(new System.Timers.Timer());
@@ -149,12 +148,11 @@ namespace C490_App.Core
 
                         bool r = false, g = false, b = false; //bools for intensity
 
-                        List<char> serialSendChars = new List<char>();
-
-                        serialSendChars.Add('L');
-                        serialSendChars.Add(_leds.Name.ToString()[0]);
-                        if (_leds.Name.ToString().Length > 1) //if >1 we have a two digit name
+                        List<char> serialSendChars = ['L', _leds.Name.ToString()[0]];
+                        //if >1 we have a two digit name 
                         //actually this should be unnecessary since we send it as char anyways, if we send 22 as a char[] it will be fine
+                        //note if we do do col rol sending we will need to prefix a 0 to #'s < 10                        
+                        if (_leds.Name.ToString().Length > 1)
                         {
                             serialSendChars.Add(_leds.Name.ToString()[1]);
                         }
@@ -190,66 +188,61 @@ namespace C490_App.Core
                                 _serialPortWrapper.SendData.Add(bytes);
                             }
                         }
-                        //can send here if we want. Might help issue
 
-                        //Stopwatch sw = Stopwatch.StartNew();
-                        //_serialPortWrapper.send();
-                        //sw.Stop();
-                        //Trace.WriteLine(sw.ToString());//00.14 on my home pc
-                        //serialSendChars.Clear();
-                        ////this moves on to appending intensity to SendData
-                        //serialSendChars.Add('R');
-                        //serialSendChars.Add(_leds.Name.ToString()[0]);
-                        //if (_leds.Name.ToString().Length > 1) //if >1 we have a two digit name
-                        //{
-                        //    serialSendChars.Add(_leds.Name.ToString()[1]);
-                        //}
-                        //if (g && !r && !b)
-                        //{
-                        //    serialSendChars.Add('G');
-                        //    if (_leds.GIntensity < 100)
-                        //    {
-                        //        serialSendChars.Add('0');
-                        //    }
-                        //    foreach (char c in _leds.GIntensity.ToString())
-                        //    {
-                        //        serialSendChars.Add(c);
-                        //    }
-                        //}
-                        //else if (r && !g && !b)
-                        //{
-                        //    serialSendChars.Add('R');
-                        //    if (_leds.RIntensity < 100)
-                        //    {
-                        //        serialSendChars.Add('0');
-                        //    }
-                        //    foreach (char c in _leds.RIntensity.ToString())
-                        //    {
-                        //        serialSendChars.Add(c);
-                        //    }
+                        serialSendChars.Clear();
+                        //this moves on to appending intensity to SendData
+                        serialSendChars.Add('R');
+                        serialSendChars.Add(_leds.Name.ToString()[0]);
+                        if (_leds.Name.ToString().Length > 1) //if >1 we have a two digit name
+                        {
+                            serialSendChars.Add(_leds.Name.ToString()[1]);
+                        }
+                        if (g && !r && !b)
+                        {
+                            serialSendChars.Add('G');
+                            if (_leds.GIntensity < 100)
+                            {
+                                serialSendChars.Add('0');
+                            }
+                            foreach (char c in _leds.GIntensity.ToString())
+                            {
+                                serialSendChars.Add(c);
+                            }
+                        }
+                        else if (r && !g && !b)
+                        {
+                            serialSendChars.Add('R');
+                            if (_leds.RIntensity < 100)
+                            {
+                                serialSendChars.Add('0');
+                            }
+                            foreach (char c in _leds.RIntensity.ToString())
+                            {
+                                serialSendChars.Add(c);
+                            }
 
-                        //}
-                        //else if (b && !g && !r)
-                        //{
-                        //    serialSendChars.Add('B');
-                        //    if (_leds.BIntensity < 100)
-                        //    {
-                        //        serialSendChars.Add('0');
-                        //    }
-                        //    foreach (char c in _leds.BIntensity.ToString())
-                        //    {
-                        //        serialSendChars.Add(c);
-                        //    }
+                        }
+                        else if (b && !g && !r)
+                        {
+                            serialSendChars.Add('B');
+                            if (_leds.BIntensity < 100)
+                            {
+                                serialSendChars.Add('0');
+                            }
+                            foreach (char c in _leds.BIntensity.ToString())
+                            {
+                                serialSendChars.Add(c);
+                            }
 
-                        //}
-                        ////Adds intensity to send queue
-                        //foreach (var bytes in serialSendChars)
-                        //{
-                        //    if (serialSendChars.Count > 0) // if not ==3 then we know it didnt have led times >=1
-                        //    {
-                        //        // _serialPortWrapper.SendData.Add(bytes);
-                        //    }
-                        //}
+                        }
+                        //Adds intensity to send queue
+                        foreach (var bytes in serialSendChars)
+                        {
+                            if (serialSendChars.Count > 0) // if not ==3 then we know it didnt have led times >=1
+                            {
+                                _serialPortWrapper.SendData.Add(bytes);
+                            }
+                        }
 
                     }
                     else count++;
@@ -257,25 +250,17 @@ namespace C490_App.Core
                     ledTimerIndex++;
                 }
 
-                //Send the data
-                //this threaded send could work
-                //var threadSend = new Thread(() =>
-                //{
-                //    _serialPortWrapper.send();
-                //});
-                //thread.Start();
-
                 Stopwatch sw = Stopwatch.StartNew();
                 _serialPortWrapper.send();
                 sw.Stop();
                 Trace.WriteLine(sw.ToString());//00.14 on my home pc
 
                 //enables LED timers
-                //foreach (var index in ledTimer)
-                //{
-                //    index.Enabled = true;
+                foreach (var index in ledTimer)
+                {
+                    index.Enabled = true;
 
-                //}
+                }
 
                 //Checks how many unused LED's
                 if (count == 50)
@@ -312,6 +297,7 @@ namespace C490_App.Core
 
             }
             //ENSURE WE DISPOSE OF TIMERS HERE
+
             Trace.WriteLine("End of experiment");
         }
         public struct TimerHelper
@@ -324,55 +310,43 @@ namespace C490_App.Core
         }
         private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e, ref TimerHelper th)
         {
-            System.Timers.Timer newJ = source as System.Timers.Timer;
-            newJ.Enabled = false;
-            newJ.AutoReset = false;
 
-            switch (th.colour)
+            if (th.OnOrOff.Equals("On"))
             {
-                case ('G'):
-                    if (th.OnOrOff.Equals("On"))
-                    {
-                        //if any other colour has an on time switch to it
-                        if (ledParameters[th.ledIndex].BOnTime > 0 || ledParameters[th.ledIndex].ROnTime > 0)
-                        {
+                //if any other colour has an on time switch to it
+                if (ledParameters[th.ledIndex].BOnTime > 0 || ledParameters[th.ledIndex].ROnTime > 0)
+                {
 
-                        }
-                        else
-                        {
-                            //Trace.WriteLine("Switching to GOFF for:" + th.ledIndex + " G OFF");
-                            if (!(ledParameters[th.ledIndex].GOffTime == 0))
-                            {
-                                ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].GOffTime * 1000;
-                                th.OnOrOff = "Off";
-                            }
-                            else
-                            {
-                                th.OnOrOff = "On";
-                                ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].GOnTime * 1000;
-                            }
-                            //ledTimer[int.Parse(parse[3])].Elapsed += (sender, e) => OnTimedEvent(sender, e, parse[0] + " G OFF " + parse[3]);
-                        }
+                }
+                else
+                {
+                    if (!(ledParameters[th.ledIndex].GOffTime == 0))
+                    {
+                        ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].GOffTime * 1000;
+                        th.OnOrOff = "Off";
+                        _serialPortWrapper.SendData.Add('L');
+                        _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[0]);
+                        _serialPortWrapper.SendData.Add(th.colour);
+
                     }
                     else
                     {
-                        //Trace.WriteLine("Switching to GON for:" + parse[0] + " G ON");
                         th.OnOrOff = "On";
                         ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].GOnTime * 1000;
-
-                        //ledTimer[int.Parse(parse[3])].Elapsed += (sender, e) => OnTimedEvent(sender, e, parse[0] + " G ON " + parse[3]);
+                        //no append to SendData here as we dont want toggle led
                     }
-
-
-                    break;
-                case ('R'): Trace.WriteLine("R timer goes off"); break;
-                case ('B'): Trace.WriteLine("B timer goes off"); break;
-
-
+                }
             }
+            else
+            {
+                th.OnOrOff = "On";
+                ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].GOnTime * 1000;
+                _serialPortWrapper.SendData.Add('L');
+                _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[0]);
+                _serialPortWrapper.SendData.Add(th.colour);
+            }
+            _serialPortWrapper.send();
             ledTimer[th.timerIndex].Enabled = true;
-
-
         }
 
     }
