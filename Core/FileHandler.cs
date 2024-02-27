@@ -211,12 +211,10 @@ namespace C490_App.Core
 
                                 List<DPVModel> enumerableModelDPV = [(DPVModel)ExperimentLocal.Model];
                                 csv.NextRecord();
-                                //writer.Flush();
                                 csv.WriteField("type");
 
                                 csv.WriteHeader<DPVModel>();
                                 csv.NextRecord();
-                                // writer.Flush();
 
                                 //TODO this could be split to just write DPV not DPVModel
                                 csv.WriteField(enumerableModelDPV[0].GetType().Name.ToString());
@@ -224,7 +222,6 @@ namespace C490_App.Core
                                 csv.WriteRecords<DPVModel>(enumerableModelDPV);
                                 csv.WriteField(",");
 
-                                //writer.Flush();
                                 enumerableModelDPV.Clear();
                                 break;
                             case "CAModel":
@@ -299,6 +296,13 @@ namespace C490_App.Core
                 Map(m => m.BOnTime);
                 Map(m => m.BOffTime);
                 Map(m => m.BIntensity);
+                Map(m => m.PriorityOne).Default('G');
+                Map(m => m.PriorityTwo).Default('R');
+                Map(m => m.PriorityThree).Default('B');
+                Map(m => m.GreenCycle).Default(0);
+                Map(m => m.RedCycle).Default(0);
+                Map(m => m.BlueCycle).Default(0);
+
                 Map(m => m.IsSelected).Constant(true).Ignore();
             }
         }

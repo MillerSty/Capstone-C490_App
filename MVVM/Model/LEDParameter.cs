@@ -15,6 +15,19 @@
         public ushort BOffTime { get => bOffTime; set => bOffTime = value; }
         public ushort BIntensity { get => bIntensity; set => bIntensity = value; }
 
+        public char PriorityOne { get; set; }
+        public char PriorityTwo { get; set; }
+        public char PriorityThree { get; set; }
+
+        public int GreenCycle { get; set; }
+        public int BlueCycle { get; set; }
+        public int RedCycle { get; set; }
+        public int currGreenCycle { get; set; } = 0;
+        public int currBlueCycle { get; set; } = 0;
+
+        public int currRedCycle { get; set; } = 0;
+
+
         private bool isSelected;
 
         private ushort[] address = new UInt16[2]; //Index 1: is row | Index 0: column
@@ -30,6 +43,8 @@
         private ushort bOnTime;
         private ushort bOffTime;
         private ushort bIntensity;
+
+
 
         public LEDParameter()
         {
@@ -66,6 +81,9 @@
             this.BOnTime = record.BOnTime;
             this.BOffTime = record.BOffTime;
             this.BIntensity = record.BIntensity;
+            this.PriorityOne = record.PriorityOne;
+            this.PriorityTwo = record.PriorityTwo;
+            this.PriorityThree = record.PriorityThree;
             this.isSelected = true;
 
         }

@@ -8,20 +8,21 @@
         mc:Ignorable="d"
         Title="LEDParameterFrame"
         x:Name="LEDFrame"
-        Height="500" Width="400">
+        Height="650" Width="400">
     <!--<Window.DataContext>
     <viewmodel:LEDParameterViewModel>
     </viewmodel:LEDParameterViewModel>
     </Window.DataContext>-->
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -49,17 +50,78 @@
                     Content="Stop Selected LED"
                     Command="{Binding StopLed}"></Button>
         </Grid>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Margin="0 0 0 0 " >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox Height="25" Width="25" VerticalAlignment="Bottom" Grid.Column="0" Background="#33008000" IsChecked="{Binding Green}"   />
+                    <CheckBox Height="25" Width="25" VerticalAlignment="Bottom" Grid.Column="1" Background="#33F15B5B" IsChecked="{Binding Red}"/>
+                    <CheckBox Height="25" Width="25" VerticalAlignment="Bottom" Grid.Column="2" Background="#335F93FB" IsChecked="{Binding Blue}"/>
+                </Grid>
+            </StackPanel>
+            <TextBlock Grid.Row="1"
+                       Text="Inputs" FontSize="20"
+                       HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
+        </Grid>
 
         <TextBlock Grid.Row="1" Grid.Column="0"
                    Text="Parameter" FontSize="20"
                    HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
-        <TextBlock Grid.Row="1" Grid.Column="1"
-                   Text="Inputs" FontSize="20"
-                   HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
-        <TextBlock Grid.Row="2" Grid.Column="0"
+        <Grid Grid.Row="2" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       Text="Priorities" FontSize="20"
+                       HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
+            <TextBlock Grid.Row="1"
+                       Text="Cycles" FontSize="20"
+                       HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
+        </Grid>
+        <Grid  Grid.Row="2" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" VerticalAlignment="Bottom" Margin="0 0 0 0 " >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="0" Background="#33008000"  Text="{Binding GPrior, UpdateSourceTrigger=PropertyChanged}"  />
+                    <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="1" Background="#33F15B5B" Text="{Binding RCycle, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="2" Background="#335F93FB" Text="{Binding BCycle, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+            </StackPanel>
+            <StackPanel Grid.Row="1" VerticalAlignment="Bottom" Margin="0 0 0 0 " >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="0" Background="#33008000" Text="{Binding GCycle, UpdateSourceTrigger=PropertyChanged}"  />
+                    <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="1" Background="#33F15B5B" Text="{Binding RCycle, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="2" Background="#335F93FB" Text="{Binding BCycle, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+            </StackPanel>
+        </Grid>
+        <TextBlock Grid.Row="3" Grid.Column="0"
                    Text="On Time (s)" FontSize="20"
-                   HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-        <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Stretch" Margin="0 25 0 0 " >
+                   HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
+        <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Bottom" Margin="0 25 0 0 " >
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -71,7 +133,7 @@
                 <TextBox Height="25" VerticalAlignment="Bottom" Width="25" Grid.Column="2" Background="#335F93FB" Text="{Binding BOnTime, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
         </StackPanel>
-        <StackPanel Grid.Row="3" Grid.Column="1" VerticalAlignment="Stretch" Margin="0 25 0 0 " >
+        <StackPanel Grid.Row="4" Grid.Column="1" VerticalAlignment="Bottom" Margin="0 25 0 0 " >
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -86,15 +148,15 @@
 
 
 
-        <TextBlock Grid.Row="3" Grid.Column="0"
-                   Text="Off Time (s)" FontSize="20"
-                   HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
         <TextBlock Grid.Row="4" Grid.Column="0"
+                   Text="Off Time (s)" FontSize="20"
+                   HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
+        <TextBlock Grid.Row="5" Grid.Column="0"
                    Text="Intensity" FontSize="20"
-                   HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                   HorizontalAlignment="Center" VerticalAlignment="Bottom"></TextBlock>
 
 
-        <Button Grid.Column="0" Grid.Row="6"
+        <Button Grid.Column="0" Grid.Row="7"
                 Style="{StaticResource HomeButton}"
                 Height="30" Width="100"
                 Content="Save"
@@ -102,7 +164,7 @@
                 HorizontalAlignment="Center" VerticalAlignment="Center"
                 Command="{Binding Save}"></Button>
 
-        <Button Grid.Column="1" Grid.Row="6"
+        <Button Grid.Column="1" Grid.Row="7"
                 Style="{StaticResource HomeButton}"
                 Height="30" Width="100"
                 Content="Cancel"
@@ -110,7 +172,7 @@
                 HorizontalAlignment="Center" VerticalAlignment="Center"
                 Command="{Binding Cancel}"
                 CommandParameter="Binding ElementName=LEDFrame"></Button>
-        <StackPanel Grid.Column="1" Grid.Row="4" Grid.RowSpan="2">
+        <StackPanel Grid.Column="1" Grid.Row="5" Grid.RowSpan="2" VerticalAlignment="Bottom">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>

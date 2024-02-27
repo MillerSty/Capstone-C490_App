@@ -38,14 +38,13 @@ namespace C490_App
             ExperimentStore.serialPortWrapper = new SerialPortWrapper(new System.IO.Ports.SerialPort());
             ExperimentStore.serialPortWrapper.initSerial();
             ExperimentStore.setPropertyChange();
-            ExperimentStore.serialPortWrapper.Open();
-            //ExperimentStore.serialPortWrapper.Close();
 
 
         }
         protected override void OnStartup(StartupEventArgs e)
         {
             var k = _serviceProvider.GetRequiredService<ExperimentStore>();
+            k.serialPortWrapper.Open();
             var viewmodel = new HomeViewModel(k);
             var mainWindow = _serviceProvider.GetRequiredService<HomeView>();
             mainWindow.DataContext = viewmodel;
