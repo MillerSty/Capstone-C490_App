@@ -68,9 +68,11 @@ namespace C490_App.MVVM.ViewModel
         public RelayCommand ImportData { get; set; }
         public RelayCommand RandomizeColours { get; set; }
         public RelayCommand OpenRecent { get; set; }
-        public GraphViewModel()
+        public GraphViewModel(HomeViewModel homeViewModel)
         {
-            InitializePlotModel();
+            this.homeViewModel = homeViewModel;
+            //InitializePlotModel();
+            IsExperimentRunning();
             CsvListBox = new ObservableCollection<PlotItem>();
             LoadSelectedCsv = new RelayCommand(o => ExecuteLoadSelectedCsv(o), o => true);
             ToggleCsvVisibility = new RelayCommand(o => ExecuteToggleCsvVisibility(o), o => true);
@@ -82,6 +84,24 @@ namespace C490_App.MVVM.ViewModel
             RandomizeColours = new RelayCommand(o => ExecuteRandomizeColours(o), o => true);
             OpenRecent = new RelayCommand(o => ExecuteOpenRecent(o), o => true);
         }
+
+        private readonly HomeViewModel homeViewModel;
+        private void IsExperimentRunning()
+        {
+
+            bool isRunning = homeViewModel.experimentRunning;
+
+            if (isRunning)
+            {
+                // The experiment is running
+                InitializePlotModel();
+            }
+            else
+            {
+                // The experiment is not running
+            }
+        }
+
         private void ExecuteOpenRecent(object o)
         {
             string directoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory.Split(new[] { "\\bin\\" }, StringSplitOptions.None)[0], "Resources", "CSVDATA");

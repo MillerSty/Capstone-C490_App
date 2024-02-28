@@ -8,6 +8,8 @@ namespace C490_App.MVVM.ViewModel
 {
     public class HomeViewModel : ViewModelBase
     {
+        public bool experimentRunning { get; set; } = false;
+
         /*
          * Viewmodel variables for potentiostat and led selection
          */
@@ -103,6 +105,7 @@ namespace C490_App.MVVM.ViewModel
         /// </summary>
         private void SimpleSerial()
         {
+            experimentRunning = true;
             ExperimentLocal.RunExperiment12();
         }
 
@@ -146,7 +149,7 @@ namespace C490_App.MVVM.ViewModel
         /// </summary>
         private void GraphOpen()
         {
-            GraphView graphView = new GraphView();
+            GraphView graphView = new GraphView(this);
             graphView.Show();
         }
 

@@ -7,10 +7,15 @@ namespace C490_App.MVVM.View
     {
         private GraphViewModel viewModel;
 
-        public GraphView()
+        private HomeViewModel homeViewModel;
+
+        public GraphView(HomeViewModel homeViewModel)
         {
             InitializeComponent();
-            viewModel = new GraphViewModel();
+
+            // Initialize GraphViewModel with HomeViewModel instance
+            viewModel = new GraphViewModel(homeViewModel);
+
             DataContext = viewModel;
         }
     }
