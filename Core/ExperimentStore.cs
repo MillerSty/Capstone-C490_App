@@ -256,11 +256,11 @@ namespace C490_App.Core
                 Trace.WriteLine(sw.ToString());//00.14 on my home pc
 
                 //enables LED timers
-                foreach (var index in ledTimer)
-                {
-                    index.Enabled = true;
+                //foreach (var index in ledTimer)
+                //{
+                //    index.Enabled = true;
 
-                }
+                //}
 
                 //Checks how many unused LED's
                 if (count == 50)

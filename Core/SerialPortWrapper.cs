@@ -57,14 +57,20 @@ namespace C490_App.Core
         }
         public void send()
         {
-
-            foreach (char c in SendData)
-            {
-                Trace.WriteLine("Writing " + c);
-                this.writeChar(c);
-                Thread.Sleep(20); // NOTE THIS TIME CHANGES (due to pc hardware?)???
-            }
-            SendData.Clear();
+            //try
+            //{
+                foreach (char c in SendData)
+                {
+                    Trace.WriteLine("Writing " + c);
+                    this.writeChar(c);
+                    Thread.Sleep(50); // NOTE THIS TIME CHANGES (due to pc hardware?)???
+                }
+                SendData.Clear();
+            //}
+            //catch(Exception e)
+            //{
+            //    Trace.WriteLine("Error sending data");
+            //}
         }
 
         private SerialPort _port;
