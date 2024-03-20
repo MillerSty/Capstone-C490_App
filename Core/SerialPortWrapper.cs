@@ -13,7 +13,6 @@ namespace C490_App.Core
 
         private void OnPropertyChanged(String e)
         {
-            Trace.WriteLine("Changed property!! " + e);
             if (e.Equals("sendChar"))
             {
                 Trace.WriteLine("We got it baby?");
@@ -57,20 +56,19 @@ namespace C490_App.Core
         }
         public void send()
         {
-            //try
-            //{
+            try
+            {
                 foreach (char c in SendData)
                 {
-                    Trace.WriteLine("Writing " + c);
                     this.writeChar(c);
-                    Thread.Sleep(50); // NOTE THIS TIME CHANGES (due to pc hardware?)???
+                    Thread.Sleep(15); // NOTE THIS TIME CHANGES (due to pc hardware?)???
                 }
                 SendData.Clear();
-            //}
-            //catch(Exception e)
-            //{
-            //    Trace.WriteLine("Error sending data");
-            //}
+            }
+            catch(Exception e)
+            {
+                Trace.WriteLine("Error sending data");
+            }
         }
 
         private SerialPort _port;
@@ -126,8 +124,8 @@ namespace C490_App.Core
             SerialPort.ReceivedBytesThreshold = 10;
             SerialPort.DataBits = 8;
             //SerialPort.ReadTimeout = 10;
-            SerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
-            SerialPort.ErrorReceived += new SerialErrorReceivedEventHandler(OnErrorRecieved);
+           // SerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
+           // SerialPort.ErrorReceived += new SerialErrorReceivedEventHandler(OnErrorRecieved);
             // }
         }
         public bool Open()

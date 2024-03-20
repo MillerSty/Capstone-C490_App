@@ -16,6 +16,7 @@ namespace C490_App.MVVM.ViewModel
         public bool Blue { get => _blue; set => _blue = value; }
 
         private int _GonTime;
+        public int currCycle { get; set; } =0;
 
         public int GOnTime
         {
@@ -295,8 +296,18 @@ namespace C490_App.MVVM.ViewModel
         {
             if (Green)
             {
+                string test = ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name.ToString();
                 ExperimentLocal.serialPortWrapper.SendData.Add('L');
-                ExperimentLocal.serialPortWrapper.SendData.Add(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name[0]);
+                if (int.Parse(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name.ToString()) < 10)
+                {
+                    ExperimentLocal.serialPortWrapper.SendData.Add('0');
+                    ExperimentLocal.serialPortWrapper.SendData.Add(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name[0]);
+                }
+                else
+                {
+                    ExperimentLocal.serialPortWrapper.SendData.Add(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name[0]);
+                    ExperimentLocal.serialPortWrapper.SendData.Add(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name[1]);
+                }
                 ExperimentLocal.serialPortWrapper.SendData.Add('G');
             }
             if (Red)
