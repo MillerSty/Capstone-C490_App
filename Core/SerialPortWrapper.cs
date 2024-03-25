@@ -61,7 +61,7 @@ namespace C490_App.Core
                 foreach (char c in SendData)
                 {
                     this.writeChar(c);
-                    Thread.Sleep(15); // NOTE THIS TIME CHANGES (due to pc hardware?)???
+                    Thread.Sleep(25); // NOTE THIS TIME CHANGES (due to pc hardware?)???
                 }
                 SendData.Clear();
             }
@@ -124,8 +124,8 @@ namespace C490_App.Core
             SerialPort.ReceivedBytesThreshold = 10;
             SerialPort.DataBits = 8;
             //SerialPort.ReadTimeout = 10;
-           // SerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
-           // SerialPort.ErrorReceived += new SerialErrorReceivedEventHandler(OnErrorRecieved);
+            SerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
+            SerialPort.ErrorReceived += new SerialErrorReceivedEventHandler(OnErrorRecieved);
             // }
         }
         public bool Open()
@@ -232,10 +232,10 @@ namespace C490_App.Core
 
         static List<string> ComPortNames()
         {
-            //String vid = "2341";
-            //String pid = "0043";
-            String vid = vidHW;
-            String pid = pidHW;
+            String vid = "2341";
+            String pid = "0043";
+            //String vid = vidHW;
+            //String pid = pidHW;
 
             String pattern = String.Format("^VID_{0}.PID_{1}", vid, pid);
             Regex _rx = new Regex(pattern, RegexOptions.IgnoreCase);

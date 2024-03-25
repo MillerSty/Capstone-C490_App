@@ -294,34 +294,98 @@ namespace C490_App.MVVM.ViewModel
         }
         public void startStop()
         {
-            if (Green)
+            string test = ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name.ToString();
+            int i = 0;
+            while (i < 2)
             {
-                string test = ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name.ToString();
-                ExperimentLocal.serialPortWrapper.SendData.Add('L');
-                if (int.Parse(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name.ToString()) < 10)
+                if (i == 0)
                 {
-                    ExperimentLocal.serialPortWrapper.SendData.Add('0');
-                    ExperimentLocal.serialPortWrapper.SendData.Add(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name[0]);
+                    ExperimentLocal.serialPortWrapper.SendData.Add('L');
+                    if (int.Parse(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name.ToString()) < 10)
+                    {
+                        ExperimentLocal.serialPortWrapper.SendData.Add('0');
+                        ExperimentLocal.serialPortWrapper.SendData.Add(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name[0]);
+                    }
+                    else
+                    {
+                        ExperimentLocal.serialPortWrapper.SendData.Add(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name[0]);
+                        ExperimentLocal.serialPortWrapper.SendData.Add(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name[1]);
+                    }
+
+                    
                 }
-                else
+            else if (i == 1) {
+
+
+                    ExperimentLocal.serialPortWrapper.SendData.Add('R');
+                    if (int.Parse(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name.ToString()) < 10)
+                    {
+                        ExperimentLocal.serialPortWrapper.SendData.Add('0');
+                        ExperimentLocal.serialPortWrapper.SendData.Add(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name[0]);
+                    }
+                    else
+                    {
+                        ExperimentLocal.serialPortWrapper.SendData.Add(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name[0]);
+                        ExperimentLocal.serialPortWrapper.SendData.Add(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name[1]);
+                    }
+
+                }
+                if (Green)
                 {
-                    ExperimentLocal.serialPortWrapper.SendData.Add(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name[0]);
-                    ExperimentLocal.serialPortWrapper.SendData.Add(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name[1]);
+
+                    ExperimentLocal.serialPortWrapper.SendData.Add('G');
+                    if (i == 1)
+                    {
+                        if (ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].GIntensity < 100)
+                        {
+                            ExperimentLocal.serialPortWrapper.SendData.Add('0');
+                        }
+                        foreach (char c in ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].GIntensity.ToString())
+                        {
+                            ExperimentLocal.serialPortWrapper.SendData.Add(c);
+                        }
+
+
+                    }
                 }
-                ExperimentLocal.serialPortWrapper.SendData.Add('G');
+                if (Red)
+                {
+                    ExperimentLocal.serialPortWrapper.SendData.Add('R');
+                    if (i == 1)
+                    {
+                        if (ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].RIntensity < 100)
+                        {
+                            ExperimentLocal.serialPortWrapper.SendData.Add('0');
+                        }
+                        foreach (char c in ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].RIntensity.ToString())
+                        {
+                            ExperimentLocal.serialPortWrapper.SendData.Add(c);
+                        }
+
+
+                    }
+                }
+                if (Blue)
+                {
+                    ExperimentLocal.serialPortWrapper.SendData.Add('B');
+                    if (i == 1)
+                    {
+                        if (ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].BIntensity < 100)
+                        {
+                            ExperimentLocal.serialPortWrapper.SendData.Add('0');
+                        }
+                        foreach (char c in ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].BIntensity.ToString())
+                        {
+                            ExperimentLocal.serialPortWrapper.SendData.Add(c);
+                        }
+
+
+                    }
+                }
+                i++;
+
             }
-            if (Red)
-            {
-                ExperimentLocal.serialPortWrapper.SendData.Add('L');
-                ExperimentLocal.serialPortWrapper.SendData.Add(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name[0]);
-                ExperimentLocal.serialPortWrapper.SendData.Add('R');
-            }
-            if (Blue)
-            {
-                ExperimentLocal.serialPortWrapper.SendData.Add('L');
-                ExperimentLocal.serialPortWrapper.SendData.Add(ExperimentLocal.ledParameters[int.Parse(LEDS[selectedIndex])].Name[0]);
-                ExperimentLocal.serialPortWrapper.SendData.Add('B');
-            }
+
             ExperimentLocal.serialPortWrapper.send();
 
         }
