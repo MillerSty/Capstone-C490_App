@@ -32,7 +32,12 @@ namespace C490_App.MVVM.ViewModel
         }
         private void A_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            UserEntryRead = _ExperimentStoreSerialWrapper.debugInfo + "\n";
+            var threadSend = new Thread(() =>
+            {
+                UserEntryRead = _ExperimentStoreSerialWrapper.debugInfo;
+            });
+            threadSend.IsBackground = true;
+            threadSend.Start();
         }
         private SerialPortWrapper _experimentStore;
         public SerialPortWrapper _ExperimentStoreSerialWrapper
@@ -71,7 +76,7 @@ namespace C490_App.MVVM.ViewModel
 
                     }
                     _ExperimentStoreSerialWrapper.send();
-                    UserEntryRead = "User: " + UserEntry + "\n";
+                    UserEntryRead = "\r\nUser: " + UserEntry + "\r\n";
 
                     Thread.Sleep(50);
                     UserEntry = "";

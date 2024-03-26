@@ -70,6 +70,7 @@ namespace C490_App.MVVM.ViewModel
         /// Listens for relayCommands.
         /// </summary>
         /// <param name="ExperimentSingleton"> The global experimentStore</param>
+
         public HomeViewModel(ExperimentStore ExperimentSingleton)
         {
             ExperimentLocal = ExperimentSingleton;
@@ -93,7 +94,9 @@ namespace C490_App.MVVM.ViewModel
 
             DebugView debug = new DebugView();
             debug.DataContext = new DebugViewModel(ExperimentLocal);
-            debug.Show();
+            debug.ShowDialog();
+
+
         }
 
         /// <summary>
@@ -103,11 +106,12 @@ namespace C490_App.MVVM.ViewModel
         /// </summary>
         private void SimpleSerial()
         {
-            //var threadSend = new Thread(() =>
-            //{
-            ExperimentLocal.RunExperiment12();
-            //});
-            // threadSend.Start();
+            var threadSend = new Thread(() =>
+            {
+                ExperimentLocal.RunExperiment12();
+            });
+            threadSend.Priority = ThreadPriority.AboveNormal;
+            threadSend.Start();
             //ExperimentLocal.RunExperiment12();
         }
 

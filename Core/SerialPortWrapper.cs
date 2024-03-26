@@ -40,51 +40,6 @@ namespace C490_App.Core
                 OnPropertyChanged("Text2");
             }
         }
-
-        private List<char> _sendData = new List<char>();
-        public List<char> SendData
-        {
-            get
-            {
-                return _sendData;
-            }
-            set
-            {
-                _sendData = value;
-                OnPropertyChanged(""); //probably not needed
-            }
-        }
-        public void send()
-        {
-            try
-            {
-                foreach (char c in SendData)
-                {
-                    this.writeChar(c);
-                    Thread.Sleep(25); // NOTE THIS TIME CHANGES (due to pc hardware?)???
-                }
-                SendData.Clear();
-            }
-            catch(Exception e)
-            {
-                Trace.WriteLine("Error sending data");
-            }
-        }
-
-        private SerialPort _port;
-        public SerialPort SerialPort
-        {
-            get { return _port; }
-            set { _port = value; }
-        }
-
-        public SerialPortWrapper(SerialPort serialPort)
-        {
-            SerialPort = serialPort;
-
-        }
-
-
         /// <summary>
         /// This is for initializing the serial port
         /// </summary>
@@ -125,9 +80,98 @@ namespace C490_App.Core
             SerialPort.DataBits = 8;
             //SerialPort.ReadTimeout = 10;
             SerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
-            SerialPort.ErrorReceived += new SerialErrorReceivedEventHandler(OnErrorRecieved);
+            //SerialPort.ErrorReceived += new SerialErrorReceivedEventHandler(OnErrorRecieved);
             // }
         }
+
+        private List<char> _sendData = new List<char>();
+        public List<char> SendData
+        {
+            get
+            {
+                return _sendData;
+            }
+            set
+            {
+                _sendData = value;
+                OnPropertyChanged(""); //probably not needed
+            }
+        }
+        public void send()
+        {
+            try
+            {
+                foreach (char c in SendData)
+                {
+                    Trace.WriteLine("Writing " + c);
+                    this.writeChar(c);
+                    Thread.Sleep(5); // NOTE THIS TIME CHANGES (due to pc hardware?)???
+                }
+                SendData.Clear();
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine("Error sending data");
+            }
+        }
+
+        private SerialPort _port;
+        public SerialPort SerialPort
+        {
+            get { return _port; }
+            set { _port = value; }
+        }
+
+        public SerialPortWrapper(SerialPort serialPort)
+        {
+            SerialPort = serialPort;
+
+        }
+
+
+
+
+        public void writeChar(char data)
+        {
+            SerialPort.Write(data.ToString());
+
+        }
+        public void writeString(string data)
+        {
+            SerialPort.Write(data);
+        }
+
+        /// <summary>
+        /// This handles receiving data from the mCU
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e">SerialDataReceivedEventArgs</param>
+        private void OnDataRecieved(object sender, SerialDataReceivedEventArgs e)
+        {
+            var serialDevice = sender as SerialPort;
+            try
+            {
+                var indata = serialDevice.ReadLine();
+                //var indata = serialDevice.ReadExisting();
+                debugInfo = indata;
+            }
+            catch (Exception err)
+            {
+                Trace.WriteLine(err.ToString());
+            }
+        }
+        private void OnErrorRecieved(object sender, SerialErrorReceivedEventArgs e)
+        {
+            try
+            {
+                Trace.Write("*Hw debug. Error received " + e.ToString());
+            }
+            catch (Exception err)
+            {
+                Trace.WriteLine(err.ToString());
+            }
+        }
+
         public bool Open()
         {
 
@@ -154,6 +198,10 @@ namespace C490_App.Core
             return isOpen();
 
         }
+        public bool isOpen()
+        {
+            return SerialPort.IsOpen;
+        }
         public void Close()
         {
             try
@@ -169,55 +217,6 @@ namespace C490_App.Core
             }
 
         }
-
-        public void writeChar(char data)
-        {
-            SerialPort.Write(data.ToString());
-
-        }
-        public void writeString(string data)
-        {
-            SerialPort.Write(data);
-        }
-        public bool isOpen()
-        {
-            return SerialPort.IsOpen;
-        }
-
-        public void assignEventHandler()
-        {
-
-        }
-        /// <summary>
-        /// This handles receiving data from the mCU
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e">SerialDataReceivedEventArgs</param>
-        private void OnDataRecieved(object sender, SerialDataReceivedEventArgs e)
-        {
-            var serialDevice = sender as SerialPort;
-            try
-            {
-                var indata = serialDevice.ReadExisting();
-                debugInfo = indata;
-            }
-            catch (Exception err)
-            {
-                Trace.WriteLine(err.ToString());
-            }
-        }
-        private void OnErrorRecieved(object sender, SerialErrorReceivedEventArgs e)
-        {
-            try
-            {
-                Trace.Write("*Hw debug. Error received " + e.ToString());
-            }
-            catch (Exception err)
-            {
-                Trace.WriteLine(err.ToString());
-            }
-        }
-
         /// <summary>
         /// Used for getting comports used by VID/PID
         /// </summary>
