@@ -119,7 +119,7 @@ namespace C490_App.Core
             th.timerIndex = timerIndex;
         }
 
-        public List<System.Timers.Timer> ledTimer = new List<System.Timers.Timer>();
+        public List<System.Timers.Timer> ledTimer = new List<System.Timers.Timer>(50);
         /// <summary>
         /// SimpleSerial communication. Second function for sending more detailed experiment to hardware
         /// </summary>
@@ -140,11 +140,12 @@ namespace C490_App.Core
 
                 foreach (LEDParameter _leds in ledParameters)//write LED's 
                 {
+                    ledTimer.Add(new System.Timers.Timer());
+                    ledTimer[ledTimerIndex].AutoReset = false;
+                    TimerHelper th = new TimerHelper();
                     if (_leds.IsSelected)
                     {
-                        ledTimer.Add(new System.Timers.Timer());
-                        ledTimer[ledTimerIndex].AutoReset = false;
-                        TimerHelper th = new TimerHelper();
+
 
                         bool r = false, g = false, b = false; //bools for intensity
 
@@ -270,11 +271,11 @@ namespace C490_App.Core
                 Trace.WriteLine(sw.ToString());//00.14 on my home pc
                 if (!(_serialPortWrapper.SendData.Count == 0)) ;
                 //enables LED timers
-                //foreach (var index in ledTimer)
-                //{
-                //    index.Enabled = true;
+                foreach (var index in ledTimer)
+                {
+                    // index.Enabled = true;
 
-                //}
+                }
 
                 //Checks how many unused LED's
                 if (count == 50)
@@ -321,30 +322,76 @@ namespace C490_App.Core
             public int ledIndex { get; set; }
 
         }
-        private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e, ref TimerHelper th)
+        private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e, ref TimerHelper _th)
         {
+            var th = _th;
             char colour = th.colour;
             char[] colours = ['R', 'G', 'B'];
             //if (th.OnOrOff.Equals("On"))
             //{
             //if any other colour has an on time switch to it
             Trace.WriteLine("In timer " + th.ledIndex.ToString());
-            switch (colour)
+
+            //bool aquiredLock = false;
+            //Object mLock = new Object();
+            //Monitor.TryEnter(mLock, 50, ref aquiredLock);
+            Application.Current.Dispatcher.Invoke(new Action(() =>
             {
-                case 'G':
-                    if (ledParameters[th.ledIndex].currGreenCycle == ledParameters[th.ledIndex].GreenCycle)
-                    {
-                        //switch to next priority
-                        break;
-                    }
-                    else
-                    {
-                        if (th.OnOrOff.Equals("On"))
+                switch (colour)
+                {
+                    case 'G':
+                        if (ledParameters[th.ledIndex].currGreenCycle == ledParameters[th.ledIndex].GreenCycle)
                         {
-                            if (!(ledParameters[th.ledIndex].GOffTime == 0))
+                            //switch to next priority
+                            break;
+                        }
+                        else
+                        {
+                            if (th.OnOrOff.Equals("On"))
                             {
-                                ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].GOffTime * 1000;
-                                th.OnOrOff = "Off";
+                                if (!(ledParameters[th.ledIndex].GOffTime == 0))
+                                {
+                                    ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].GOffTime * 1000;
+                                    th.OnOrOff = "Off";
+                                    _serialPortWrapper.SendData.Add('L');
+                                    if (int.Parse(ledParameters[th.ledIndex].Name.ToString()) < 10)
+                                    {
+                                        _serialPortWrapper.SendData.Add('0');
+                                        _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[0]);
+                                    }
+                                    else
+                                    {
+                                        _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[0]);
+                                        _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[1]);
+                                    }
+
+
+                                    //_serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[0]);
+                                    _serialPortWrapper.SendData.Add(th.colour);
+                                    ledParameters[th.ledIndex].currGreenCycle += 1;
+
+                                }
+                                else
+                                {
+                                    th.OnOrOff = "On";
+                                    ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].GOnTime * 1000;
+                                    //no append to SendData here as we dont want toggle led
+                                }
+
+                            }
+                            else
+                            {
+                                th.OnOrOff = "On";
+                                int indexOfJawn = Array.IndexOf(colours, colour);
+                                switch (colour)
+                                {
+                                    case 'R':
+                                        ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].ROnTime * 1000; break;
+                                    case 'G':
+                                        ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].GOnTime * 1000; break;
+                                    case 'B':
+                                        ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].BOnTime * 1000; break;
+                                }
                                 _serialPortWrapper.SendData.Add('L');
                                 if (int.Parse(ledParameters[th.ledIndex].Name.ToString()) < 10)
                                 {
@@ -356,121 +403,23 @@ namespace C490_App.Core
                                     _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[0]);
                                     _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[1]);
                                 }
-
-
-                                //_serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[0]);
                                 _serialPortWrapper.SendData.Add(th.colour);
-                                ledParameters[th.ledIndex].currGreenCycle += 1;
-
                             }
-                            else
-                            {
-                                th.OnOrOff = "On";
-                                ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].GOnTime * 1000;
-                                //no append to SendData here as we dont want toggle led
-                            }
-
                         }
-                        else
-                        {
-                            th.OnOrOff = "On";
-                            int indexOfJawn = Array.IndexOf(colours, colour);
-                            switch (colour)
-                            {
-                                case 'R':
-                                    ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].ROnTime * 1000; break;
-                                case 'G':
-                                    ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].GOnTime * 1000; break;
-                                case 'B':
-                                    ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].BOnTime * 1000; break;
-                            }
-                            _serialPortWrapper.SendData.Add('L');
-                            if (int.Parse(ledParameters[th.ledIndex].Name.ToString()) < 10)
-                            {
-                                _serialPortWrapper.SendData.Add('0');
-                                _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[0]);
-                            }
-                            else
-                            {
-                                _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[0]);
-                                _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[1]);
-                            }
-                            _serialPortWrapper.SendData.Add(th.colour);
-                        }
-                    }
-                    break;
-                case 'R':
-                    //if (ledParameters[th.ledIndex].currRedCycle == ledParameters[th.ledIndex].RedCycle)
-                    //{
-                    //    //switch to next priority
-                    //   // break;
-                    //}
-                    //else
-                    //{
-                    if (th.OnOrOff.Equals("On"))
-                    {
-                        if (!(ledParameters[th.ledIndex].ROffTime == 0))
-                        {
-                            ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].ROffTime * 1000;
-                            th.OnOrOff = "Off";
-                            _serialPortWrapper.SendData.Add('L');
-                            if (int.Parse(ledParameters[th.ledIndex].Name.ToString()) < 10)
-                            {
-                                _serialPortWrapper.SendData.Add('0');
-                                _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[0]);
-                            }
-                            else
-                            {
-                                _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[0]);
-                                _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[1]);
-                            }
-
-
-                            //_serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[0]);
-                            _serialPortWrapper.SendData.Add(th.colour);
-                            ledParameters[th.ledIndex].currRedCycle += 1;
-
-                        }
-                        else
-                        {
-                            th.OnOrOff = "On";
-                            ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].ROnTime * 1000;
-                            //no append to SendData here as we dont want toggle led
-                        }
-
-                    }
-                    else
-                    {
-                        th.OnOrOff = "On";
-                        ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].ROnTime * 1000;
-                        _serialPortWrapper.SendData.Add('L');
-                        if (int.Parse(ledParameters[th.ledIndex].Name.ToString()) < 10)
-                        {
-                            _serialPortWrapper.SendData.Add('0');
-                            _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[0]);
-                        }
-                        else
-                        {
-                            _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[0]);
-                            _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[1]);
-                        }
-                        _serialPortWrapper.SendData.Add(th.colour);
-                    }
-                    //}
-                    break;
-                case 'B':
-                    if (ledParameters[th.ledIndex].currBlueCycle == ledParameters[th.ledIndex].BlueCycle)
-                    {
-                        //switch to next priority
                         break;
-                    }
-                    else
-                    {
+                    case 'R':
+                        //if (ledParameters[th.ledIndex].currRedCycle == ledParameters[th.ledIndex].RedCycle)
+                        //{
+                        //    //switch to next priority
+                        //   // break;
+                        //}
+                        //else
+                        //{
                         if (th.OnOrOff.Equals("On"))
                         {
-                            if (!(ledParameters[th.ledIndex].BOffTime == 0))
+                            if (!(ledParameters[th.ledIndex].ROffTime == 0))
                             {
-                                ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].BOffTime * 1000;
+                                ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].ROffTime * 1000;
                                 th.OnOrOff = "Off";
                                 _serialPortWrapper.SendData.Add('L');
                                 if (int.Parse(ledParameters[th.ledIndex].Name.ToString()) < 10)
@@ -493,7 +442,7 @@ namespace C490_App.Core
                             else
                             {
                                 th.OnOrOff = "On";
-                                ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].BOnTime * 1000;
+                                ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].ROnTime * 1000;
                                 //no append to SendData here as we dont want toggle led
                             }
 
@@ -501,16 +450,7 @@ namespace C490_App.Core
                         else
                         {
                             th.OnOrOff = "On";
-                            int indexOfJawn = Array.IndexOf(colours, colour);
-                            switch (colour)
-                            {
-                                case 'R':
-                                    ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].ROnTime * 1000; break;
-                                case 'G':
-                                    ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].GOnTime * 1000; break;
-                                case 'B':
-                                    ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].BOnTime * 1000; break;
-                            }
+                            ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].ROnTime * 1000;
                             _serialPortWrapper.SendData.Add('L');
                             if (int.Parse(ledParameters[th.ledIndex].Name.ToString()) < 10)
                             {
@@ -524,17 +464,91 @@ namespace C490_App.Core
                             }
                             _serialPortWrapper.SendData.Add(th.colour);
                         }
-                    }
-                    break;
+                        //}
+                        break;
+                    case 'B':
+                        if (ledParameters[th.ledIndex].currBlueCycle == ledParameters[th.ledIndex].BlueCycle)
+                        {
+                            //switch to next priority
+                            break;
+                        }
+                        else
+                        {
+                            if (th.OnOrOff.Equals("On"))
+                            {
+                                if (!(ledParameters[th.ledIndex].BOffTime == 0))
+                                {
+                                    ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].BOffTime * 1000;
+                                    th.OnOrOff = "Off";
+                                    _serialPortWrapper.SendData.Add('L');
+                                    if (int.Parse(ledParameters[th.ledIndex].Name.ToString()) < 10)
+                                    {
+                                        _serialPortWrapper.SendData.Add('0');
+                                        _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[0]);
+                                    }
+                                    else
+                                    {
+                                        _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[0]);
+                                        _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[1]);
+                                    }
 
 
-            }
-            //}
+                                    //_serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[0]);
+                                    _serialPortWrapper.SendData.Add(th.colour);
+                                    ledParameters[th.ledIndex].currRedCycle += 1;
 
-            _serialPortWrapper.send();
-            ledTimer[th.timerIndex].Enabled = true;
-            Trace.WriteLine("LEaving timer " + th.ledIndex.ToString());
+                                }
+                                else
+                                {
+                                    th.OnOrOff = "On";
+                                    ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].BOnTime * 1000;
+                                    //no append to SendData here as we dont want toggle led
+                                }
+
+                            }
+                            else
+                            {
+                                th.OnOrOff = "On";
+                                int indexOfJawn = Array.IndexOf(colours, colour);
+                                switch (colour)
+                                {
+                                    case 'R':
+                                        ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].ROnTime * 1000; break;
+                                    case 'G':
+                                        ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].GOnTime * 1000; break;
+                                    case 'B':
+                                        ledTimer[th.timerIndex].Interval = ledParameters[th.ledIndex].BOnTime * 1000; break;
+                                }
+                                _serialPortWrapper.SendData.Add('L');
+                                if (int.Parse(ledParameters[th.ledIndex].Name.ToString()) < 10)
+                                {
+                                    _serialPortWrapper.SendData.Add('0');
+                                    _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[0]);
+                                }
+                                else
+                                {
+                                    _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[0]);
+                                    _serialPortWrapper.SendData.Add(ledParameters[th.ledIndex].Name.ToString()[1]);
+                                }
+                                _serialPortWrapper.SendData.Add(th.colour);
+                            }
+                        }
+                        break;
+
+
+                }
+                //}
+
+                Application.Current.Dispatcher.Invoke(new Action(() =>
+                {
+                    _serialPortWrapper.send();
+                }), null);
+
+                ledTimer[th.timerIndex].Enabled = true;
+
+            }), null);
+            Trace.WriteLine("Leaving timer " + th.ledIndex.ToString());
+
         }
-
     }
 }

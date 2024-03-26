@@ -91,10 +91,16 @@ namespace C490_App.MVVM.ViewModel
         /// </summary>
         private void OpenDebug()
         {
+            Application.Current.Dispatcher.Invoke(new Action(() =>
+            {
 
-            DebugView debug = new DebugView();
-            debug.DataContext = new DebugViewModel(ExperimentLocal);
-            debug.ShowDialog();
+
+                DebugView debug = new DebugView();
+                debug.DataContext = new DebugViewModel(ExperimentLocal);
+                debug.Show();
+            }), null);
+
+
 
 
         }

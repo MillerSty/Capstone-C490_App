@@ -76,7 +76,7 @@ namespace C490_App.Core
             SerialPort.NewLine = "\r\n";
             SerialPort.StopBits = StopBits.One;
             SerialPort.Parity = Parity.None;
-            SerialPort.ReceivedBytesThreshold = 10;
+            SerialPort.ReceivedBytesThreshold = 1;
             SerialPort.DataBits = 8;
             //SerialPort.ReadTimeout = 10;
             SerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
@@ -99,13 +99,14 @@ namespace C490_App.Core
         }
         public void send()
         {
+            Trace.WriteLine("!!!!!!!!!!!!!!!!!!!!!!");
             try
             {
                 foreach (char c in SendData)
                 {
                     Trace.WriteLine("Writing " + c);
                     this.writeChar(c);
-                    Thread.Sleep(5); // NOTE THIS TIME CHANGES (due to pc hardware?)???
+                    Thread.Sleep(10); // NOTE THIS TIME CHANGES (due to pc hardware?)???
                 }
                 SendData.Clear();
             }
@@ -148,11 +149,12 @@ namespace C490_App.Core
         /// <param name="e">SerialDataReceivedEventArgs</param>
         private void OnDataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
+            Trace.WriteLine("Data received");
             var serialDevice = sender as SerialPort;
             try
             {
-                var indata = serialDevice.ReadLine();
-                //var indata = serialDevice.ReadExisting();
+                //var indata = serialDevice.ReadLine();
+                var indata = serialDevice.ReadExisting();
                 debugInfo = indata;
             }
             catch (Exception err)
