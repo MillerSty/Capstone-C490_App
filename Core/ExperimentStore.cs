@@ -197,6 +197,7 @@ namespace C490_App.Core
                             }
                         }
 
+                        //_serialPortWrapper.send();
                         serialSendChars.Clear();
                         //this moves on to appending intensity to SendData
                         serialSendChars.Add('R');
@@ -218,6 +219,10 @@ namespace C490_App.Core
                             {
                                 serialSendChars.Add('0');
                             }
+                            if (_leds.GIntensity < 10)
+                            {
+                                serialSendChars.Add('0');
+                            }
                             foreach (char c in _leds.GIntensity.ToString())
                             {
                                 serialSendChars.Add(c);
@@ -228,6 +233,9 @@ namespace C490_App.Core
                             serialSendChars.Add('R');
                             if (_leds.RIntensity < 100)
                             {
+                                serialSendChars.Add('0');
+                            }
+                            if (_leds.RIntensity < 10) {
                                 serialSendChars.Add('0');
                             }
                             foreach (char c in _leds.RIntensity.ToString())
@@ -243,6 +251,10 @@ namespace C490_App.Core
                             {
                                 serialSendChars.Add('0');
                             }
+                            if (_leds.BIntensity < 10)
+                            {
+                                serialSendChars.Add('0');
+                            }
                             foreach (char c in _leds.BIntensity.ToString())
                             {
                                 serialSendChars.Add(c);
@@ -252,10 +264,9 @@ namespace C490_App.Core
                         //Adds intensity to send queue
                         foreach (var bytes in serialSendChars)
                         {
-                            if (serialSendChars.Count > 0) // if not ==3 then we know it didnt have led times >=1
-                            {
-                                _serialPortWrapper.SendData.Add(bytes);
-                            }
+                            
+                                _serialPortWrapper.SendRes.Add(bytes);
+                            
                         }
 
                     }
@@ -266,14 +277,16 @@ namespace C490_App.Core
 
                 Stopwatch sw = Stopwatch.StartNew();
                 //_serialPortWrapper.SendData.Clear();
-                _serialPortWrapper.send();
+                //_serialPortWrapper.send();
+                _serialPortWrapper.sendData();
+                _serialPortWrapper.sendRes();
                 sw.Stop();
                 Trace.WriteLine(sw.ToString());//00.14 on my home pc
                 if (!(_serialPortWrapper.SendData.Count == 0)) ;
                 //enables LED timers
                 foreach (var index in ledTimer)
                 {
-                    // index.Enabled = true;
+                    //index.Enabled = true;
 
                 }
 
@@ -312,7 +325,8 @@ namespace C490_App.Core
 
             }
             //ENSURE WE DISPOSE OF TIMERS HERE
-            Trace.WriteLine("End of experiment");
+            showMessageBox("Experiment has ended, feel free to run again", "Experiment End");//add bool for blocking/ non blocking message
+           // Trace.WriteLine("End of experiment");
         }
         public struct TimerHelper
         {
@@ -335,8 +349,8 @@ namespace C490_App.Core
             //bool aquiredLock = false;
             //Object mLock = new Object();
             //Monitor.TryEnter(mLock, 50, ref aquiredLock);
-            Application.Current.Dispatcher.Invoke(new Action(() =>
-            {
+            //Application.Current.Dispatcher.Invoke(new Action(() =>
+            //{
                 switch (colour)
                 {
                     case 'G':
@@ -537,16 +551,19 @@ namespace C490_App.Core
 
 
                 }
-                //}
+            //}
 
-                Application.Current.Dispatcher.Invoke(new Action(() =>
-                {
+            //Application.Current.Dispatcher.Invoke(new Action(() =>
+            //{
+            foreach (char c in _serialPortWrapper.SendData) {
+                Trace.WriteLine("TIMER: "+c);
+            }
                     _serialPortWrapper.send();
-                }), null);
+                //}), null);
 
                 ledTimer[th.timerIndex].Enabled = true;
 
-            }), null);
+            //}), null);
             Trace.WriteLine("Leaving timer " + th.ledIndex.ToString());
 
         }

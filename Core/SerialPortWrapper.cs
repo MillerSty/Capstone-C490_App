@@ -76,7 +76,7 @@ namespace C490_App.Core
             SerialPort.NewLine = "\r\n";
             SerialPort.StopBits = StopBits.One;
             SerialPort.Parity = Parity.None;
-            SerialPort.ReceivedBytesThreshold = 1;
+            SerialPort.ReceivedBytesThreshold = 10;
             SerialPort.DataBits = 8;
             //SerialPort.ReadTimeout = 10;
             SerialPort.DataReceived += new SerialDataReceivedEventHandler(OnDataRecieved);
@@ -94,19 +94,31 @@ namespace C490_App.Core
             set
             {
                 _sendData = value;
-                OnPropertyChanged(""); //probably not needed
+            }
+        }
+        private List<char> _sendRes = new List<char>();
+        public List<char> SendRes
+        {
+            get
+            {
+                return _sendRes;
+            }
+            set
+            {
+                _sendRes = value;
+                //probably not needed
             }
         }
         public void send()
         {
-            Trace.WriteLine("!!!!!!!!!!!!!!!!!!!!!!");
+           // Trace.WriteLine("!!!!!!!!!!!!!!!!!!!!!!");
             try
             {
                 foreach (char c in SendData)
                 {
-                    Trace.WriteLine("Writing " + c);
                     this.writeChar(c);
-                    Thread.Sleep(10); // NOTE THIS TIME CHANGES (due to pc hardware?)???
+                    //Trace.WriteLine("Writing " + c);
+                    Thread.Sleep(5); // NOTE THIS TIME CHANGES (due to pc hardware?)???
                 }
                 SendData.Clear();
             }
@@ -115,7 +127,42 @@ namespace C490_App.Core
                 Trace.WriteLine("Error sending data");
             }
         }
-
+        public void sendData()
+        {
+            // Trace.WriteLine("!!!!!!!!!!!!!!!!!!!!!!");
+            try
+            {
+                foreach (char c in SendData)
+                {
+                    this.writeChar(c);
+                    //Trace.WriteLine("Writing " + c);
+                    Thread.Sleep(5); // NOTE THIS TIME CHANGES (due to pc hardware?)???
+                }
+                SendData.Clear();
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine("Error sending data");
+            }
+        }
+        public void sendRes()
+        {
+            // Trace.WriteLine("!!!!!!!!!!!!!!!!!!!!!!");
+            try
+            {
+                foreach (char c in SendRes)
+                {
+                    this.writeChar(c);
+                    //Trace.WriteLine("RES " + c);
+                    Thread.Sleep(5); // NOTE THIS TIME CHANGES (due to pc hardware?)???
+                }
+                SendRes.Clear();
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine("Error sending data");
+            }
+        }
         private SerialPort _port;
         public SerialPort SerialPort
         {
@@ -149,7 +196,7 @@ namespace C490_App.Core
         /// <param name="e">SerialDataReceivedEventArgs</param>
         private void OnDataRecieved(object sender, SerialDataReceivedEventArgs e)
         {
-            Trace.WriteLine("Data received");
+            //Trace.WriteLine("Data received");
             var serialDevice = sender as SerialPort;
             try
             {
@@ -233,10 +280,10 @@ namespace C490_App.Core
 
         static List<string> ComPortNames()
         {
-            String vid = "2341";
-            String pid = "0043";
-            //String vid = vidHW;
-            //String pid = pidHW;
+            //String vid = "2341";
+            //String pid = "0043";
+            String vid = vidHW;
+            String pid = pidHW;
 
             String pattern = String.Format("^VID_{0}.PID_{1}", vid, pid);
             Regex _rx = new Regex(pattern, RegexOptions.IgnoreCase);

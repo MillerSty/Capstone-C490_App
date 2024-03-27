@@ -32,7 +32,7 @@ namespace C490_App.Core
                 var config = new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo.InvariantCulture);
                 config.MissingFieldFound = null;
 
-                using (var reader = new StreamReader(openFileDialog.FileName))
+                using (var reader = new StreamReader(openFileDialog.FileName)) //TODO Try catch file 
 
                 using (var csv = new CsvReader(reader, config))
                 {
